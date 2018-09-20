@@ -1,0 +1,44 @@
+URxvt.background: 	#1c2023
+URxvt.scrollBar:	 false
+URxvt.cursosBlink: 	true
+URxvt.borderColor: 	#1c2023
+URxvt.termnane:		rxvt-256color
+
+## Colors
+! special
+*.foreground:   #c7ccd1
+*.background:   #1c2023
+*.cursorColor:  #c7ccd1
+
+! black
+*.color0:       #1c2023
+*.color8:       #747c84
+
+! red
+*.color1:       #ff614b
+*.color9:       #ff614b
+
+! green
+*.color2:       #95c7ae
+*.color10:      #95c7ae
+
+! yellow
+*.color3:       #aec795
+*.color11:      #aec795
+
+! blue
+*.color4:       #ae95c7
+*.color12:      #ae95c7
+
+! magenta
+*.color5:       #c795ae
+*.color13:      #c795ae
+
+! cyan
+*.color6:       #95aec7
+*.color14:      #95aec7
+
+! white
+*.color7:       #c7ccd1
+*.color15:      #f3f4f5
+

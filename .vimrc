@@ -1,5 +1,43 @@
-set nocompatible              " required
-filetype on                  " required
+" vimrc by vilukissa
+"
+" NOTICE! This configuration uses set exrc and set secure. Set exrc allows vim to run some external commands,
+" which could compromise your system if not used with set secure. NEVER REMOVE set secure without removing set exrc.
+"
+" This configuration has setting for: Python, C, C++, Latex
+"
+" Configuration supports features such as:  Airline and Nerdtree, for information
+"                                           Simplyfold, YouCompleteMe and VimFugitive for ease of use
+"                                           Goyo, pencil and vimroom for distraction free environment
+"
+"
+" C-language configuration based on: Alexey Shmalko's setup and guide:
+" http://www.alexeyshmalko.com/2014/using-vim-as-c-cpp-ide/
+"
+" Python configuration based on Real Python guide:
+" https://realpython.com/vim-and-python-a-match-made-in-heaven/
+
+
+
+" __      __  _____   _______              _
+" \ \    / / |_   _| |__   __|     /\     | |
+"  \ \  / /    | |      | |       /  \    | |
+"  	\ \/ /     | |      | |      / /\ \   | |
+"	   \  /     _| |_     | |     / ____ \  | |____
+"	  	\/     |_____|    |_|    /_/    \_\ |______|
+
+set nocompatible            " required
+set exrc                    " required
+set secure                  " NEVER REMOVE, YOUR VIM MIGHT EXECUTE DANGEROUS CODE
+filetype on                 " required
+
+
+
+"  _____    _        _    _    _____   _____   _   _    _____
+" |  __ \  | |      | |  | |  / ____| |_   _| | \ | |  / ____|
+" | |__) | | |      | |  | | | |  __    | |   |  \| | | (___
+" |  ___/  | |      | |  | | | | |_ |   | |   | . ` |  \___ \
+" | |      | |____  | |__| | | |__| |  _| |_  | |\  |  ____) |
+" |_|      |______|  \____/   \_____| |_____| |_| \_| |_____/
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -8,14 +46,11 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'gmarik/Vundle.vim'	" let Vundle manage Vundle, required
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-let g:airline#extensioins#tabline#enable = 1
-" set laststatus=2
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'scrooloose/syntastic'
@@ -30,7 +65,19 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
 
-" Goyo settings
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+" AIRLINE
+let g:airline#extensioins#tabline#enable = 1
+" set laststatus=2
+let g:airline_theme='bubblegum' " set look
+
+
+" GOYO
 function! s:goyo_enter()
 	:set textwidth 130
 	:set wrap on
@@ -44,6 +91,68 @@ function! s:goyo_leave()
 endfunction
 let g:SimpylFold_docstring_preview=1
 
+" PENCIL
+
+augroup pencil " Initialize by file type
+	autocmd!
+	autocmd FileType markdown,mkd call pencil#init()
+	autocmd FileType text call pencil#init({'wrap': 'hard'})
+augroup END
+" Softwrap with pencil
+let g:pencil#wrapModeDefault = 'soft'
+
+
+" YOU-COMPLETE-ME
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" NERD TREE
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+map <C-n> :NERDTreeToggle<CR>
+
+
+
+"   _____   ______   _   _   ______   _____               _
+"  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |
+" | |  __  | |__    |  \| | | |__    | |__) |    /  \    | |
+" | | |_ | |  __|   | . ` | |  __|   |  _  /    / /\ \   | |
+" | |__| | | |____  | |\  | | |____  | | \ \   / ____ \  | |____
+"  \_____| |______| |_| \_| |______| |_|  \_\ /_/    \_\ |______|
+
+set nu									" Set numbers
+set nocursorline				" Remove cursor line
+set background=dark			" tmux backgraund fix
+set ruler               " show line and column number
+syntax on               " syntax highlighting
+set showcmd             " show (partial) command in status line
+
+
+" Basic Functionality
+set expandtab           " enter spaces when tab is pressed
+set textwidth=120       " break lines when line length increases
+set tabstop=4           " use 4 spaces to represent tab
+set softtabstop=4
+set shiftwidth=4        " number of spaces to use for auto indent
+set autoindent          " copy indent from current line when starting a new line
+
+set backspace=indent,eol,start	" make backspaces more powerfull
+
+
+" SPLIT FUNCTIONALITY
+"Split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Split config
+set splitbelow
+set splitright
+
+
+" FOLDING FUNCTIONALITY
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
@@ -57,44 +166,19 @@ let g:vimroom_background="none"
 set clipboard=unnamed
 
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+" read odt files in vim
+autocmd BufReadPost *.odt :%!odt2txt %
 
-" configure expanding of tabs for various file types
-au BufRead,BufNewFile *.py set expandtab
-au BufRead,BufNewFile *.c set noexpandtab
-au BufRead,BufNewFile *.h set noexpandtab
-au BufRead,BufNewFile Makefile* set noexpandtab
 
-" --------------------------------------------------------------------------------
-" configure editor with tabs and nice stuff...
-" --------------------------------------------------------------------------------
-set expandtab           " enter spaces when tab is pressed
-set textwidth=120       " break lines when line length increases
-set tabstop=4           " use 4 spaces to represent tab
-set softtabstop=4
-set shiftwidth=4        " number of spaces to use for auto indent
-set autoindent          " copy indent from current line when starting a new line
 
-" make backspaces more powerfull
-set backspace=indent,eol,start
+"  _____   __     __  _______   _    _    ____    _   _
+" |  __ \  \ \   / / |__   __| | |  | |  / __ \  | \ | |
+" | |__) |  \ \_/ /     | |    | |__| | | |  | | |  \| |
+" |  ___/    \   /      | |    |  __  | | |  | | | . ` |
+" | |         | |       | |    | |  | | | |__| | | |\  |
+" |_|         |_|       |_|    |_|  |_|  \____/  |_| \_|
 
-set ruler                           " show line and column number
-syntax on               " syntax highlighting
-set showcmd             " show (partial) command in status line
-
-"Split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" Split config
-set splitbelow
-set splitright
-
-"Python setup
+"Python filesetup
 au BufNewFile,BufRead *.py
     \ set tabstop=4
     \ set softtabstop=4
@@ -110,43 +194,40 @@ au BufNewFile,BufRead *.js, *.html, *.css
     \ set shiftwidth=2
 
 
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-" Python syntax 
+" Syntax
 let python_highlight_all=1
 syntax on
 
-" Nerd tree
-let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
-set nu
-set nocursorline
 
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"   _____       __   _____
+"  / ____|     / /  / ____|    _       _
+" | |         / /  | |       _| |_   _| |_
+" | |        / /   | |      |_   _| |_   _|
+" | |____   / /    | |____    |_|     |_|
+"  \_____| /_/      \_____|
 
-map <C-n> :NERDTreeToggle<CR>
+" Makefile syntax"
+au BufRead,BufNewFile Makefile* set noexpandtab
 
-" Vim pencil config
-" Initialize by file type
-augroup pencil
-	autocmd!
-	autocmd FileType markdown,mkd call pencil#init()
-	autocmd FileType text call pencil#init({'wrap': 'hard'})
-augroup END
-" Softwrap with pencil
-let g:pencil#wrapModeDefault = 'soft'
+" C syntax
+au BufNewFile,BufRead *.h,*.c
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set noexpandtab
+    \ set colorcolumn=110
+    \ highlight ColorColumn ctermbg=darkgray
 
-" Airline
-let g:airline_theme='bubblegum'
+
+
+"		_                   _______   ______  __   __
+"	 | |          /\     |__   __| |  ____| \ \ / /
+"	 | |         /  \       | |    | |__     \ V /
+"	 | |        / /\ \      | |    |  __|     > <
+"	 | |____   / ____ \     | |    | |____   / . \
+"	 |______| /_/    \_\    |_|    |______| /_/ \_\
 
 " Latex
 " Pdf autoview settings
 let g:livepreview_previewer = 'Okular'
-
-" read odt files in vim
-autocmd BufReadPost *.odt :%!odt2txt %
-
-" tmux fix
-set background=dark

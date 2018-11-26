@@ -160,6 +160,12 @@ nnoremap <silent> <C-Down> <c-w>j
 set splitbelow
 set splitright
 
+" Split resizing
+set winheight=10
+:silent! set winminheight=5
+
+nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 
 " FOLDING FUNCTIONALITY
 " Enable folding

@@ -64,7 +64,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
-
+Plugin 'ervandew/supertab'
+Plugin 'majutsushi/tagbar'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -106,6 +107,7 @@ let g:pencil#wrapModeDefault = 'soft'
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
+
 " NERD TREE
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 autocmd StdinReadPre * let s:std_in=1
@@ -113,6 +115,8 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>
 
 
+" TAGBAR
+nmap <F8> :TagbarToggle<CR>
 
 "   _____   ______   _   _   ______   _____               _
 "  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |
@@ -146,6 +150,11 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+" Enable arrows
+nnoremap <silent> <C-Right> <c-w>l
+nnoremap <silent> <C-Left> <c-w>h
+nnoremap <silent> <C-Up> <c-w>k
+nnoremap <silent> <C-Down> <c-w>j
 
 " Split config
 set splitbelow
@@ -165,6 +174,15 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.p
 let g:vimroom_background="none"
 set clipboard=unnamed
 
+
+" Auto closing brackets
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
 
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %
@@ -187,6 +205,7 @@ au BufNewFile,BufRead *.py
     \ set expandtab
     \ set autoindent
     \ set fileformat=unix
+    
 
 au BufNewFile,BufRead *.js, *.html, *.css
     \ set tabstop=2

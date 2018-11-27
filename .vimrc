@@ -190,6 +190,11 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 
+
+" MOUSE SUPPORT
+:set mouse=a
+
+
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %
 

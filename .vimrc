@@ -7,6 +7,7 @@
 "
 " Configuration supports features such as:  Airline and Nerdtree, for information
 "                                           Simplyfold, YouCompleteMe and VimFugitive for ease of use
+"                                           Undotree and Tagbar for extra utility and information
 "                                           Goyo, pencil and vimroom for distraction free environment
 "
 "

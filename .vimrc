@@ -151,6 +151,9 @@ set autoindent          " copy indent from current line when starting a new line
 
 set backspace=indent,eol,start	" make backspaces more powerfull
 
+" Define highlight group
+:highlight BadWhitespace ctermfg=16 ctermbg=253 guifg=#000000 guibg=#F8F8F0
+
 
 " SPLIT FUNCTIONALITY
 "Split navigations
@@ -217,19 +220,19 @@ autocmd BufReadPost *.odt :%!odt2txt %
 
 "Python filesetup
 au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
     \ set fileformat=unix
     
 
 au BufNewFile,BufRead *.js, *.html, *.css
-    \ set tabstop=2
-    \ set softtabstop=2
-    \ set shiftwidth=2
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 
 
 
 " Syntax
@@ -250,11 +253,11 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 
 " C syntax
 au BufNewFile,BufRead *.h,*.c
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set noexpandtab
-    \ set colorcolumn=110
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set noexpandtab |
+    \ set colorcolumn=110 |
     \ highlight ColorColumn ctermbg=darkgray
 
 

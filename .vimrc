@@ -66,6 +66,7 @@ Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
+Plugin 'mbbill/undotree'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -117,6 +118,13 @@ map <C-n> :NERDTreeToggle<CR>
 
 " TAGBAR
 nmap <F8> :TagbarToggle<CR>
+
+" UNDOTREE
+nmap <F9> :UndotreeToggle<CR>
+if has("persistent undo") " Clean undofile management
+    set undodir=~/.undodir/
+    set undofile
+endif
 
 "   _____   ______   _   _   ______   _____               _
 "  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |

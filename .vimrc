@@ -7,7 +7,6 @@
 "
 " Configuration supports features such as:  Airline and Nerdtree, for information
 "                                           Simplyfold, YouCompleteMe and VimFugitive for ease of use
-"                                           Undotree and Tagbar for extra utility and information
 "                                           Goyo, pencil and vimroom for distraction free environment
 "
 "
@@ -67,7 +66,6 @@ Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
-Plugin 'mbbill/undotree'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -120,13 +118,6 @@ map <C-n> :NERDTreeToggle<CR>
 " TAGBAR
 nmap <F8> :TagbarToggle<CR>
 
-" UNDOTREE
-nmap <F9> :UndotreeToggle<CR>
-if has("persistent undo") " Clean undofile management
-    set undodir=~/.undodir/
-    set undofile
-endif
-
 "   _____   ______   _   _   ______   _____               _
 "  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |
 " | |  __  | |__    |  \| | | |__    | |__) |    /  \    | |
@@ -151,9 +142,6 @@ set shiftwidth=4        " number of spaces to use for auto indent
 set autoindent          " copy indent from current line when starting a new line
 
 set backspace=indent,eol,start	" make backspaces more powerfull
-
-" Define highlight group
-:highlight BadWhitespace ctermfg=16 ctermbg=253 guifg=#000000 guibg=#F8F8F0
 
 
 " SPLIT FUNCTIONALITY
@@ -221,19 +209,19 @@ autocmd BufReadPost *.odt :%!odt2txt %
 
 "Python filesetup
 au BufNewFile,BufRead *.py
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
     \ set fileformat=unix
     
 
 au BufNewFile,BufRead *.js, *.html, *.css
-    \ set tabstop=2 |
-    \ set softtabstop=2 |
-    \ set shiftwidth=2 
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
 
 
 " Syntax
@@ -252,16 +240,20 @@ syntax on
 " Makefile syntax"
 au BufRead,BufNewFile Makefile* set noexpandtab
 
+" Doxygen highlighting
+augroup project
+    autocmd!
+    autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
+augroup END
+
 " C syntax
 au BufNewFile,BufRead *.h,*.c
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set noexpandtab |
-    \ set colorcolumn=110 |
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set noexpandtab
+    \ set colorcolumn=110
     \ highlight ColorColumn ctermbg=darkgray
-
-
 
 "	  _                   _______   ______  __   __
 "	 | |          /\     |__   __| |  ____| \ \ / /

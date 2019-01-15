@@ -93,7 +93,6 @@ endfunction
 let g:SimpylFold_docstring_preview=1
 
 " PENCIL
-
 augroup pencil " Initialize by file type
 	autocmd!
 	autocmd FileType markdown,mkd call pencil#init()
@@ -106,6 +105,7 @@ let g:pencil#wrapModeDefault = 'soft'
 " YOU-COMPLETE-ME
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_show_diagnostics_ui = 0
 
 
 " NERD TREE
@@ -117,6 +117,19 @@ map <C-n> :NERDTreeToggle<CR>
 
 " TAGBAR
 nmap <F8> :TagbarToggle<CR>
+
+
+" SYNTASTIC
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_cpp_checkers = ["clang_check", "gcc"]
+
 
 "   _____   ______   _   _   ______   _____               _
 "  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |
@@ -248,7 +261,7 @@ augroup project
 augroup END
 
 " C syntax
-au BufNewFile,BufRead *.h,*.c
+au BufNewFile,BufRead *.h,*.c,*.cpp
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -258,6 +271,8 @@ au BufNewFile,BufRead *.h,*.c
 
 " Compile and run"
 nnoremap <F5> :!g++ -std=c++11 % -Wall -g -o %.out && ./%.out<CR>
+
+
 "
 "	  _                   _______   ______  __   __
 "	 | |          /\     |__   __| |  ____| \ \ / /

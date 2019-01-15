@@ -255,6 +255,9 @@ au BufNewFile,BufRead *.h,*.c
     \ set colorcolumn=110
     \ highlight ColorColumn ctermbg=darkgray
 
+" Compile and run"
+nnoremap <F5> :!g++ -std=c++11 % -Wall -g -o %.out && ./%.out<CR>
+"
 "	  _                   _______   ______  __   __
 "	 | |          /\     |__   __| |  ____| \ \ / /
 "	 | |         /  \       | |    | |__     \ V /

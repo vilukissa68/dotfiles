@@ -1,7 +1,7 @@
 # TMUX
 ZSH_TMUX_AUTOSTART=true
 
-export ZSH=/home/vaino/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 
 # Set theme
 ZSH_THEME="agnoster"

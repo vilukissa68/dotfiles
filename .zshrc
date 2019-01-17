@@ -10,6 +10,7 @@ plugins=(
   git
   vi-mode
   zsh-autosuggestions
+  zsh-syntax-highlighting
   python
   tmux
 )

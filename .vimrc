@@ -66,6 +66,7 @@ Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
+Plugin 'TaDaa/vimade'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -129,6 +130,17 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_checkers = ["clang_check", "gcc"]
+
+" VIMADE
+let g:vimade = {
+  \ "normalid": '',
+  \ "basefg": '',
+  \ "basebg": '',
+  \ "fadelevel": 0.4,
+  \ "colbufsize": 30,
+  \ "rowbufsize": 30,
+  \ "checkinterval": 32,
+}
 
 
 "   _____   ______   _   _   ______   _____               _
@@ -212,7 +224,8 @@ inoremap {;<CR> {<CR>};<ESC>O
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %
 
-
+" Bash Terminal
+nnoremap <F4> :split <CR> & :q! & bash
 
 "  _____   __     __  _______   _    _    ____    _   _
 " |  __ \  \ \   / / |__   __| | |  | |  / __ \  | \ | |

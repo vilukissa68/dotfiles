@@ -5,40 +5,30 @@ URxvt.borderColor: 	#1c2023
 URxvt.termnane:		rxvt-256color
 
 ## Colors
-! special
-*.foreground:   #c7ccd1
-*.background:   #1c2023
-*.cursorColor:  #c7ccd1
+*.foreground: #abb2bf
+*.background: #282c34
 
-! black
-*.color0:       #1c2023
-*.color8:       #747c84
+*.color0:     #2c323c
+*.color8:     #55606d
 
-! red
-*.color1:       #ff614b
-*.color9:       #ff614b
+*.color1:     #e06c75
+*.color9:     #af5f5f
 
-! green
-*.color2:       #95c7ae
-*.color10:      #95c7ae
+*.color2:     #87AF87
+*.color10:    #87AF87
 
-! yellow
-*.color3:       #aec795
-*.color11:      #aec795
+*.color3:     #D7AFAF
+*.color11:    #FF875F
 
-! blue
-*.color4:       #ae95c7
-*.color12:      #ae95c7
+*.color4:     #6E88A6
+*.color12:    #6E88A6
 
-! magenta
-*.color5:       #c795ae
-*.color13:      #c795ae
+*.color5:     #D18EC2
+*.color13:    #8787AF
 
-! cyan
-*.color6:       #95aec7
-*.color14:      #95aec7
+*.color6:     #5fafaf
+*.color14:    #5fafaf
 
-! white
-*.color7:       #c7ccd1
-*.color15:      #f3f4f5
+*.color7:     #ABB2BF
+*.color15:    #ECEFF4
 

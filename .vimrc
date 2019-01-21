@@ -67,6 +67,8 @@ Plugin 'lervag/vimtex'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
 Plugin 'TaDaa/vimade'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -139,9 +141,12 @@ let g:vimade = {
   \ "fadelevel": 0.4,
   \ "colbufsize": 30,
   \ "rowbufsize": 30,
-  \ "checkinterval": 32,
-}
+  \ "checkinterval": 32,}
 
+" ULTINIPS
+let g:UltiSnipsExpandTrigger="<c-f>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 "   _____   ______   _   _   ______   _____               _
 "  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |

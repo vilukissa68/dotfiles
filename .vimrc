@@ -159,6 +159,7 @@ set nu									" Set numbers
 set nocursorline				" Remove cursor line
 set background=dark			" tmux backgraund fix
 set ruler               " show line and column number
+set scrolloff=5
 syntax on               " syntax highlighting
 set showcmd             " show (partial) command in status line
 

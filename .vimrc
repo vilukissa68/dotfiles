@@ -69,6 +69,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'TaDaa/vimade'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'derekwyatt/vim-fswitch'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -231,7 +232,7 @@ inoremap {;<CR> {<CR>};<ESC>O
 autocmd BufReadPost *.odt :%!odt2txt %
 
 " Bash Terminal
-nnoremap <F4> :split <CR> & :q! & bash
+
 
 "  _____   __     __  _______   _    _    ____    _   _
 " |  __ \  \ \   / / |__   __| | |  | |  / __ \  | \ | |
@@ -290,7 +291,7 @@ au BufNewFile,BufRead *.h,*.c,*.cpp
 
 " Compile and run"
 nnoremap <F5> :!g++ -std=c++11 % -Wall -g -o %.out && ./%.out<CR>
-
+nnoremap <F6> :!g++ *.cpp -o project && ./project<CR>
 
 "
 "	  _                   _______   ______  __   __

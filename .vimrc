@@ -291,7 +291,7 @@ au BufNewFile,BufRead *.h,*.c,*.cpp
 
 " Compile and run"
 nnoremap <F5> :!g++ -std=c++11 % -Wall -g -o %.out && ./%.out<CR>
-nnoremap <F6> :!g++ *.cpp -o project && ./project<CR>
+nnoremap <F6> :!g++ *.cpp -o project && ./project.out<CR>
 
 "
 "	  _                   _______   ______  __   __

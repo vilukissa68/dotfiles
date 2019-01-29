@@ -29,6 +29,7 @@ set nocompatible            " required
 set exrc                    " required
 set secure                  " NEVER REMOVE, YOUR VIM MIGHT EXECUTE DANGEROUS CODE
 filetype on                 " required
+filetype plugin indent on   " Enable ftplugin suppoer
 
 
 

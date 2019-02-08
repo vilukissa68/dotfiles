@@ -4,7 +4,7 @@
 set $mod Mod4
 
 # set font
-font pango:monospace 8
+font pango:Terminus 9px
 
 # set terminal
 set $term urxvt
@@ -16,7 +16,7 @@ floating_modifier $mod
 for_window [class="^.*"] border pixel 1 
 
 # set wallpaper
-exec --no-startup-id feh --bg-scale /home/vaino/Pictures/Wallpapers/ocelot.png
+exec --no-startup-id feh --bg-scale ~/Dropbox/Muut/Kuvat/ocelotwallpaper.jpg
 
 # set windows gaps
 gaps inner 30
@@ -31,9 +31,9 @@ bindsym $mod+Shift+a gaps outer current plus 5
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-# bar {
-#	
-# }
+ bar {
+	
+ }
 # apply kde theming for i3
 # exec_always --no-startup-id DESKTOP_SESSION=kde
 
@@ -44,26 +44,11 @@ exec_always --no-startup-id dropbox start
 exec_always --no-startup-id compton --config /home/vaino/.config/compton.conf
 
 
-# set multimonitor setup
-exec_always --no-startup-id xrandr --output DVI-D-0 --mode 1680x1050 --pos 1920x0 --rotate normal --output HDMI-0 --mode 1920x1080 --pos 0x0 --rotate normal --output DVI-I-1 --off --output DVI-I-0 --off --output DP-1 --off --output DP-0 --off
-
-###---Dropdown terminal---###
-for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 625 400
-for_window [instance="dropdown"] move position center
-for_window [instance="dropdown"] move scratchpad
-exec --no-startup-id terminator -name dropdown -e tmux
-
 ###---Keyboard commands---###
 
 # start a terminal
 bindsym $mod+Return 	exec urxvt
-
-# start tmux terminal
-bindsym $mod+Return+Shift exec urxvt
-
-# start dropdown terminal
-bindsym $mod+u 		[instance="dropdown"] scratchpad show; move position center
+bindsym Alt+space       exec albert
 
 # kill focused window
 bindsym $mod+shift+q 	kill
@@ -187,9 +172,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 # volume controls
-# bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
-# bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
-# bindsym XF86AudioMute exec amixer -q set Master toggle
+bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute
+bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute
+bindsym XF86AudioMute exec amixer -q set Master toggle
 
 # i3 integration with KDE
 for_window [class="quake"] floating enable;

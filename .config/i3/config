@@ -41,7 +41,6 @@ bindsym $mod+Shift+a gaps outer current plus 5
 # exec_always --no-startup-id tint3
 exec --no-startup-id nm-applet
 exec_always --no-startup-id dropbox start
-exec_always --no-startup-id compton --config /home/vaino/.config/compton.conf
 
 
 ###---Keyboard commands---###
@@ -52,6 +51,9 @@ bindsym Alt+space       exec albert
 
 # kill focused window
 bindsym $mod+shift+q 	kill
+
+# lockscreen 
+bindsym XF86ScreenSaver  exec i3lock
 
 # start dmenu (a program launcher)
 bindsym $mod+space 	exec rofi -show run

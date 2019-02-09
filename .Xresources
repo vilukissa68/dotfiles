@@ -2,8 +2,7 @@ URxvt.scrollBar:	 false
 URxvt.cursosBlink: 	true
 URxvt.borderColor: 	#1c2023
 URxvt.termnane:		rxvt-256color
-URxvt.font:         xft:Terminus:pixelsize=9
-
+URxvt.font:         xft:Hack:size=9
 
 ! Colors
 ! hard contrast: *background: #1d2021

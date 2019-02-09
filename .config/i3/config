@@ -58,7 +58,7 @@ bindsym $mod+Return 	exec urxvt
 bindsym $mod+shift+q 	kill
 
 # lockscreen 
-bindsym XF86ScreenSaver  exec i3lock
+bindsym XF86ScreenSaver exec $HOME/.config/i3/lock.sh
 
 # start dmenu (a program launcher)
 bindsym $mod+space 	exec rofi -show run

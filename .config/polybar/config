@@ -25,6 +25,8 @@ magenta = ${xrdb:color5:#b16286}
 cyan = ${xrdb:color6:#689d6a}
 grey = ${xrdb:color7:#a89984}
 
+lightgreen = ${xrdb:color10:#b8bb25}
+
 
 [modules/xmenu]
 menu-0 = item 1;command
@@ -312,9 +314,8 @@ ramp-capacity-1 = BAT:
 ramp-capacity-2 = BAT:
 ramp-capacity-foreground = ${colors.green}
 
-animation-charging-0 = +
-animation-charging-1 = ++
-animation-charging-2 = +++
+animation-charging-0 = BAT: 
+animation-charging-1 = +++
 animation-charging-foreground = ${colors.green}
 animation-charging-framerate = 750
 

@@ -67,7 +67,7 @@ font-2 = FontAwesome:pixelsize=11
 
 modules-left = bspwm i3
 modules-center = xwindow
-modules-right = volume xkeyboard memory cpu wlan eth battery temperature date powermenu
+modules-right = volume filesystem xkeyboard memory cpu wlan eth battery temperature date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -109,9 +109,10 @@ label-indicator-underline = ${colors.magenta}
 type = internal/fs
 interval = 25
 
-mount-0 = /
+mount-0 = /home
 
-label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-mounted =   %percentage_used%%
+label-mounted-underline = ${colors.grey}
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
@@ -254,11 +255,11 @@ format-disconnected =
 type = internal/date
 interval = 5
 
-date = " %d.%m"
-date-alt = " %Y-%m-%d"
+date = 
+date-alt = "%d-%m-%y"
 
 time = %H:%M:%S
-time-alt = %H:%M:%S
+time-alt =
 
 format-prefix = " " 
 format-prefix-foreground = ${colors.cyan}
@@ -275,7 +276,7 @@ label-volume-foreground = ${root.foreground}
 
 format-muted-prefix = 
 format-muted-foreground = ${colors.foreground-alt}
-label-muted = " "
+label-muted = "MUTED"
 
 bar-volume-width = 10
 bar-volume-foreground-0 = #55aa55

@@ -21,3 +21,4 @@ cp -r $dotfiles_dir/.vim/ftplugin ~/.vim/
 cp -r $dotfiles_dir/.config ~
 
 echo "Install finished"
+exit 0

@@ -20,6 +20,5 @@ source $ZSH/oh-my-zsh.sh
 #(cat ~/.cache/wal/sequences &)
 
 # ALIASES
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-
+alias vim="nvim"
 

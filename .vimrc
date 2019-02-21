@@ -111,7 +111,7 @@ let g:pencil#wrapModeDefault = 'soft'
 " YOU-COMPLETE-ME
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-let g:ycm_show_diagnostics_ui = 0
+let g:ycm_show_diagnostics_ui = 1
 
 
 " NERD TREE
@@ -146,10 +146,10 @@ let g:vimade = {
   \ "rowbufsize": 30,
   \ "checkinterval": 32,}
 
-" ULTINIPS
+" ULTISNIPS
 let g:UltiSnipsExpandTrigger="<c-f>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 
 "   _____   ______   _   _   ______   _____               _
 "  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |

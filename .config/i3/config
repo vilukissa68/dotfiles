@@ -1,3 +1,23 @@
+###---Colors---###
+set_from_resource $bg background
+set_from_resource $fg foreground
+
+set_from_resource $black color0
+set_from_resource $red color1
+set_from_resource $green color2
+set_from_resource $yellow color3
+set_from_resource $blue color4
+set_from_resource $magenta color5
+set_from_resource $cyan color6
+set_from_resource $grey color7
+
+# class                 border  bg      text    indicator   child_border
+client.focused          $blue   $bg     $fg     $red        $bg
+client.focused_inactive $blue     $bg     $fg     $red        $bg
+client.unfocused        $bg     $bg     $fg     $red        $bg
+client.urgent           $blue    $red    $fg     $red        $bg
+client.background   $bg
+
 ###---Basic definitions---###
 
 # set mod key
@@ -19,6 +39,7 @@ for_window [class="^.*"] border pixel 1
 exec --no-startup-id feh --bg-scale ~/Dropbox/Muut/Kuvat/ocelotwallpaper.jpg
 
 # set windows gaps
+gaps outer 0
 gaps inner 30
 smart_gaps on
 

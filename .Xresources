@@ -1,8 +1,14 @@
 URxvt.scrollBar:	 false
 URxvt.cursosBlink: 	true
-URxvt.borderColor: 	#1c2023
+!URxvt.borderColor: 	#1c2023
 URxvt.termnane:		rxvt-256color
 URxvt.font:         xft:Hack:size=9
+URxvt.internalBorder:   0
+Urxvt.externalBorder:   0
+Urxvt.borderWidth:      0
+
+urxvt*dynamicColors: on
+xterm*dynamicColors: true
 
 ! Colors
 ! hard contrast: *background: #1d2021

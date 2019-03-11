@@ -78,6 +78,9 @@ bindsym $mod+Return 	exec urxvt
 # kill focused window
 bindsym $mod+shift+q 	kill
 
+# theme switcher
+bindsym $mod+t          exec $HOME/dotfiles/color-switch.sh
+
 # lockscreen 
 bindsym XF86ScreenSaver exec $HOME/.config/i3/lock.sh
 

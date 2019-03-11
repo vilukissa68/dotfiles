@@ -81,7 +81,7 @@ filetype plugin indent on    " required
 " AIRLINE
 let g:airline#extensioins#tabline#enable = 1
 " set laststatus=2
-let g:airline_theme='bubblegum' " set look
+let g:airline_theme='distinguished' " set look
 
 
 " GOYO
@@ -119,6 +119,8 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>
+
+hi Directory guifg=#FF0000 ctermfg=red
 
 
 " TAGBAR

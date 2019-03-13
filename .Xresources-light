@@ -7,6 +7,9 @@ URxvt.borderWidth:  0
 URxvt.internalBorder:    0
 URxvt.externalBorder:   0
 
+! Perl extensions
+URxvt.perl-ext-common: selection-to-clipboard
+
 urxvt*dynamicColors: on
 xterm*dynamicColors: true
 

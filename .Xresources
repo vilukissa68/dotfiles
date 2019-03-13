@@ -7,6 +7,9 @@ URxvt.internalBorder:   0
 Urxvt.externalBorder:   0
 Urxvt.borderWidth:      0
 
+! Perl extensions 
+URxvt.perl-ext-common: selection-to-clipboard
+
 urxvt*dynamicColors: on
 xterm*dynamicColors: true
 
@@ -16,6 +19,7 @@ xterm*dynamicColors: true
 
 ! soft contrast: *background: #32302f
 *foreground: #ebdbb2
+    pass
 
 ! Black + Dark Grey
 *color0:    #282828

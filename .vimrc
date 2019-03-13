@@ -231,6 +231,9 @@ inoremap {;<CR> {<CR>};<ESC>O
 " MOUSE SUPPORT
 :set mouse=a
 
+" Set persistent undo
+set undodir=~/.vim/undodir
+set undofile
 
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %

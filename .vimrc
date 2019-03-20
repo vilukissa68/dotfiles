@@ -1,4 +1,3 @@
-ol
 "
 " NOTICE! This configuration uses set exrc and set secure. Set exrc allows vim to run some external commands,
 " which could compromise your system if not used with set secure. NEVER REMOVE set secure without removing set exrc.
@@ -237,6 +236,9 @@ inoremap {;<CR> {<CR>};<ESC>O
 " MOUSE SUPPORT
 :set mouse=a
 
+" Set persistent undo
+set undodir=~/.vim/undodir
+set undofile
 
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %

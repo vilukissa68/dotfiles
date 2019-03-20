@@ -1,4 +1,4 @@
-" vimrc by vilukissa
+ol
 "
 " NOTICE! This configuration uses set exrc and set secure. Set exrc allows vim to run some external commands,
 " which could compromise your system if not used with set secure. NEVER REMOVE set secure without removing set exrc.
@@ -72,6 +72,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'morhetz/gruvbox'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -168,6 +169,10 @@ set scrolloff=5
 syntax on               " syntax highlighting
 set showcmd             " show (partial) command in status line
 
+" Set gruvbox theme
+colorscheme gruvbox
+""""set background=light
+highlight Normal ctermbg=None
 
 " Basic Functionality
 set expandtab           " enter spaces when tab is pressed
@@ -203,6 +208,7 @@ set winheight=10
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 
+
 " FOLDING FUNCTIONALITY
 " Enable folding
 set foldmethod=indent
@@ -231,9 +237,6 @@ inoremap {;<CR> {<CR>};<ESC>O
 " MOUSE SUPPORT
 :set mouse=a
 
-" Set persistent undo
-set undodir=~/.vim/undodir
-set undofile
 
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %

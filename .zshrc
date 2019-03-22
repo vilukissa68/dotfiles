@@ -22,6 +22,7 @@ source $ZSH/oh-my-zsh.sh
 # ALIASES
 alias vim="nvim"
 alias python="python3"
+alias raspi="ssh vaino@89.106.42.210"
 
 
 # Urxvt perl extensions

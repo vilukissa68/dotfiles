@@ -14,8 +14,8 @@ done
 cp $dotfiles_dir/.vimrc ~
 cp $dotfiles_dir/.tmux.conf ~
 cp $dotfiles_dir/.zshrc ~
-cp $dotfiles_dir/.Xrecources ~
-cp $dotfiles_dir/.Xrecources-light ~
+cp $dotfiles_dir/.Xresources ~
+cp $dotfiles_dir/.Xresources-light ~
 cp $dotfiles_dir/lock.png ~
 
 cp -r $dotfiles_dir/.vim/ftplugin ~/.vim/

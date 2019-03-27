@@ -72,6 +72,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'morhetz/gruvbox'
+Plugin 'RRethy/vim-hexokinase'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

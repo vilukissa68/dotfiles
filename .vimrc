@@ -173,6 +173,9 @@ set showcmd             " show (partial) command in status line
 colorscheme gruvbox
 """"set background=light
 highlight Normal ctermbg=None
+" Color change commands:
+command Light execute "set background=light"
+command Dark execute "set background=dark"
 
 " Basic Functionality
 set expandtab           " enter spaces when tab is pressed

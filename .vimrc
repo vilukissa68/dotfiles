@@ -186,6 +186,9 @@ set shiftwidth=4        " number of spaces to use for auto indent
 set autoindent          " copy indent from current line when starting a new line
 
 set backspace=indent,eol,start	" make backspaces more powerfull
+set showbreak=↪\
+set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
 
 
 " SPLIT FUNCTIONALITY

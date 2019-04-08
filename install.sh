@@ -11,6 +11,17 @@ while true; do
     esac
 done
 
+while true; do
+    read -p "Do you want to set up zsh plugins y/n " yn
+    case $yn in
+        [Yy]* ) git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+            ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+
 cp $dotfiles_dir/.vimrc ~
 cp $dotfiles_dir/.tmux.conf ~
 cp $dotfiles_dir/.zshrc ~

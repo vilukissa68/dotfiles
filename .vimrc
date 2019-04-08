@@ -173,6 +173,9 @@ set showcmd             " show (partial) command in status line
 colorscheme gruvbox
 """"set background=light
 highlight Normal ctermbg=None
+" Color change commands:
+command Light execute "set background=light"
+command Dark execute "set background=dark"
 
 " Basic Functionality
 set expandtab           " enter spaces when tab is pressed
@@ -183,6 +186,9 @@ set shiftwidth=4        " number of spaces to use for auto indent
 set autoindent          " copy indent from current line when starting a new line
 
 set backspace=indent,eol,start	" make backspaces more powerfull
+set showbreak=↪\
+set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
 
 
 " SPLIT FUNCTIONALITY

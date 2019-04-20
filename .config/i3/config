@@ -66,8 +66,9 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # execute programs on startup
 # exec_always --no-startup-id tint3
 exec --no-startup-id nm-applet
-exec_always --no-startup-id dropbox start
-exec_always --no-startup-id albert
+exec --no-startup-id dropbox start
+exec --no-startup-id albert
+exec --no-startup-id udiskie
 
 
 ###---Keyboard commands---###

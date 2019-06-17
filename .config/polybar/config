@@ -109,7 +109,7 @@ label-indicator-underline = ${colors.magenta}
 type = internal/fs
 interval = 25
 
-mount-0 = /
+mount-0 = /home
 
 label-mounted =   %percentage_used%%
 label-mounted-underline = ${colors.grey}

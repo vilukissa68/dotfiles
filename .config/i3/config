@@ -33,7 +33,7 @@ set $term urxvt
 floating_modifier $mod
 
 # gaps fix
-for_window [class="^.*"] border pixel 1 
+for_window [class="^.*"] border pixel 0 
 
 # set wallpaper
 exec --no-startup-id feh --bg-scale ~/Dropbox/Muut/Kuvat/ocelotwallpaper.jpg

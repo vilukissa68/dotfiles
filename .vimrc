@@ -66,13 +66,11 @@ Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
-Plugin 'TaDaa/vimade'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'morhetz/gruvbox'
-Plugin 'RRethy/vim-hexokinase'
 Plugin 'jiangmiao/auto-pairs'
 
 " All of your Plugins must be added before the following line

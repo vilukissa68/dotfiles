@@ -46,9 +46,9 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-Plugin 'gmarik/Vundle.vim'	" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'	" let Vundle manage plugins
 
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
+" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/nerdtree'
@@ -230,16 +230,6 @@ let g:vimroom_background="none"
 set clipboard=unnamed
 
 
-" Auto closing brackets
-"inoremap " ""<left>
-"inoremap ' ''<left>
-"inoremap ( ()<left>
-"inoremap [ []<left>
-"inoremap { {}<left>
-"inoremap {<CR> {<CR>}<ESC>O
-"inoremap {;<CR> {<CR>};<ESC>O
-
-
 " MOUSE SUPPORT
 :set mouse=a
 
@@ -251,7 +241,6 @@ set undofile
 autocmd BufReadPost *.odt :%!odt2txt %
 
 " Bash Terminal
-
 "
 "	  _                   _______   ______  __   __
 "	 | |          /\     |__   __| |  ____| \ \ / /

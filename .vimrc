@@ -152,9 +152,14 @@ let g:vimade = {
   \ "checkinterval": 32,}
 
 " ULTISNIPS
-let g:UltiSnipsExpandTrigger="<c-f>"
-let g:UltiSnipsJumpForwardTrigger="<c-l>"
-let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger=' <s-tab> '
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips'] "NVim only
+"YCM compatibality
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
 
 
 "   _____   ______   _   _   ______   _____               _
@@ -253,5 +258,8 @@ autocmd BufReadPost *.odt :%!odt2txt %
 "	 |______| /_/    \_\    |_|    |______| /_/ \_\
 
 " Latex
-" Pdf autoview settings
-let g:livepreview_previewer = 'Okular'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'

@@ -245,6 +245,11 @@ set clipboard=unnamed
 set undodir=~/.vim/undodir
 set undofile
 
+" Spell checking
+setlocal spell
+set spelllang=en_gb
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %
 

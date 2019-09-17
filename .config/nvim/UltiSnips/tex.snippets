@@ -48,15 +48,15 @@ snippet cb "^3" iA
 ^3
 endsnippet
 
-snippet compl "complement" iA
+snippet compl "complement" i
 ^{c}
 endsnippet
 
-snippet td "superscript" iA
+snippet td "superscript" i
 ^{$1}$0
 endsnippet
 
-snippet // "Fraction" iA
+snippet // "Fraction" i
 \\frac{$1}{$2}$0
 endsnippet
 
@@ -79,7 +79,7 @@ snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 `{$1}$0
 endsnippet
 
-snippet / "Fraction" iA
+snippet / "Fraction" i
 \\frac{${VISUAL}}{$1}$0
 endsnippet
 

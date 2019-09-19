@@ -141,6 +141,7 @@ let g:syntastic_cpp_checkers = ["clang_check", "gcc"]
 map <C-s> :SyntasticToggleMode<CR>
 map <C-c> :SyntasticCheck<CR>
 
+let g:syntastic_quiet_messages = { "type": "style" } "No messages for style errors
 " VIMADE
 let g:vimade = {
   \ "normalid": '',

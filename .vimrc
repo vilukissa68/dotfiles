@@ -237,7 +237,6 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.p
 let g:vimroom_background="none"
 set clipboard=unnamed
 
-
 " MOUSE SUPPORT
 :set mouse=a
 
@@ -245,6 +244,8 @@ set clipboard=unnamed
 set undodir=~/.vim/undodir
 set undofile
 
+" Remove unwanted whitespace
+autocmd BufWritePre *.py %s/\s\+$//e
 
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %

@@ -171,10 +171,11 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 " | |__| | | |____  | |\  | | |____  | | \ \   / ____ \  | |____
 "  \_____| |______| |_| \_| |______| |_|  \_\ /_/    \_\ |______|
 
-set nu									" Set numbers
+set number relativenumber		" Set numbers
+set nu rnu
 set nocursorline				" Remove cursor line
-set background=dark			" tmux backgraund fix
-set ruler               " show line and column number
+set background=dark		    	" tmux backgraund fix
+set ruler                   " show line and column number
 set scrolloff=5
 syntax on               " syntax highlighting
 set showcmd             " show (partial) command in status line

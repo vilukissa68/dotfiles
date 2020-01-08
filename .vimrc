@@ -73,6 +73,7 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
+Plugin 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

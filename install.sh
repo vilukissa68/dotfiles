@@ -28,7 +28,6 @@ cp $dotfiles_dir/.zshrc ~
 cp $dotfiles_dir/.Xresources ~
 cp $dotfiles_dir/.Xresources-light ~
 cp $dotfiles_dir/lock.png ~
-cp $dotfiles_dir/spacemacs ~
 
 cp -r $dotfiles_dir/.vim/ftplugin ~/.vim/
 cp -r $dotfiles_dir/.config ~

@@ -63,7 +63,7 @@ module-margin-right = 2
 
 font-0 = fixed:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-2 = FontAwesome:pixelsize=11
+font-2 = Symbols Nerd Font:style=2048-em:size=10
 
 modules-left = powermenu bspwm i3
 modules-center = xwindow
@@ -203,7 +203,7 @@ interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.yellow}
 format-underline = ${colors.yellow}
-label = %percentage%%
+label-inactive = %{T2}&#f85a{T-} %percentage%%
 
 [module/memory]
 type = internal/memory
@@ -312,7 +312,7 @@ label-discharging = %percentage%% %time%
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
 
-format-full-prefix = "  "
+format-full-prefix = %nf-fa-battery%
 format-full-prefix-foreground = ${colors.green}
 format-full-underline = ${self.format-charging-underline}
 

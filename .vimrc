@@ -83,7 +83,7 @@ filetype plugin indent on    " required
 " AIRLINE
 let g:airline#extensioins#tabline#enable = 1
 " set laststatus=2
-let g:airline_theme='distinguished' " set look
+let g:airline_theme='base16' " set look
 
 
 " GOYO

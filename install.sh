@@ -12,15 +12,24 @@ while true; do
 done
 
 while true; do
-    read -p "Do you want to set up zsh plugins y/n " yn
+    read -p "Do you want to install oh-my-zsh y/n " yn
     case $yn in
-        [Yy]* ) git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
-            ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions break;;
+        [Yy]* ) sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"         break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
 
+while true; do
+    read -p "Do you want to set up oh-my-zsh plugins y/n " yn
+    case $yn in
+        [Yy]* )
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting &&
+        git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 cp $dotfiles_dir/.vimrc ~
 cp $dotfiles_dir/.tmux.conf ~

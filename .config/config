@@ -1,0 +1,41 @@
+[colors]
+background = rgba(46,48,66,0.80)
+foreground = #fbf1c7
+
+# Black ,Grey, Silver, White
+color0 = #2e3042
+color8 = #2e3042
+color7 = #e1f2f5
+color15 = #e1f2f5
+
+
+# Red
+color1 = #d23465
+color9 = #d23465
+
+# Green
+color2 = #22cfaa
+color10 = #22cfaa
+
+# Yellow
+color3 = #e0b136
+color11 = #e0b136
+
+# Blue
+color4 = #7195de
+color12 = #7195de
+
+# Purple
+color5 = #8574de
+color13 = #8574de
+
+# Aqua
+color6 = #61b3df
+color14 = #61b3df
+
+
+[options]
+allow_bold = true
+clickable_url = true
+browser = firefox
+font = Hack 9

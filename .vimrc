@@ -144,6 +144,7 @@ map <C-s> :SyntasticToggleMode<CR>
 map <C-c> :SyntasticCheck<CR>
 
 let g:syntastic_quiet_messages = { "type": "style" } "No messages for style errors
+let g:syntastic_python_checkers=['flake8']
 " VIMADE
 let g:vimade = {
   \ "normalid": '',

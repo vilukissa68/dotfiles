@@ -60,6 +60,7 @@ Plugin 'tmhedberg/SimpylFold'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'dense-analysis/ale'
+Plugin 'ycm-core/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
@@ -127,23 +128,13 @@ hi Directory guifg=#FF0000 ctermfg=red
 " TAGBAR
 nmap <F8> :TagbarToggle<CR>
 
+" ALE
+let g:ale_set_highlights = 1
+let g:ale_warn_about_trailing_whitespace = 1
+highlight ALEError guifg=red ctermfg=red cterm=underline
+highlight ALEWarning guifg=yellow ctermfg=yellow cterm=underline
 
-" SYNTASTIC
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_cpp_checkers = ["clang_check", "gcc"]
-
-map <C-s> :SyntasticToggleMode<CR>
-map <C-c> :SyntasticCheck<CR>
-
-let g:syntastic_quiet_messages = { "type": "style" } "No messages for style errors
-let g:syntastic_python_checkers=['flake8']
 " VIMADE
 let g:vimade = {
   \ "normalid": '',

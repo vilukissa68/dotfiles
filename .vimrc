@@ -74,6 +74,7 @@ Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 Plugin 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plugin 'ryanoasis/vim-devicons'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

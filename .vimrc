@@ -75,6 +75,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 Plugin 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'jupyter-vim/jupyter-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -152,8 +153,8 @@ let g:UltiSnipsJumpForwardTrigger='<tab>'
 let g:UltiSnipsJumpBackwardTrigger=' <s-tab> '
 let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips'] "NVim only
 "YCM compatibality
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 
@@ -195,7 +196,9 @@ set backspace=indent,eol,start	" make backspaces more powerfull
 set showbreak=↪\
 set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 
+" REMAPPINGS
 
+nnoremap e el
 
 " SPLIT FUNCTIONALITY
 "Split navigations
@@ -219,7 +222,6 @@ set winheight=10
 
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
-
 
 " FOLDING FUNCTIONALITY
 " Enable folding

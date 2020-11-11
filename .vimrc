@@ -213,6 +213,8 @@ set showbreak=↪\
 set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 
 " REMAPPINGS
+" Leader key
+let mapleader = " "
 
 nnoremap e el
 

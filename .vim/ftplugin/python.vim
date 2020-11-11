@@ -23,3 +23,6 @@ syntax on
 " Lintin
 let b:ale_linters = ['flake8']
 let b:ale_warn_about_trailing_whitespace = 1
+
+" Run script in vim
+noremap <F5> <ESC>:w<CR>:execute "!python %"<CR>

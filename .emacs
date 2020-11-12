@@ -272,53 +272,69 @@
    ;; Initialize.
    (global-evil-surround-mode 1))
 
- ;; -- Evil Mode Keys
+;; -- Evil Mode Keys
 
- ;; -- Use secondary selection in insert mode 
- (define-key evil-insert-state-map (kbd "<down-mouse-1>") 'mouse-drag-secondary)
- (define-key evil-insert-state-map (kbd "<drag-mouse-1>") 'mouse-drag-secondary)
- (define-key evil-insert-state-map (kbd "<mouse-1>") 'mouse-start-secondary)
+;; -- Use secondary selection in insert mode 
+(define-key evil-insert-state-map (kbd "<down-mouse-1>") 'mouse-drag-secondary)
+(define-key evil-insert-state-map (kbd "<drag-mouse-1>") 'mouse-drag-secondary)
+(define-key evil-insert-state-map (kbd "<mouse-1>") 'mouse-start-secondary)
 
- ;; -- De-select after copy this allows quick select-copy-paste.
- (define-key evil-insert-state-map (kbd "<mouse-2>")
-   (lambda (click)
-     (interactive "*p")
-     (when (overlay-start mouse-secondary-overlay)
-       (mouse-yank-secondary click)
-       (delete-overlay mouse-secondary-overlay))))
+;; -- De-select after copy this allows quick select-copy-paste.
+(define-key evil-insert-state-map (kbd "<mouse-2>")
+ (lambda (click)
+   (interactive "*p")
+   (when (overlay-start mouse-secondary-overlay)
+     (mouse-yank-secondary click)
+     (delete-overlay mouse-secondary-overlay))))
 
- ;; WHICH-KEY (available keys)
- (use-package which-key
-   :demand t
-   :config
-   ;; Initialize.
-   (which-key-mode))
+;; NEO TREE
+(use-package neotree)
 
- ;; IVY
- (use-package ivy
-   :demand t
-   :config
-   (ivy-mode)
 
-   ;; -- Always show half the window height
-   (setq ivy-height-alist `((t . ,(lambda (_caller) (/ (frame-height) 2)))))
-   (setq ivy-display-style 'fancy)
+;; WHICH-KEY (available keys)
+(use-package which-key
+ :demand t
+ :config
+ ;; Initialize.
+ (which-key-mode))
 
-   ;; -- Vim style keys in ivy (holding Ctrl).
-   (define-key ivy-minibuffer-map (kbd "C-j") 'next-line)
-   (define-key ivy-minibuffer-map (kbd "C-k") 'previous-line)
+;; MAGIT
+(use-package magit
+  :init
+  (message "Loading Magit!")
+  :config
+  (message "Loaded Magit!")
+  :bind (("C-x g" . magit-status)
+         ("C-x C-g" . magit-status)))
 
-   (define-key ivy-minibuffer-map (kbd "C-h") 'minibuffer-keyboard-quit)
-   (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-done)
+;; MAGIT - EVIL INTEGRATION
+(use-package evil-magit)
 
-   ;; -- open and next
-   (define-key ivy-minibuffer-map (kbd "C-M-j") 'ivy-next-line-and-call)
-   (define-key ivy-minibuffer-map (kbd "C-M-k") 'ivy-previous-line-and-call)
+;; IVY
+(use-package ivy
+ :demand t
+ :config
+ (ivy-mode)
 
-   (define-key ivy-minibuffer-map (kbd "<C-return>") 'ivy-done)
+ ;; -- Always show half the window height
+ (setq ivy-height-alist `((t . ,(lambda (_caller) (/ (frame-height) 2)))))
+ (setq ivy-display-style 'fancy)
 
-   ;; -- so we can switch away
-   (define-key ivy-minibuffer-map (kbd "C-w") 'evil-window-map))
+ ;; -- Vim style keys in ivy (holding Ctrl).
+ (define-key ivy-minibuffer-map (kbd "C-j") 'next-line)
+ (define-key ivy-minibuffer-map (kbd "C-k") 'previous-line)
+
+ (define-key ivy-minibuffer-map (kbd "C-h") 'minibuffer-keyboard-quit)
+ (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-done)
+
+ ;; -- open and next
+ (define-key ivy-minibuffer-map (kbd "C-M-j") 'ivy-next-line-and-call)
+ (define-key ivy-minibuffer-map (kbd "C-M-k") 'ivy-previous-line-and-call)
+
+ (define-key ivy-minibuffer-map (kbd "<C-return>") 'ivy-done)
+
+ ;; -- so we can switch away
+ (define-key ivy-minibuffer-map (kbd "C-w") 'evil-window-map))
 
  ;; DIFF-HL (show git changes)
  ;;(use-package diff-hl
@@ -347,7 +363,7 @@
 (define-key evil-normal-state-map (kbd "C-x") 'evil-numbers/dec-at-pt)
 
 ;; -- Auto complete using words from the buffer.
-(define-key evil-insert-state-map (kbd "C-n") 'company-dabbrev)
+;;(define-key evil-insert-state-map (kbd "C-n") 'company-dabbrev)
 ;; -- Comprehensive auto-complete.
 (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete-common)
 
@@ -377,7 +393,33 @@
 (define-key evil-normal-state-map (kbd "<leader>bn") 'next-buffer)
 (define-key evil-normal-state-map (kbd "<leader>bb") 'previous-buffer)
 
+;; Neo tree
+(define-key evil-normal-state-map  (kbd "<leader>nt") 'neotree-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 
+
+;; MAGIT
+(evil-set-initial-state 'magit-mode 'normal)
+(evil-set-initial-state 'magit-status-mode 'normal)
+(evil-set-initial-state 'magit-diff-mode 'normal)
+(evil-set-initial-state 'magit-log-mode 'normal)
+(evil-define-key 'normal magit-mode-map
+    "j" 'magit-goto-next-section
+    "k" 'magit-goto-previous-section)
+(evil-define-key 'normal magit-log-mode-map
+    "j" 'magit-goto-next-section
+    "k" 'magit-goto-previous-section)
+(evil-define-key 'normal magit-diff-mode-map
+    "j" 'magit-goto-next-section
+    "k" 'magit-goto-previous-section)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

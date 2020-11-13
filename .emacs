@@ -218,6 +218,15 @@
 (use-package company-jedi)
 (use-package py-autopep8)
 
+;; EIN (jupyter notebooks in emacs)
+(use-package ein)
+
+;; PYTHON VIRTUAL ENVIRONMENTS
+(use-package virtualenvwrapper)
+(venv-initialize-interactive-shells)
+(venv-initialize-eshell)
+(setq venv-location "~/anaconda3/envs/")
+
 ;; ELPY (development for python)
 (use-package elpy)
 (elpy-enable)

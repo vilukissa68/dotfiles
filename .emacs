@@ -5,7 +5,7 @@
 ;; APPLICATION OPTIONS
 ;; -- Disable GUI elements
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+;;(menu-bar-mode -1)
 (scroll-bar-mode -1)
 
 ;; -- Disable startup message
@@ -13,7 +13,6 @@
 
 ;; -- Disable visual sounds
 (setq visible-bell 1)
-
 ;; -- Window Title:
 (setq-default frame-title-format "%b %& emacs")
 
@@ -55,6 +54,175 @@
 
 ;; -- Don't put two spaces after full-stop 
 (setq sentence-end-double-space nil)
+
+
+;; -------------------------------------------------
+;; PACKAGES
+(require 'package)
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+
+;; -- Auto install use-package
+(unless (package-installed-p 'use-package)
+ (package-refresh-contents)
+ (package-install 'use-package))
+
+(eval-when-compile (require 'use-package))
+
+;; -- Download automatically 
+(setq use-package-always-ensure t)
+
+;; -- Defer loading packages by default 
+(setq use-package-always-defer t)
+
+
+;; THEME
+(use-package dracula-theme
+   :demand t
+   :config (load-theme 'dracula t))
+
+;; EVIL MODE (vim emulation layer)
+(use-package evil
+   :demand t
+   :config
+   ;; -- Initialize
+   (evil-mode)
+
+;; -- Evil mode search
+(setq evil-search-module 'evil-search)
+(setq evil-ex-search-case 'sensitive))
+
+;; -- Evil mode numbers
+(use-package evil-numbers)
+
+;; -- Evil mode surround
+(use-package evil-surround
+   :demand t
+   :config
+   ;; Initialize.
+   (global-evil-surround-mode 1))
+
+;; -- Evil Mode Keys
+
+;; -- Use secondary selection in insert mode 
+(define-key evil-insert-state-map (kbd "<down-mouse-1>") 'mouse-drag-secondary)
+(define-key evil-insert-state-map (kbd "<drag-mouse-1>") 'mouse-drag-secondary)
+(define-key evil-insert-state-map (kbd "<mouse-1>") 'mouse-start-secondary)
+
+;; -- De-select after copy this allows quick select-copy-paste.
+(define-key evil-insert-state-map (kbd "<mouse-2>")
+ (lambda (click)
+   (interactive "*p")
+   (when (overlay-start mouse-secondary-overlay)
+     (mouse-yank-secondary click)
+     (delete-overlay mouse-secondary-overlay))))
+
+;; NEO TREE
+(use-package neotree)
+
+
+;; WHICH-KEY (available keys)
+(use-package which-key
+ :demand t
+ :config
+ ;; Initialize.
+ (which-key-mode))
+
+;; MAGIT
+(use-package magit
+  :init
+  (message "Loading Magit!")
+  :config
+  (message "Loaded Magit!")
+  :bind (("C-x g" . magit-status)
+         ("C-x C-g" . magit-status)))
+
+;; MAGIT - EVIL INTEGRATION
+(use-package evil-magit)
+
+
+;; FLYCHECK (syntax checking)
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+;; IVY
+(use-package ivy
+ :demand t
+ :config
+ (ivy-mode)
+
+ ;; -- Always show half the window height
+ (setq ivy-height-alist `((t . ,(lambda (_caller) (/ (frame-height) 2)))))
+ (setq ivy-display-style 'fancy)
+
+ ;; -- Vim style keys in ivy (holding Ctrl).
+ (define-key ivy-minibuffer-map (kbd "C-j") 'next-line)
+ (define-key ivy-minibuffer-map (kbd "C-k") 'previous-line)
+
+ (define-key ivy-minibuffer-map (kbd "C-h") 'minibuffer-keyboard-quit)
+ (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-done)
+
+ ;; -- open and next
+ (define-key ivy-minibuffer-map (kbd "C-M-j") 'ivy-next-line-and-call)
+ (define-key ivy-minibuffer-map (kbd "C-M-k") 'ivy-previous-line-and-call)
+
+ (define-key ivy-minibuffer-map (kbd "<C-return>") 'ivy-done)
+
+ ;; -- so we can switch away
+ (define-key ivy-minibuffer-map (kbd "C-w") 'evil-window-map))
+
+ ;; DIFF-HL (show git changes)
+ ;;(use-package diff-hl
+ ;;  :demand t
+ ;;  :config (global-diff-hl-mode))
+
+
+;; TEXT SIZE
+(use-package default-text-scale
+  :demand t
+  :init (setq default-text-scale-mode-map (make-sparse-keymap))
+  :config (default-text-scale-mode))
+
+
+;; COMPANY (auto completion)
+(use-package company
+  :commands (company-complete-common company-dabbrev)
+  :config
+  (global-company-mode)
+
+  ;; Increase maximum number of items to show in auto-completion. Why?
+  ;; .. seeing more at once gives you a better overview of your options.
+  (setq company-tooltip-limit 40)
+
+  ;; Don't make abbreviations lowercase or ignore case. Why?
+  ;; .. many languages are case sensitive, so changing case isn't helpful.
+  (setq company-dabbrev-downcase nil)
+  (setq company-dabbrev-ignore-case nil)
+
+  ;; Keymap: hold Ctrl for Vim motion. Why?
+  ;; .. we're already holding Ctrl, allow navigation at the same time.
+  (define-key company-active-map (kbd "C-j") 'company-select-next-or-abort)
+  (define-key company-active-map (kbd "C-k") 'company-select-previous-or-abort)
+  (define-key company-active-map (kbd "C-l") 'company-complete-selection)
+  (define-key company-active-map (kbd "C-h") 'company-abort)
+  (define-key company-active-map (kbd "<C-return>") 'company-complete-selection)
+
+  (define-key company-search-map (kbd "C-j") 'company-select-next)
+  (define-key company-search-map (kbd "C-k") 'company-select-previous))
+
+;; Python completion
+(use-package jedi-core)
+(use-package company-jedi)
+(use-package py-autopep8)
+
+;; ELPY (development for python)
+(use-package elpy)
+(elpy-enable)
+(setq python-shell-interpreter "ipython"
+      python-shell-interpreter-args "-i --simple-prompt")
 
 
 ;; -------------------------------------------------
@@ -152,199 +320,87 @@
  (set-default 'truncate-lines t)
 
 
- ;; -------------------------------------------------
- ;; FILE FORMATS
- ;; Options for generic modes.
- (add-hook 'after-change-major-mode-hook
-   (lambda ()
-     (when (derived-mode-p 'text-mode)
-       (flyspell-mode))
-     (when (derived-mode-p 'prog-mode)
-       (flyspell-prog-mode))))
+;; -------------------------------------------------
+;; FILE FORMATS
+;; Options for generic modes.
+(add-hook 'after-change-major-mode-hook
+ (lambda ()
+   (when (derived-mode-p 'text-mode)
+     (flyspell-mode))
+   (when (derived-mode-p 'prog-mode)
+     (flyspell-prog-mode))))
 
- ;; -- Markup
- (add-hook 'org-mode-hook
-   (lambda ()
-     (setq-local fill-column 120)
-     (setq-local tab-width 2)
-     (setq-local evil-shift-width 2)
-     (setq-local indent-tabs-mode nil)
+;; -- Markup
+(add-hook 'org-mode-hook
+ (lambda ()
+   (setq-local fill-column 120)
+   (setq-local tab-width 2)
+   (setq-local evil-shift-width 2)
+   (setq-local indent-tabs-mode nil)
 
-     (setq-local ffip-patterns '("*.org"))))
+   (setq-local ffip-patterns '("*.org"))))
 
- ;; -- Emacs lisp
- (add-hook 'emacs-lisp-mode-hook
-   (lambda ()
-     (setq-local fill-column 120)
-     (setq-local tab-width 2)
-     (setq-local evil-shift-width 2)
-     (setq-local indent-tabs-mode nil)
+;; -- Emacs lisp
+(add-hook 'emacs-lisp-mode-hook
+ (lambda ()
+   (setq-local fill-column 120)
+   (setq-local tab-width 2)
+   (setq-local evil-shift-width 2)
+   (setq-local indent-tabs-mode nil)
 
-     (setq-local ffip-patterns '("*.el"))
+   (setq-local ffip-patterns '("*.el"))
 
-     ;; Don't delimit on dashes or underscores
-     ;; this makes seaching for variable names inconvenient.
-     (modify-syntax-entry ?- "w")
-     (modify-syntax-entry ?_ "w")))
+   ;; Don't delimit on dashes or underscores
+   ;; this makes seaching for variable names inconvenient.
+   (modify-syntax-entry ?- "w")
+   (modify-syntax-entry ?_ "w")))
 
- ;; -- Python
- (add-hook 'python-mode-hook
-   (lambda ()
-     (setq-local fill-column 80)
-     (setq-local tab-width 4)
-     (setq-local evil-shift-width 4)
-     (setq-local indent-tabs-mode nil)
+;; -- Python
+(add-hook 'python-mode-hook
+ (lambda ()
+   (setq-local fill-column 80)
+   (setq-local tab-width 4)
+   (setq-local evil-shift-width 4)
+   (setq-local indent-tabs-mode nil)
 
-     (setq-local ffip-patterns '("*.py"))))
+   (setq-local ffip-patterns '("*.py"))))
 
- ;; -- Shell
- (add-hook 'sh-mode-hook
-   (lambda ()
-     (setq-local fill-column 120)
-     (setq-local tab-width 4)
-     (setq-local evil-shift-width 4)
-     (setq-local indent-tabs-mode nil)
+;; -- -- Auto Completion
+(defun company-jedi-setup ()
+  (add-to-list 'company-backends 'company-jedi))
+(add-hook 'python-mode-hook 'company-jedi-setup)
 
-     (setq-local ffip-patterns '("*.sh"))))
+;; -- -- Syntax Checking
+(add-hook 'after-init-hook 'global-flycheck-mode)
+;(setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+;(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+;(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 
- ;; -- C/C++
- (add-hook 'c-mode-hook
-   (lambda ()
-     (setq-local fill-column 120)
-     (setq-local c-basic-offset 4)
-     (setq-local tab-width 4)
-     (setq-local evil-shift-width 4)
-     (setq-local indent-tabs-mode nil)
+;; -- Shell
+(add-hook 'sh-mode-hook
+ (lambda ()
+   (setq-local fill-column 120)
+   (setq-local tab-width 4)
+   (setq-local evil-shift-width 4)
+   (setq-local indent-tabs-mode nil)
 
-     (setq-local ffip-patterns
-       '("*.c" "*.cc" "*.cpp" "*.cxx" "*.h" "*.hh" "*.hpp" "*.hxx" "*.inl"))
+   (setq-local ffip-patterns '("*.sh"))))
 
-     ;; Don't delimit on '_'
-     ;; this makes searching for variable names inconvenient.
-     (modify-syntax-entry ?_ "w")))
+;; -- C/C++
+(add-hook 'c-mode-hook
+ (lambda ()
+   (setq-local fill-column 120)
+   (setq-local c-basic-offset 4)
+   (setq-local tab-width 4)
+   (setq-local evil-shift-width 4)
+   (setq-local indent-tabs-mode nil)
 
+   (setq-local ffip-patterns
+     '("*.c" "*.cc" "*.cpp" "*.cxx" "*.h" "*.hh" "*.hpp" "*.hxx" "*.inl"))
 
-  ;; -------------------------------------------------
- ;; PACKAGES
- (require 'package)
-
- (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
- (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
- (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-
- ;; -- Auto install use-package
- (unless (package-installed-p 'use-package)
-   (package-refresh-contents)
-   (package-install 'use-package))
-
- (eval-when-compile (require 'use-package))
-
- ;; -- Download automatically 
- (setq use-package-always-ensure t)
-
- ;; -- Defer loading packages by default 
- (setq use-package-always-defer t)
-
-
- ;; THEME
- (use-package dracula-theme
-   :demand t
-   :config (load-theme 'dracula t))
-
- ;; EVIL MODE (vim emulation layer)
- (use-package evil
-   :demand t
-   :config
-   ;; -- Initialize
-   (evil-mode)
-
- ;; -- Evil mode search
- (setq evil-search-module 'evil-search)
- (setq evil-ex-search-case 'sensitive))
-
- ;; -- Evil mode numbers
- (use-package evil-numbers)
-
- ;; -- Evil mode surround
- (use-package evil-surround
-   :demand t
-   :config
-   ;; Initialize.
-   (global-evil-surround-mode 1))
-
-;; -- Evil Mode Keys
-
-;; -- Use secondary selection in insert mode 
-(define-key evil-insert-state-map (kbd "<down-mouse-1>") 'mouse-drag-secondary)
-(define-key evil-insert-state-map (kbd "<drag-mouse-1>") 'mouse-drag-secondary)
-(define-key evil-insert-state-map (kbd "<mouse-1>") 'mouse-start-secondary)
-
-;; -- De-select after copy this allows quick select-copy-paste.
-(define-key evil-insert-state-map (kbd "<mouse-2>")
- (lambda (click)
-   (interactive "*p")
-   (when (overlay-start mouse-secondary-overlay)
-     (mouse-yank-secondary click)
-     (delete-overlay mouse-secondary-overlay))))
-
-;; NEO TREE
-(use-package neotree)
-
-
-;; WHICH-KEY (available keys)
-(use-package which-key
- :demand t
- :config
- ;; Initialize.
- (which-key-mode))
-
-;; MAGIT
-(use-package magit
-  :init
-  (message "Loading Magit!")
-  :config
-  (message "Loaded Magit!")
-  :bind (("C-x g" . magit-status)
-         ("C-x C-g" . magit-status)))
-
-;; MAGIT - EVIL INTEGRATION
-(use-package evil-magit)
-
-;; IVY
-(use-package ivy
- :demand t
- :config
- (ivy-mode)
-
- ;; -- Always show half the window height
- (setq ivy-height-alist `((t . ,(lambda (_caller) (/ (frame-height) 2)))))
- (setq ivy-display-style 'fancy)
-
- ;; -- Vim style keys in ivy (holding Ctrl).
- (define-key ivy-minibuffer-map (kbd "C-j") 'next-line)
- (define-key ivy-minibuffer-map (kbd "C-k") 'previous-line)
-
- (define-key ivy-minibuffer-map (kbd "C-h") 'minibuffer-keyboard-quit)
- (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-done)
-
- ;; -- open and next
- (define-key ivy-minibuffer-map (kbd "C-M-j") 'ivy-next-line-and-call)
- (define-key ivy-minibuffer-map (kbd "C-M-k") 'ivy-previous-line-and-call)
-
- (define-key ivy-minibuffer-map (kbd "<C-return>") 'ivy-done)
-
- ;; -- so we can switch away
- (define-key ivy-minibuffer-map (kbd "C-w") 'evil-window-map))
-
- ;; DIFF-HL (show git changes)
- ;;(use-package diff-hl
- ;;  :demand t
- ;;  :config (global-diff-hl-mode))
-
-(use-package default-text-scale
-  :demand t
-  :init (setq default-text-scale-mode-map (make-sparse-keymap))
-  :config (default-text-scale-mode))
+   ;; Don't delimit on '_'
+   ;; this makes searching for variable names inconvenient.
+   (modify-syntax-entry ?_ "w")))
 
 
 ;; -------------------------------------------------

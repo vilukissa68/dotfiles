@@ -1,1 +1,2 @@
-((magit-dispatch nil))
+((magit-commit nil)
+ (magit-dispatch nil))

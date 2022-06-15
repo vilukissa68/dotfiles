@@ -1,0 +1,6 @@
+swipe:
+  3:
+    right:
+      command: "xdotool set_desktop --relative -- -1"
+    left:
+      command: "xdotool set_desktop --relative 1"

@@ -16,29 +16,14 @@
 " https://realpython.com/vim-and-python-a-match-made-in-heaven/
 
 
-
-" __      __  _____   _______              _
-" \ \    / / |_   _| |__   __|     /\     | |
-"  \ \  / /    | |      | |       /  \    | |
-"  	\ \/ /     | |      | |      / /\ \   | |
-"    \  /     _| |_     | |     / ____ \  | |____
-"     \/     |_____|    |_|    /_/    \_\ |______|
-
+" Enabled
 set nocompatible            " required
 set exrc                    " required
 set secure                  " NEVER REMOVE, YOUR VIM MIGHT EXECUTE DANGEROUS CODE
 filetype on                 " required
-filetype plugin indent on   " Enable ftplugin suppoer
+filetype plugin indent on   " Enable ftplugin support
 
-
-
-"  _____    _        _    _    _____   _____   _   _    _____
-" |  __ \  | |      | |  | |  / ____| |_   _| | \ | |  / ____|
-" | |__) | | |      | |  | | | |  __    | |   |  \| | | (___
-" |  ___/  | |      | |  | | | | |_ |   | |   | . ` |  \___ \
-" | |      | |____  | |__| | | |__| |  _| |_  | |\  |  ____) |
-" |_|      |______|  \____/   \_____| |_____| |_| \_| |_____/
-
+" PLUGINS
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -52,17 +37,10 @@ Plugin 'gmarik/Vundle.vim'	" let Vundle manage plugins
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'nvie/vim-flake8'
 Plugin 'junegunn/goyo.vim'
 Plugin 'reedes/vim-pencil'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'kien/ctrlp.vim'
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'dense-analysis/ale'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'ycm-core/YouCompleteMe'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vimroom.vim'
 Plugin 'lervag/vimtex'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
@@ -70,14 +48,12 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'bfrg/vim-cpp-modern'
-Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
-Plugin 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plugin 'ryanoasis/vim-devicons'
-Plugin 'jupyter-vim/jupyter-vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -90,18 +66,6 @@ let g:airline#extensioins#tabline#enable = 1
 let g:airline_theme='base16' " set look
 
 
-" GOYO
-function! s:goyo_enter()
-	:set textwidth 130
-	:set wrap on
-	:set nocursorline
-	:set linebreak on
-endfunction
-function! s:goyo_leave()
-	:set wrap off
-	:set linebreak off
-	:set cursorline
-endfunction
 let g:SimpylFold_docstring_preview=1
 
 " PENCIL
@@ -132,23 +96,6 @@ hi Directory guifg=#FF0000 ctermfg=red
 " TAGBAR
 nmap <F8> :TagbarToggle<CR>
 
-" ALE
-let g:ale_set_highlights = 1
-let g:ale_warn_about_trailing_whitespace = 1
-highlight ALEError guifg=red ctermfg=red cterm=underline
-highlight ALEWarning guifg=yellow ctermfg=yellow cterm=underline
-
-
-" VIMADE
-let g:vimade = {
-  \ "normalid": '',
-  \ "basefg": '',
-  \ "basebg": '',
-  \ "fadelevel": 0.4,
-  \ "colbufsize": 30,
-  \ "rowbufsize": 30,
-  \ "checkinterval": 32,}
-
 " ULTISNIPS
 let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsJumpForwardTrigger='<tab>'
@@ -158,7 +105,6 @@ let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips'] "N
 let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
-
 
 " FZF.VIM
 " Fuzzy finder for vim
@@ -173,13 +119,6 @@ let g:fzf_tags_command = 'ctags -R'
 
 " [Commands] --expect expression for directly executing the command
 let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-
-"   _____   ______   _   _   ______   _____               _
-"  / ____| |  ____| | \ | | |  ____| |  __ \      /\     | |
-" | |  __  | |__    |  \| | | |__    | |__) |    /  \    | |
-" | | |_ | |  __|   | . ` | |  __|   |  _  /    / /\ \   | |
-" | |__| | | |____  | |\  | | |____  | | \ \   / ____ \  | |____
-"  \_____| |______| |_| \_| |______| |_|  \_\ /_/    \_\ |______|
 
 set number relativenumber		" Set numbers
 set nu rnu
@@ -197,6 +136,7 @@ set showcmd             " show (partial) command in status line
 " Color change commands:
 "command Light execute "set background=light"
 "command Dark execute "set background=dark"
+set background=light
 
 set t_Co=16
 
@@ -233,6 +173,9 @@ nnoremap <silent> <C-Down> <c-w>j
 " Split config
 set splitbelow
 set splitright
+nnoremap <silent> <Leader>ws :split<CR>
+nnoremap <silent> <Leader>wv :vsplit<CR>
+nnoremap <silent> <Leader>wd :close<CR>
 
 " Split resizing
 set winheight=10
@@ -247,7 +190,6 @@ set foldmethod=indent
 set foldlevel=99
 
 " Enable folding with the spacebar
-nnoremap <space> za
 :highlight BadWhitespace ctermfg=16 ctermbg=253 guifg=#000000 guibg=#F8F8F0
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
@@ -267,13 +209,6 @@ autocmd BufWritePre *.py %s/\s\+$//e
 
 " read odt files in vim
 autocmd BufReadPost *.odt :%!odt2txt %
-
-"	  _                   _______   ______  __   __
-"	 | |          /\     |__   __| |  ____| \ \ / /
-"	 | |         /  \       | |    | |__     \ V /
-"	 | |        / /\ \      | |    |  __|     > <
-"	 | |____   / ____ \     | |    | |____   / . \
-"	 |______| /_/    \_\    |_|    |______| /_/ \_\
 
 " Latex
 let g:tex_flavor='latex'

@@ -37,15 +37,10 @@ Plugin 'gmarik/Vundle.vim'	" let Vundle manage plugins
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/nerdtree'
-Plugin 'junegunn/goyo.vim'
-Plugin 'reedes/vim-pencil'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'ycm-core/YouCompleteMe'
 Plugin 'lervag/vimtex'
 Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'bfrg/vim-cpp-modern'
 Plugin 'tpope/vim-surround'
@@ -53,6 +48,13 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
+Plugin 'mattn/vim-lsp-settings'
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'thomasfaingnaert/vim-lsp-ultisnips'
+
 
 
 " All of your Plugins must be added before the following line
@@ -68,22 +70,6 @@ let g:airline_theme='base16' " set look
 
 let g:SimpylFold_docstring_preview=1
 
-" PENCIL
-augroup pencil " Initialize by file type
-	autocmd!
-	autocmd FileType markdown,mkd call pencil#init()
-	autocmd FileType text call pencil#init({'wrap': 'hard'})
-augroup END
-" Softwrap with pencil
-let g:pencil#wrapModeDefault = 'soft'
-
-
-" YOU-COMPLETE-ME
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-let g:ycm_show_diagnostics_ui = 0
-
-
 " NERD TREE
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 autocmd StdinReadPre * let s:std_in=1
@@ -92,19 +78,8 @@ map <C-n> :NERDTreeToggle<CR>
 
 hi Directory guifg=#FF0000 ctermfg=red
 
-
 " TAGBAR
 nmap <F8> :TagbarToggle<CR>
-
-" ULTISNIPS
-let g:UltiSnipsExpandTrigger='<tab>'
-let g:UltiSnipsJumpForwardTrigger='<tab>'
-let g:UltiSnipsJumpBackwardTrigger=' <s-tab> '
-let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips'] "NVim only
-"YCM compatibality
-let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " FZF.VIM
 " Fuzzy finder for vim
@@ -193,7 +168,6 @@ set foldlevel=99
 :highlight BadWhitespace ctermfg=16 ctermbg=253 guifg=#000000 guibg=#F8F8F0
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
 let g:vimroom_background="none"
 set clipboard=unnamed
 

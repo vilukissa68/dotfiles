@@ -60,7 +60,7 @@ find "$dotfiles_config_dir" -type f | while read -r file; do
     mkdir -p "$dest_folder"
 
     # Create symlink
-    ln -s "$file" "$dest_file"
+    ln -sf "$file" "$dest_file"
     echo "Created symlink: $dest_file -> $file"
 done
 

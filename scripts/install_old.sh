@@ -1,6 +1,10 @@
-# Symlink.sh
+#!/bin/bash
 
-dotfiles_dir=~/dotfiles
+dotfiles_dir="${HOME}/dotfiles"
+dotfiles_config_dir="${dotfiles_dir}/.config/"
+config_destination_dir="${HOME}/.config/"
+
+echo $dotfiles_config_dir
 
 while true; do
     read -p "Do you want to set up vundle? y/n " yn
@@ -31,15 +35,31 @@ while true; do
     esac
 done
 
-cp $dotfiles_dir/.vimrc ~
-cp $dotfiles_dir/.tmux.conf ~
-cp $dotfiles_dir/.zshrc ~
-cp $dotfiles_dir/.Xresources ~
-cp $dotfiles_dir/.Xresources-light ~
-cp $dotfiles_dir/lock.png ~
+# Symlinks
 
-cp -r $dotfiles_dir/.vim/ftplugin ~/.vim/
-cp -r $dotfiles_dir/.config ~
+ln -sf $dotfiles_dir/.vimrc "${HOME}/.vimrc"
+ln -sf $dotfiles_dir/.tmux.conf "${HOME}/.tmux.conf"
+ln -sf $dotfiles_dir/.zshrc "${HOME}/.zshrc"
+
+
+# Create symlinks for each file inside subfolders
+
+# Check if the source directory exists
+if [ ! -d "$dotfiles_config_dir" ]; then
+    echo "Source directory not found: $dotfiles_config_dir"
+    exit 1
+fi
+
+# Check if the destination directory exists, if not, create it
+if [ ! -d "$config_destination_dir" ]; then
+    mkdir -p "$config_destination_dir"
+fi
+
+find "$dotfiles" -type f | while read -r file; do
+    # Create symlink with destination folder creation
+    ln -sf "$file" "${HOME}/.config/${file#$dotfiles_config_dir}"
+    echo "Created symlink: ${HOME}/.config/${file#$dotfiles_config_dir} -> $file"
+done
 
 echo "Install finished"
-exit 0
+exit

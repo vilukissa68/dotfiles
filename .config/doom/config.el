@@ -12,6 +12,9 @@
   (interactive)
   (ido-find-file-in-dir org-directory))
 
+;; Enable online image in org files
+(setq org-display-remote-inline-images 'cache)
+
 ;; OSX Fix for EPG
 (setq epg-pinentry-mode 'loopback)
 (epa-file-enable)
@@ -154,7 +157,10 @@
 
 ;; Rust
 (after! rustic
-  (setq rustic-lsp-server 'rust-analyzer))
+  (setq rustic-lsp-server 'rust-analyzer)
+  (setq rustic-format-on-save t)
+  (setq rust-format-on-save t))
+
 
 (after! dap-mode
     ;; Python support via debugpu: pip install debugpy --user
@@ -243,6 +249,28 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
           (:when (modulep! :tools debugger)
             :prefix ("d" . "debugger")
             :desc "RealGUD hydra" "h" #'+debugger/realgud:gdb-hydra)))
+
+;; Help function for merging lists
+(defun merge-list-to-list (dst src)
+  "Merges content of the 2nd list with the 1st one"
+  (set dst
+       (append (eval dst) src)))
+
+
+;; Org capture templates
+(after! org
+        (merge-list-to-list 'org-capture-templates
+        '(("w" "Work Todo" entry (file+headline "~/Dropbox/orgfiles/work.org" "Todos") "* TODO %?\n  %i\n  %a")
+          ("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes") "* %?\n %i\n %a")))
+        ;; Org todo keyword setup
+        (setq org-todo-keywords
+              '((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")))
+
+        (setq org-todo-keyword-faces
+              '(("TODO" . "red") ("DOING" . "gold") ("WAITING". "yellow") ("PR" . "dark violet") ("DONE" . "forest green")
+                ("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray")))
+
+        )
 
 
 ;; Misc

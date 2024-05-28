@@ -62,7 +62,10 @@
 (map! :leader
       (:prefix ("i". "insert")
         (:prefix ("t". "time")
-        :desc "Timestamp decimal" "td" 'insert-current-time-decimal)))
+        :desc "Timestamp decimal" "d" 'insert-current-time-decimal
+        :desc "Timestamp with git email" "g" 'insert-timestamp-with-git-email
+        :desc "Timestamp with email" "e" 'insert-timestamp-with-email
+        )))
 
 (map! :leader
         (:prefix ("j" . "jump")
@@ -289,3 +292,79 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 (add-hook 'occur-hook
           '(lambda ()
              (switch-to-buffer-other-window "*Occur*")))
+
+;; Hex to decimal
+(defun hex-to-decimal (start end)
+  "Convert the hexadecimal string in the region from START to END to a decimal number."
+  (interactive "r")
+  (let* ((hex-string (buffer-substring-no-properties start end))
+         (decimal-value (string-to-number hex-string 16)))
+    (delete-region start end)
+    (insert (number-to-string decimal-value))))
+
+(defun hex-word-to-decimal ()
+  "Convert the hexadecimal word at point to a decimal number."
+  (interactive)
+  (let* ((bounds (bounds-of-thing-at-point 'word))
+         (start (car bounds))
+         (end (cdr bounds))
+         (hex-string (buffer-substring-no-properties start end))
+         (decimal-value (string-to-number hex-string 16)))
+    (delete-region start end)
+    (insert (number-to-string decimal-value))))
+
+(defun convert-hex-words-to-decimal ()
+  "Convert all hexadecimal words in the buffer to decimal numbers."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "\\b[0-9a-fA-F]+\\b" nil t)
+      (hex-word-to-decimal))))
+
+(defun hex-to-signed-decimal (hex-string)
+  "Convert a hexadecimal string HEX-STRING to a signed decimal integer."
+  (let* ((decimal-value (string-to-number hex-string 16))
+         (bit-length (* (length hex-string) 4))  ; Each hex digit represents 4 bits
+         (max-value (expt 2 (1- bit-length))))
+    (if (>= decimal-value max-value)
+        (- decimal-value (expt 2 bit-length))
+      decimal-value)))
+
+(defun hex-word-to-signed-decimal ()
+  "Convert the hexadecimal word at point to a signed decimal integer."
+  (interactive)
+  (let* ((bounds (bounds-of-thing-at-point 'word))
+         (start (car bounds))
+         (end (cdr bounds))
+         (hex-string (buffer-substring-no-properties start end))
+         (decimal-value (hex-to-signed-decimal hex-string)))
+    (delete-region start end)
+    (insert (number-to-string decimal-value))))
+
+(defun convert-hex-words-to-signed-decimal ()
+  "Convert all hexadecimal words in the buffer to signed decimal integers."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "\\b[0-9a-fA-F]+\\b" nil t)
+      (hex-word-to-signed-decimal))))
+
+;; Document note
+(defun insert-timestamp-with-email (email)
+  "Insert a timestamp in the format (year-month-day email) at point."
+  (interactive "sEnter email: ")
+  (let ((timestamp (format "(%s %s)"
+                           (format-time-string "%Y%m%d")
+                           email)))
+    (insert timestamp)))
+
+(defun insert-timestamp-with-git-email ()
+  "Insert a timestamp in the format (year-month-day email) at point.
+The email is fetched from the current Git configuration."
+  (interactive)
+  (let* ((git-email-command "git config user.email")
+         (email (string-trim (shell-command-to-string git-email-command)))
+         (timestamp (format "(%s %s)"
+                            (format-time-string "%Y%m%d")
+                            email)))
+    (insert timestamp)))

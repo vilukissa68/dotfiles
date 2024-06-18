@@ -22,7 +22,7 @@ yabai -m config                                 \
     window_topmost               off            \
     window_shadow                on             \
     window_animation_duration    0.0            \
-    window_animation_frame_rate  120            \
+    window_animation_frame_rate  60             \
     window_opacity_duration      0.0            \
     active_window_opacity        1.0            \
     normal_window_opacity        0.90           \
@@ -87,11 +87,13 @@ yabai -m rule --add app="^Emacs$" space=^2
 yabai -m rule --add app="^mpv$" space=^8
 yabai -m rule --add app="^Overcast$" space=^8
 yabai -m rule --add app="^Radio Garden$" space=^8
+yabai -m rule --add app="^Podcasts$" space=^8
+yabai -m rule --add app="^Spotify$" space=^8
 
 # Social
 yabai -m rule --add app="^Telegram$" space=^9
 yabai -m rule --add app="^Signal$" space=^9
-yabai -m rule --add app="^Microsoft Teams classic$" space=^9
+yabai -m rule --add app="^Microsoft Teams classic$" space=^9 manage=off
 yabai -m rule --add app="^Discord$" space=^9
 
 echo "yabai configuration loaded.."

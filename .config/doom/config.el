@@ -1,7 +1,6 @@
 (setq doom-theme 'doom-one-light)
 
-(setq display-line-numbers-type t)
-(setq display-line-numbers-mode t)
+(setq display-line-numbers-type 'relative)
 
 (setq org-directory "~/Dropbox/orgfiles/")
 (setq org-default-notes-file "~/Dropbox/orgfiles/notes.org")
@@ -48,7 +47,6 @@
 
 ;; Set font
 (setq doom-font (font-spec :family "Iosevka" :size 12.0))
-
 
 ;; General keybindings
 (map! :leader
@@ -267,7 +265,7 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
           ("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes") "* %?\n %i\n %a")))
         ;; Org todo keyword setup
         (setq org-todo-keywords
-              '((sequence "TODO(t)" "|" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
+              '((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
                 (sequence "MEETING(m)" "|" "DONE(d)")))
 
         (setq org-todo-keyword-faces
@@ -278,6 +276,8 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 
 
 ;; Misc
+;; Automatically refresh magit buffer on file visit
+(add-hook 'after-save-hook 'magit-after-save-refresh-status t)
 
 ;; Write current time in HH.MM format in decimal
 (defun insert-current-time-decimal ()

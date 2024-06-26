@@ -102,7 +102,9 @@
 
 ;; Lsp
 (after! lsp-mode
-  (setq lsp-auto-guess-root nil)) ;; Dont guess root
+  (setq lsp-auto-guess-root nil ;; Dont guess root
+        lsp-ui-doc-show-with-cursor t
+        lsp-ui-doc-show-with-mouse t))
 
 ;; Python
 (after! python-mode

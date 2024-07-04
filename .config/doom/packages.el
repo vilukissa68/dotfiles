@@ -54,3 +54,5 @@
 
 (package! sly-overlay
   :recipe (:host sourcehut :repo "fosskers/sly-overlay"))
+
+(package! catppuccin-theme)

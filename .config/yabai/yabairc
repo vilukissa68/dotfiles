@@ -77,6 +77,7 @@ setup_space 9 social
 # app rules
 yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^Archive Utility$" manage=off
+yabai -m rule --add app="^mono64$" manage=off
 
 yabai -m rule --add app="^Firefox$" space=^1
 

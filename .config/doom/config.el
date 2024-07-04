@@ -1,4 +1,6 @@
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'catppuccin)
+(setq catppuccin-flavor 'latte) ;; or 'latte, 'frappe 'macchiato, or 'mocha
+(catppuccin-reload)
 
 (setq display-line-numbers-type 'relative)
 
@@ -371,3 +373,23 @@ The email is fetched from the current Git configuration."
                             (format-time-string "%Y%m%d")
                             email)))
     (insert timestamp)))
+
+(defun catppuccin-latte ()
+        (interactive)
+        (setq catppuccin-flavor 'latte)
+        (catppuccin-reload))
+
+(defun catppuccin-frappe ()
+        (interactive)
+        (setq catppuccin-flavor 'frappe)
+        (catppuccin-reload))
+
+(defun catppuccin-macchiato ()
+        (interactive)
+        (setq catppuccin-flavor 'macchiato)
+        (catppuccin-reload))
+
+(defun catppuccin-mocha ()
+        (interactive)
+        (setq catppuccin-flavor 'mocha)
+        (catppuccin-reload))

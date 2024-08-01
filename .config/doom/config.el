@@ -1,6 +1,5 @@
 (setq doom-theme 'catppuccin)
 (setq catppuccin-flavor 'latte) ;; or 'latte, 'frappe 'macchiato, or 'mocha
-(catppuccin-reload)
 
 (setq display-line-numbers-type 'relative)
 
@@ -78,6 +77,17 @@
            :desc "Jump back to swap pos" "s" 'evil-jump-backward-swap
            :desc "Jump back to forward pos" "l" 'evil-jump-forward
            :desc "Open occur buffer" "o" 'occur
+           ))
+
+(map! :leader
+        (:prefix ("v" . "visual select")
+           :desc "Select buffer" "a" 'mark-whole-buffer
+           :desc "Select word" "w" 'mark-word
+           ))
+
+(map! :leader
+        (:prefix ("s")
+           :desc "Search and replace" "r" 'evil-replace-word-selection
            ))
 
 ;; MacOS specific
@@ -282,6 +292,19 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 ;; Misc
 ;; Automatically refresh magit buffer on file visit
 (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
+
+;; Replace all occurences of a word
+;; query-replace current word
+(defun evil-replace-word-selection(replace-str)
+  (interactive "sReplace occurences under cursor with: ")
+  (if (use-region-p)
+      (let (
+            (selection (buffer-substring-no-properties (region-beginning) (region-end))))
+        (if (= (length selection) 0)
+            (message "empty string")
+          (evil-ex (concat "'<,'>s/" selection "/"))
+          ))
+    (evil-ex (concat "%s/" (thing-at-point 'word) "/" replace-str "/g"))))
 
 ;; Write current time in HH.MM format in decimal
 (defun insert-current-time-decimal ()

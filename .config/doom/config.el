@@ -288,6 +288,29 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 
         )
 
+;; Magit
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq transient-default-level 7)
+
+;; EWW (Emacs Web Wowser)
+(setq browse-url-browser-function 'eww-browse-url)
+(map! :leader
+      :desc "Search web for text between BEG/END"
+      "s w" #'eww-search-words
+      (:prefix ("e" . "evaluate/ERC/EWW")
+       :desc "Eww web browser" "w" #'eww-new
+       :desc "Eww add bookmark" "a" #'eww-add-bookmark
+       :desc "Eww list bookmarks" "l" #'eww-list-bookmarks
+       :desc "Eww list history" "h" #'eww-list-histories
+       :desc "Eww switch to buffer" "s" #'eww-switch-to-buffer
+       :desc "Eww reload page" "R" #'eww-reload))
+
+(defun eww-new ()
+  (interactive)
+  (let ((url (read-from-minibuffer "Enter URL or keywords: ")))
+    (switch-to-buffer (generate-new-buffer "eww"))
+    (eww-mode)
+    (eww url)))
 
 ;; Misc
 ;; Automatically refresh magit buffer on file visit

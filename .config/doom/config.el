@@ -345,6 +345,10 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
         :v "p" #'ein:worksheet-yank-cell
         :v "P" #'ein:worksheet-yank-cell-above))
 
+;; RSS
+(setq elfeed-feeds '("https://planet.emacslife.com/atom.xml"))
+
+
 ;; Misc
 ;; Automatically refresh magit buffer on file visit
 (add-hook 'after-save-hook 'magit-after-save-refresh-status t)

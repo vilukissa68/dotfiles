@@ -351,6 +351,25 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 ;; RSS
 (setq elfeed-feeds '("https://planet.emacslife.com/atom.xml"))
 
+;; Spell check and grammar
+(after! flyspell
+  (map! :leader
+      (:prefix ("k" . "krammar/spelling")
+       :desc "Flyspell next error" "n" #'flyspell-goto-next-error
+       :desc "Flyspell correct error at point" "k" #'flyspell-correct-at-point
+       :desc "Flyspell corrent next error" "c" #'flyspell-correct-next
+       :desc "Flyspell corrent previoues error" "C" #'flyspell-correct-previous
+       :desc "Flyspell add word" "a" #'+spell/add-word
+       :desc "Flyspell remove word" "x" #'+spell/remove-word
+       :desc "Langtool check grammar" "l" #'langtool-check
+       :desc "Langtool finish grammar" "L" #'langtool-check-done
+       :desc "Langtool next grammar error" "m" #'langtool-goto-next-error
+       :desc "Langtool prev grammar error" "M" #'langtool-goto-prev-error
+       :desc "Langtool interactive" "i" #'langtool-correct-at-point
+       :desc "Langtool interactive" "I" #'langtool-interactive-correction)))
+
+;; Markdown
+(add-hook 'markdown-mode #'+word-wrap-mode)
 
 ;; Misc
 ;; Automatically refresh magit buffer on file visit
@@ -479,3 +498,7 @@ The email is fetched from the current Git configuration."
         (interactive)
         (setq catppuccin-flavor 'mocha)
         (catppuccin-reload))
+
+(defun lookup-word (word)
+  (interactive (list (thing-at-point 'word)))
+  (browse-url (format "http://en.wiktionary.org/wiki/%s" word)))

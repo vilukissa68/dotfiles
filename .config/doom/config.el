@@ -292,6 +292,9 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq transient-default-level 7)
 
+;; Magit-forge
+(setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     "))
+
 ;; EWW (Emacs Web Wowser)
 (setq browse-url-browser-function 'eww-browse-url)
 (map! :leader

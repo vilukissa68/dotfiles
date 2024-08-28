@@ -21,13 +21,13 @@
 (setq epg-gpg-program "/opt/homebrew/Cellar/gnupg/2.4.0/bin/gpg")
 
 ;; Sensible defaults
-(setq
+(setq-default
  ad-redefinition-action 'accept                   ; Silence warnings for redefinition
  cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
  confirm-kill-emacs nil
  fill-column 80                                   ; Set width for automatic line breaks
  help-window-select t                             ; Focus new help windows when opened
- indent-tabs-mode nil                             ; Prefer spaces over tabs
+ indent-tabs-mode t                               ; Prefer spaces over tabs
  initial-scratch-message ""                       ; Empty the initial *scratch* buffer
  load-prefer-newer t                              ; Prefer the newest version of a file
  mark-ring-max 128                                ; Maximum length of mark ring
@@ -35,6 +35,7 @@
  scroll-conservatively most-positive-fixnum       ; Always scroll by one line
  select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
  tab-width 4                                      ; Set width for tabs
+ c-basic-offset 4                                 ; Set width for tabs
  use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
  vc-follow-symlinks t                             ; Always follow the symlinks
  view-read-only t)                                ; Always open read-only buffers in view-mode
@@ -130,6 +131,13 @@
 				"--header-insertion=never"
 				"--header-insertion-decorators=0"))
 (after! lsp-clangd (set-lsp-priority! 'clangd 2))
+
+(defun my/c++-hook ()
+  (setq tab-width 4)
+  (setq c-basic-offset 4)
+  (setq indent-tabs-mode t))
+
+(add-hook 'c++-mode-hook 'my/c++-hook)
 
 ;; Debugger
  (map! :map dap-mode-map

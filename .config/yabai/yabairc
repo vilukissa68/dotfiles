@@ -66,7 +66,7 @@ function setup_space {
 
 setup_space 1 web
 setup_space 2 emacs
-setup_space 3 other
+setup_space 3 emacs
 setup_space 4 other
 setup_space 5 other
 setup_space 6 other
@@ -95,6 +95,7 @@ yabai -m rule --add app="^Spotify$" space=^8
 yabai -m rule --add app="^Telegram$" space=^9
 yabai -m rule --add app="^Signal$" space=^9
 yabai -m rule --add app="^Microsoft Teams classic$" space=^9 manage=off
+yabai -m rule --add app="^Microsoft Teams$" space=^9 manage=off
 yabai -m rule --add app="^Discord$" space=^9
 
 echo "yabai configuration loaded.."

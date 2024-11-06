@@ -325,36 +325,30 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 
 ;; Ein
 (after! ein
+  (setq ein:worksheet-enable-undo t)
   (map! :map ein:notebook-mode-map
+	:leader
+	(:prefix ("m". "ein-major-mode")
         ;; Normal mode keybindings
-        :n "dd" #'ein:worksheet-delete-cell
-        :n "x" #'ein:worksheet-delete-cell
-        :n "O" #'ein:worksheet-insert-cell-above
-        :n "o" #'ein:worksheet-insert-cell-below
-        :n "K" #'ein:worksheet-move-cell-up
-        :n "J" #'ein:worksheet-move-cell-down
-        :n "H" #'ein:worksheet-goto-prev-input
-        :n "L" #'ein:worksheet-goto-next-input
-        :n "yy" #'ein:worksheet-copy-cell
-        :n "p" #'ein:worksheet-yank-cell
-        :n "P" #'ein:worksheet-yank-cell-above
+        "d" #'ein:worksheet-delete-cell
+        "O" #'ein:worksheet-insert-cell-above
+        "o" #'ein:worksheet-insert-cell-below
+        "K" #'ein:worksheet-move-cell-up
+        "J" #'ein:worksheet-move-cell-down
+        "H" #'ein:worksheet-goto-prev-input
+        "L" #'ein:worksheet-goto-next-input
+        "y" #'ein:worksheet-copy-cell
+        "p" #'ein:worksheet-yank-cell
+        "P" #'ein:worksheet-yank-cell-above
+	)
+
         :n "C-c C-c" #'ein:worksheet-execute-cell
-        :n "C-c C-s" #'ein:worksheet-execute-cell-and-goto-next
+	:n "C-c C-s" #'ein:worksheet-execute-cell-and-goto-next
         :n "C-c C-l" #'ein:worksheet-clear-output
         :n "C-c C-k" #'ein:worksheet-kill-cell
-
-        ;; Insert mode keybindings
-        :i "C-j" #'ein:worksheet-insert-cell-below
-        :i "C-k" #'ein:worksheet-insert-cell-above
-        :i "C-RET" #'ein:worksheet-execute-cell
-        :i "S-RET" #'ein:worksheet-execute-cell-and-goto-next
-        :i "C-c C-l" #'ein:worksheet-clear-output
-
-        ;; Visual mode keybindings
-        :v "dd" #'ein:worksheet-delete-cell
-        :v "yy" #'ein:worksheet-copy-cell
-        :v "p" #'ein:worksheet-yank-cell
-        :v "P" #'ein:worksheet-yank-cell-above))
+        :n "C-RET" #'ein:worksheet-execute-cell
+        :n "S-RET" #'ein:worksheet-execute-cell-and-goto-next
+        :n "C-c C-l" #'ein:worksheet-clear-output))
 
 ;; RSS
 (setq elfeed-feeds '("https://planet.emacslife.com/atom.xml"))

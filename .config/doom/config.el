@@ -1,5 +1,5 @@
-(setq doom-theme 'catppuccin)
-(setq catppuccin-flavor 'latte) ;; or 'latte, 'frappe 'macchiato, or 'mocha
+(setq doom-theme 'doom-one-light)
+;(setq catppuccin-flavor 'latte) ;; or 'latte, 'frappe 'macchiato, or 'mocha
 
 (setq display-line-numbers-type 'relative)
 
@@ -17,28 +17,28 @@
 
 ;; OSX Fix for EPG
 (setq epg-pinentry-mode 'loopback)
-(epa-file-enable)
+;;(epa-file-enable)
 (setq epg-gpg-program "/opt/homebrew/Cellar/gnupg/2.4.0/bin/gpg")
 
 ;; Sensible defaults
 (setq-default
  ad-redefinition-action 'accept                   ; Silence warnings for redefinition
- cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
- confirm-kill-emacs nil
- fill-column 80                                   ; Set width for automatic line breaks
- help-window-select t                             ; Focus new help windows when opened
- indent-tabs-mode t                               ; Prefer spaces over tabs
- initial-scratch-message ""                       ; Empty the initial *scratch* buffer
- load-prefer-newer t                              ; Prefer the newest version of a file
- mark-ring-max 128                                ; Maximum length of mark ring
- read-process-output-max (* 1024 1024)            ; Increase the amount of data reads from the process
- scroll-conservatively most-positive-fixnum       ; Always scroll by one line
- select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
- tab-width 4                                      ; Set width for tabs
- c-basic-offset 4                                 ; Set width for tabs
- use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
- vc-follow-symlinks t                             ; Always follow the symlinks
- view-read-only t)                                ; Always open read-only buffers in view-mode
+cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
+confirm-kill-emacs nil
+fill-column 80                                   ; Set width for automatic line breaks
+help-window-select t                             ; Focus new help windows when opened
+indent-tabs-mode t                               ; Prefer spaces over tabs
+initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+load-prefer-newer t                              ; Prefer the newest version of a file
+mark-ring-max 128                                ; Maximum length of mark ring
+read-process-output-max (* 1024 1024)            ; Increase the amount of data reads from the process
+scroll-conservatively most-positive-fixnum       ; Always scroll by one line
+select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+tab-width 4                                      ; Set width for tabs
+c-basic-offset 4                                 ; Set width for tabs
+use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
+vc-follow-symlinks t                             ; Always follow the symlinks
+view-read-only t)                                ; Always open read-only buffers in view-mode
 (column-number-mode 1)                            ; Show the column number
 (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
 (global-hl-line-mode)                             ; Hightlight current line
@@ -90,6 +90,14 @@
         (:prefix ("s")
            :desc "Search and replace" "r" 'evil-replace-word-selection
            ))
+
+;; Org keymaps
+ (map! :map org-mode-map
+      :leader
+      (:prefix ("o" . "open")
+	:desc "Org schedule" "s" 'org-schedule
+	:desc "Open cfw calendar" "s" 'cfw:open-org-calendar
+	))
 
 ;; MacOS specific
 (setq default-input-method "MacOSX")
@@ -181,9 +189,7 @@
 ;; Rust
 (after! rustic
   (setq rustic-lsp-server 'rust-analyzer)
-  (setq rustic-format-on-save t)
   (setq rust-format-on-save t))
-
 
 (after! dap-mode
     ;; Python support via debugpu: pip install debugpy --user
@@ -279,7 +285,6 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
   (set dst
        (append (eval dst) src)))
 
-
 ;; Org capture templates
 (after! org
         (merge-list-to-list 'org-capture-templates
@@ -304,7 +309,7 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     "))
 
 ;; EWW (Emacs Web Wowser)
-(setq browse-url-browser-function 'eww-browse-url)
+;;(setq browse-url-browser-function 'eww-browse-url)
 (map! :leader
       :desc "Search web for text between BEG/END"
       "s w" #'eww-search-words
@@ -314,6 +319,8 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
        :desc "Eww list bookmarks" "l" #'eww-list-bookmarks
        :desc "Eww list history" "h" #'eww-list-histories
        :desc "Eww switch to buffer" "s" #'eww-switch-to-buffer
+       :desc "Eww view readable text only" "r" #'eww-readable
+       :desc "Eww view source code" "S" #'eww-view-source
        :desc "Eww reload page" "R" #'eww-reload))
 
 (defun eww-new ()
@@ -326,6 +333,7 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 ;; Ein
 (after! ein
   (setq ein:worksheet-enable-undo t)
+  (setq! ein:output-area-inlined-images t)
   (map! :map ein:notebook-mode-map
 	:leader
 	(:prefix ("m". "ein-major-mode")
@@ -367,7 +375,7 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
        :desc "Langtool finish grammar" "L" #'langtool-check-done
        :desc "Langtool next grammar error" "m" #'langtool-goto-next-error
        :desc "Langtool prev grammar error" "M" #'langtool-goto-prev-error
-       :desc "Langtool interactive" "i" #'langtool-correct-at-point
+       :desc "Langtool correct at point" "i" #'langtool-correct-at-point
        :desc "Langtool interactive" "I" #'langtool-interactive-correction)))
 
 ;; Markdown
@@ -481,25 +489,25 @@ The email is fetched from the current Git configuration."
                             email)))
     (insert timestamp)))
 
-(defun catppuccin-latte ()
-        (interactive)
-        (setq catppuccin-flavor 'latte)
-        (catppuccin-reload))
+;(defun catppuccin-latte ()
+;        (interactive)
+;        (setq catppuccin-flavor 'latte)
+;        (catppuccin-reload))
 
-(defun catppuccin-frappe ()
-        (interactive)
-        (setq catppuccin-flavor 'frappe)
-        (catppuccin-reload))
+;(defun catppuccin-frappe ()
+;        (interactive)
+;        (setq catppuccin-flavor 'frappe)
+;        (catppuccin-reload))
 
-(defun catppuccin-macchiato ()
-        (interactive)
-        (setq catppuccin-flavor 'macchiato)
-        (catppuccin-reload))
+;(defun catppuccin-macchiato ()
+;        (interactive)
+;        (setq catppuccin-flavor 'macchiato)
+;        (catppuccin-reload))
 
-(defun catppuccin-mocha ()
-        (interactive)
-        (setq catppuccin-flavor 'mocha)
-        (catppuccin-reload))
+;(defun catppuccin-mocha ()
+;        (interactive)
+;        (setq catppuccin-flavor 'mocha)
+;        (catppuccin-reload))
 
 (defun lookup-word (word)
   (interactive (list (thing-at-point 'word)))

@@ -96,7 +96,7 @@ view-read-only t)                                ; Always open read-only buffers
       :leader
       (:prefix ("o" . "open")
 	:desc "Org schedule" "s" 'org-schedule
-	:desc "Open cfw calendar" "s" 'cfw:open-org-calendar
+	:desc "Open cfw calendar" "c" 'cfw:open-org-calendar
 	))
 
 ;; MacOS specific

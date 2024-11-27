@@ -3,17 +3,8 @@
 
 (setq display-line-numbers-type 'relative)
 
-(setq org-directory "~/Dropbox/orgfiles/")
-(setq org-default-notes-file "~/Dropbox/orgfiles/notes.org")
-(load-file "~/Dropbox/orgfiles/orgsetup.el")
-
-;; Open org folder
-(defun my-org-finder ()
-  (interactive)
-  (ido-find-file-in-dir org-directory))
-
-;; Enable online image in org files
-(setq org-display-remote-inline-images 'cache)
+;; Start with org
+(setq initial-major-mode 'org-mode)
 
 ;; OSX Fix for EPG
 (setq epg-pinentry-mode 'loopback)
@@ -46,6 +37,10 @@ view-read-only t)                                ; Always open read-only buffers
 (show-paren-mode 1)                               ; Show the parent
 (global-display-line-numbers-mode)
 (which-function-mode)
+
+;; Unbind defaults
+(map! :leader
+      "o r" nil)
 
 ;; Set font
 (setq doom-font (font-spec :family "Iosevka" :size 12.0))
@@ -91,13 +86,6 @@ view-read-only t)                                ; Always open read-only buffers
            :desc "Search and replace" "r" 'evil-replace-word-selection
            ))
 
-;; Org keymaps
- (map! :map org-mode-map
-      :leader
-      (:prefix ("o" . "open")
-	:desc "Org schedule" "s" 'org-schedule
-	:desc "Open cfw calendar" "c" 'cfw:open-org-calendar
-	))
 
 ;; MacOS specific
 (setq default-input-method "MacOSX")
@@ -285,21 +273,43 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
   (set dst
        (append (eval dst) src)))
 
-;; Org capture templates
+;; Org config
 (after! org
-        (merge-list-to-list 'org-capture-templates
-        '(("w" "Work Todo" entry (file+headline "~/Dropbox/orgfiles/work.org" "Todos") "* TODO %?\n  %i\n  %a")
-          ("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes") "* %?\n %i\n %a")))
-        ;; Org todo keyword setup
-        (setq org-todo-keywords
-              '((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
-                (sequence "MEETING(m)" "|" "DONE(d)")))
-
-        (setq org-todo-keyword-faces
-              '(("TODO" . "red") ("DOING" . "gold") ("WAITING". "yellow") ("PR" . "dark violet") ("MEETING" . "brown") ("DONE" . "forest green")
-                ("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray")))
-
-        )
+  (map! :leader
+	(:prefix ("o" . "open")
+	 :desc "Org schedule" "s" 'org-schedule
+	 :desc "Open cfw calendar" "c" 'cfw:open-org-calendar
+	 (:prefix ("r". "Org Roam")
+	  :desc "Toggle roam buffer" "t" 'org-roam-buffer-toggle
+	  :desc "Node find" "f" 'org-roam-node-find
+	  :desc "Node insert" "i" 'org-roam-node-insert)
+	 ))
+  ;; Basic org settings
+  (setq org-directory "~/Dropbox/orgfiles/")
+  (setq org-default-notes-file "~/Dropbox/orgfiles/notes.org")
+  (load-file "~/Dropbox/orgfiles/orgsetup.el")
+  ;; Org roam
+  (setq org-roam-directory "~/Dropbox/orgfiles/roamnotes")
+  ;; Open org folder
+  (defun my-org-finder ()
+    (interactive)
+    (ido-find-file-in-dir org-directory))
+  ;; Enable online image in org files
+  (setq org-display-remote-inline-images 'cache)
+  ;; Org capture templates
+  (merge-list-to-list 'org-capture-templates
+		      '(("w" "Work Todo" entry (file+headline "~/Dropbox/orgfiles/work.org" "Todos") "* TODO %?\n  %i\n  %a")
+			("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes") "* %?\n %i\n %a")))
+  ;; Org todo keyword setup
+  (setq org-todo-keywords
+	'((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
+	  (sequence "MEETING(m)" "|" "DONE(d)")))
+  (setq org-todo-keyword-faces
+        '(("TODO" . "red") ("DOING" . "gold") ("WAITING". "yellow") ("PR" . "dark violet") ("MEETING" . "brown") ("DONE" . "forest green")
+          ("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray")))
+  ;; Invoke org roam
+  (org-roam-setup)
+  )
 
 ;; Magit
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)

@@ -1,0 +1,14 @@
+{
+"title": "New iTerm2 Window",
+"author": "Ahnberg <ahnberg@netnod.se>",
+"rules": [ {
+        "description": "New iTerm2 Window",
+        "manipulators": [ {
+                "type": "basic",
+                "from": { "key_code": "return_or_enter",
+                          "modifiers": { "mandatory": [ "command" ] } },
+                "to": [ { "shell_command": "osascript -e 'tell application \"iTerm\" to create window with default profile'" } ]
+            } ]
+    } ]
+}
+

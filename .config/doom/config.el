@@ -38,9 +38,25 @@ view-read-only t)                                ; Always open read-only buffers
 (global-display-line-numbers-mode)
 (which-function-mode)
 
+;; Supress warnings
+;;(add-to-list warning-suppress-log-types '(lsp-mode))
+;;(add-to-list warning-suppress-types '(lsp-mode))
+
 ;; Unbind defaults
 (map! :leader
       "o r" nil)
+
+;; Enable focus-follows-mouse
+(setq mouse-autoselect-window t)  ;; Focus follows mouse
+(setq focus-follows-mouse t)       ;; (For older Emacs versions)
+
+;; Optionally make focus change faster
+(setq mouse-autoselect-window 0.1) ;; Delay before switching (in seconds)
+
+;; Scroll wheel zoom
+(setq text-scale-mode-step 1.02) ;; Reduce scale step to 5%
+(define-key global-map (kbd "<C-triple-wheel-up>") 'text-scale-increase)
+(define-key global-map (kbd "<C-triple-wheel-down>") 'text-scale-decrease)
 
 ;; Set font
 (setq doom-font (font-spec :family "Iosevka" :size 12.0))

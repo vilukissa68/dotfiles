@@ -3,6 +3,7 @@
 # Detects if iTerm2 is running
 if ! pgrep -f "iTerm" > /dev/null 2>&1; then
     open -a "/Applications/iTerm.app"
+    exit 0
 else
     # Create a new window
     script='tell application "iTerm2" to create window with default profile'
@@ -13,5 +14,6 @@ else
         done < <(pgrep -f "iTerm")
         open -a "/Applications/iTerm.app"
     }
+    exit 0
 fi
 

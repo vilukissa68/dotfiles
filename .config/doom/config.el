@@ -1,5 +1,5 @@
 (setq doom-theme 'doom-one-light)
-;(setq catppuccin-flavor 'latte) ;; or 'latte, 'frappe 'macchiato, or 'mocha
+(setq catppuccin-flavor 'latte) ;; or 'latte, 'frappe 'macchiato, or 'mocha
 
 (setq display-line-numbers-type 'relative)
 
@@ -14,22 +14,23 @@
 ;; Sensible defaults
 (setq-default
  ad-redefinition-action 'accept                   ; Silence warnings for redefinition
-cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
-confirm-kill-emacs nil
-fill-column 80                                   ; Set width for automatic line breaks
-help-window-select t                             ; Focus new help windows when opened
-indent-tabs-mode t                               ; Prefer spaces over tabs
-initial-scratch-message ""                       ; Empty the initial *scratch* buffer
-load-prefer-newer t                              ; Prefer the newest version of a file
-mark-ring-max 128                                ; Maximum length of mark ring
-read-process-output-max (* 1024 1024)            ; Increase the amount of data reads from the process
-scroll-conservatively most-positive-fixnum       ; Always scroll by one line
-select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
-tab-width 4                                      ; Set width for tabs
-c-basic-offset 4                                 ; Set width for tabs
-use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
-vc-follow-symlinks t                             ; Always follow the symlinks
-view-read-only t)                                ; Always open read-only buffers in view-mode
+ cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
+ confirm-kill-emacs nil
+ fill-column 80                                   ; Set width for automatic line breaks
+ help-window-select t                             ; Focus new help windows when opened
+ indent-tabs-mode t                               ; Prefer spaces over tabs
+ initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+ load-prefer-newer t                              ; Prefer the newest version of a file
+ mark-ring-max 128                                ; Maximum length of mark ring
+ read-process-output-max (* 1024 1024)            ; Increase the amount of data reads from the process
+ scroll-conservatively most-positive-fixnum       ; Always scroll by one line
+ select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+ tab-width 4                                      ; Set width for tabs
+ c-basic-offset 4                                 ; Set width for tabs
+ evil-shift-width 4
+ use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
+ vc-follow-symlinks t                             ; Always follow the symlinks
+ view-read-only t)                                ; Always open read-only buffers in view-mode
 (column-number-mode 1)                            ; Show the column number
 (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
 (global-hl-line-mode)                             ; Hightlight current line
@@ -44,7 +45,8 @@ view-read-only t)                                ; Always open read-only buffers
 
 ;; Unbind defaults
 (map! :leader
-      "o r" nil)
+      (("o r" nil)
+       ("o i" nil)))
 
 ;; Enable focus-follows-mouse
 (setq mouse-autoselect-window t)  ;; Focus follows mouse
@@ -67,40 +69,45 @@ view-read-only t)                                ; Always open read-only buffers
 
 (map! :leader
       (:prefix ("f". "files")
-        :desc "Toggle treemacs" "t" #'treemacs
-        :desc "Open org directory" "o" 'my-org-finder))
+       :desc "Toggle treemacs" "t" #'treemacs
+       :desc "Open org directory" "o" 'my-org-finder))
 
 (map! :leader
       (:prefix ("i". "insert")
-        (:prefix ("t". "time")
-        :desc "Timestamp decimal" "d" 'insert-current-time-decimal
-        :desc "Timestamp with git email" "g" 'insert-timestamp-with-git-email
-        :desc "Timestamp with email" "e" 'insert-timestamp-with-email
-        )))
+	       (:prefix ("t". "time")
+		:desc "Timestamp decimal" "d" 'insert-current-time-decimal
+		:desc "Timestamp with git email" "g" 'insert-timestamp-with-git-email
+		:desc "Timestamp with email" "e" 'insert-timestamp-with-email
+		)))
 
 (map! :leader
-        (:prefix ("j" . "jump")
-           :desc "Jump to declaration" "d" 'lsp-find-declaration
-           :desc "Jump with i menu" "i" 'imenu
-           :desc "Jump to references" "r" 'lsp-find-references
-           :desc "Jump to beginning of defun" "b" 'beginning-of-defun
-           :desc "Jump to end of defun" "e" 'end-of-defun
-           :desc "Jump back to previous pos" "h" 'evil-jump-backward
-           :desc "Jump back to swap pos" "s" 'evil-jump-backward-swap
-           :desc "Jump back to forward pos" "l" 'evil-jump-forward
-           :desc "Open occur buffer" "o" 'occur
-           ))
+      (:prefix ("j" . "jump")
+       :desc "Jump to declaration" "d" 'lsp-find-declaration
+       :desc "Jump with i menu" "i" 'imenu
+       :desc "Jump to references" "r" 'lsp-find-references
+       :desc "Jump to beginning of defun" "b" 'beginning-of-defun
+       :desc "Jump to end of defun" "e" 'end-of-defun
+       :desc "Jump back to previous pos" "h" 'evil-jump-backward
+       :desc "Jump back to swap pos" "s" 'evil-jump-backward-swap
+       :desc "Jump back to forward pos" "l" 'evil-jump-forward
+       :desc "Open occur buffer" "o" 'occur
+       ))
 
 (map! :leader
-        (:prefix ("v" . "visual select")
-           :desc "Select buffer" "a" 'mark-whole-buffer
-           :desc "Select word" "w" 'mark-word
-           ))
+      (:prefix ("v" . "visual select")
+       :desc "Select buffer" "a" 'mark-whole-buffer
+       :desc "Select word" "w" 'mark-word
+       ))
 
 (map! :leader
-        (:prefix ("s")
-           :desc "Search and replace" "r" 'evil-replace-word-selection
-           ))
+      (:prefix ("s")
+       :desc "Search and replace" "r" 'evil-replace-word-selection
+       ))
+
+(map! :leader
+      (:prefix ("b")
+       :desc "Format buffer" "f" '+format/buffer
+       ))
 
 
 ;; MacOS specific
@@ -114,16 +121,16 @@ view-read-only t)                                ; Always open read-only buffers
   (setq which-key-idle-delay 0.1))
 
 ;; Copilot
- ;; (use-package! copilot
- ;;  :hook (prog-mode . copilot-mode)
- ;;  :bind (:map copilot-completion-map
- ;;              ("<tab>" . 'copilot-accept-completion)
- ;;              ("TAB" . 'copilot-accept-completion)
- ;;              ("C-TAB" . 'copilot-accept-completion-by-word)
- ;;              ("C-<tab>" . 'copilot-accept-completion-by-word)
- ;;              ("C-k" . 'copilot-previous-completion)
- ;;              ("C-j" . 'copilot-next-completion)
- ;;             ))
+;; (use-package! copilot
+;;  :hook (prog-mode . copilot-mode)
+;;  :bind (:map copilot-completion-map
+;;              ("<tab>" . 'copilot-accept-completion)
+;;              ("TAB" . 'copilot-accept-completion)
+;;              ("C-TAB" . 'copilot-accept-completion-by-word)
+;;              ("C-<tab>" . 'copilot-accept-completion-by-word)
+;;              ("C-k" . 'copilot-previous-completion)
+;;              ("C-j" . 'copilot-next-completion)
+;;             ))
 
 ;; Lsp
 (after! lsp-mode
@@ -133,7 +140,9 @@ view-read-only t)                                ; Always open read-only buffers
 
 ;; Python
 (after! python-mode
-  (setq python-shell-interpreter "python3"))
+  (setq python-shell-interpreter "python3")
+  (conda-env-activate-path "~/anaconda3/envs/emacs-org")
+  )
 
 ;; C/C++
 (setq lsp-clients-clangd-args '("-j=4"
@@ -145,14 +154,18 @@ view-read-only t)                                ; Always open read-only buffers
 (after! lsp-clangd (set-lsp-priority! 'clangd 2))
 
 (defun my/c++-hook ()
-  (setq tab-width 4)
   (setq c-basic-offset 4)
-  (setq indent-tabs-mode t))
+  (setq tab-width 4)
+  (setq evil-shift-width 4)
+  (setq c-syntactic-indentation nil)
+  (setq indent-tabs-mode t)
+  )
 
 (add-hook 'c++-mode-hook 'my/c++-hook)
+(add-hook 'c-mode-hook 'my/c++-hook)
 
 ;; Debugger
- (map! :map dap-mode-map
+(map! :map dap-mode-map
       :leader
       :prefix ("d" . "dap")
       ;; basics
@@ -196,25 +209,25 @@ view-read-only t)                                ; Always open read-only buffers
   (setq rust-format-on-save t))
 
 (after! dap-mode
-    ;; Python support via debugpu: pip install debugpy --user
-    (setq dap-python-debugger 'debugpy)
-    (setq dap-python-executable "python3")
+  ;; Python support via debugpu: pip install debugpy --user
+  (setq dap-python-debugger 'debugpy)
+  (setq dap-python-executable "python3")
 
-    (setq dap-auto-configure-features '(breakpoints locals expressions tooltip)
-          ;dap-auto-show-output nil ;; Hide the annoying server output
-          lsp-enable-dap-auto-configure t)
+  (setq dap-auto-configure-features '(breakpoints locals expressions tooltip)
+					;dap-auto-show-output nil ;; Hide the annoying server output
+        lsp-enable-dap-auto-configure t)
 
-    ;; Automatically trigger dap-hydra when a program hits a breakpoint.
-    (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
+  ;; Automatically trigger dap-hydra when a program hits a breakpoint.
+  (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
 
-    ;; Automatically delete session and close dap-hydra when the debug session terminates.
-    (add-hook 'dap-terminated-hook
-              (lambda (arg)
-                (call-interactively #'dap-delete-session)
-                (dap-hydra/nil)))
+  ;; Automatically delete session and close dap-hydra when the debug session terminates.
+  (add-hook 'dap-terminated-hook
+	    (lambda (arg)
+	      (call-interactively #'dap-delete-session)
+	      (dap-hydra/nil)))
 
-    (add-hook! +dap-running-session-mode
-      (set-window-buffer nil (current-buffer))))
+  (add-hook! +dap-running-session-mode
+    (set-window-buffer nil (current-buffer))))
 
 ;; C/C++ debugging
 (after! realgud
@@ -247,41 +260,41 @@ Reverse | _rn_: next | _ri_: step | _ro_: finish | _rc_: continue |
 Breakpts | _ba_: break | _bD_: delete | _bt_: tbreak | _bd_: disable | _be_: enable | _tr_: backtrace
 Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill | _Qq_: quit | _Sg_: gdb | _Ss_: start
 "
-        ("n" realgud:cmd-next)
-        ("i" realgud:cmd-step)
-        ("o" realgud:cmd-finish)
-        ("c" realgud:cmd-continue)
-        ("R" realgud:cmd-restart)
-        ("u" realgud:cmd-until-here)
-        ("rn" +realgud:cmd-reverse-next)
-        ("ri" +realgud:cmd-reverse-step)
-        ("ro" +realgud:cmd-reverse-finish)
-        ("rc" +realgud:cmd-reverse-continue)
-        ("ba" realgud:cmd-break)
-        ("bt" realgud:cmd-tbreak)
-        ("bD" realgud:cmd-delete)
-        ("be" realgud:cmd-enable)
-        ("bd" realgud:cmd-disable)
-        ("ee" realgud:cmd-eval-at-point)
-        ("er" realgud:cmd-eval-region)
-        ("tr" realgud:cmd-backtrace)
-        ("eE" realgud:cmd-eval)
-        ("!" realgud:cmd-shell)
-        ("Qk" realgud:cmd-kill)
-        ("Sg" realgud:cmd-gdb)
-        ("Ss" +realgud:cmd-start)
-        ("q" nil "cancel" :color blue)
-        ("Qq" realgud:cmd-quit "quit" :color blue))
+    ("n" realgud:cmd-next)
+    ("i" realgud:cmd-step)
+    ("o" realgud:cmd-finish)
+    ("c" realgud:cmd-continue)
+    ("R" realgud:cmd-restart)
+    ("u" realgud:cmd-until-here)
+    ("rn" +realgud:cmd-reverse-next)
+    ("ri" +realgud:cmd-reverse-step)
+    ("ro" +realgud:cmd-reverse-finish)
+    ("rc" +realgud:cmd-reverse-continue)
+    ("ba" realgud:cmd-break)
+    ("bt" realgud:cmd-tbreak)
+    ("bD" realgud:cmd-delete)
+    ("be" realgud:cmd-enable)
+    ("bd" realgud:cmd-disable)
+    ("ee" realgud:cmd-eval-at-point)
+    ("er" realgud:cmd-eval-region)
+    ("tr" realgud:cmd-backtrace)
+    ("eE" realgud:cmd-eval)
+    ("!" realgud:cmd-shell)
+    ("Qk" realgud:cmd-kill)
+    ("Sg" realgud:cmd-gdb)
+    ("Ss" +realgud:cmd-start)
+    ("q" nil "cancel" :color blue)
+    ("Qq" realgud:cmd-quit "quit" :color blue))
 
-    (defun +debugger/realgud:gdb-hydra ()
-      "Run `'realgud-hydra'."
-      (interactive)
-      (realgud-hydra/body))
+  (defun +debugger/realgud:gdb-hydra ()
+    "Run `'realgud-hydra'."
+    (interactive)
+    (realgud-hydra/body))
 
-    (map! :leader :prefix ("l" . "custom")
-          (:when (modulep! :tools debugger)
-            :prefix ("d" . "debugger")
-            :desc "RealGUD hydra" "h" #'+debugger/realgud:gdb-hydra)))
+  (map! :leader :prefix ("l" . "custom")
+        (:when (modulep! :tools debugger)
+	  :prefix ("d" . "debugger")
+	  :desc "RealGUD hydra" "h" #'+debugger/realgud:gdb-hydra)))
 
 ;; Help function for merging lists
 (defun merge-list-to-list (dst src)
@@ -299,10 +312,15 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 	  :desc "Toggle roam buffer" "t" 'org-roam-buffer-toggle
 	  :desc "Node find" "f" 'org-roam-node-find
 	  :desc "Node insert" "i" 'org-roam-node-insert)
+	 (:prefix ("i". "insert")
+	  :desc "Insert block" "b" 'org-insert-structure-template)
 	 ))
   ;; Basic org settings
   (setq org-directory "~/Dropbox/orgfiles/")
+  (setq org-agenda-files '("~/Dropbox/orgfiles" "~/Dropbox/orgfiles/roamnotes"))
   (setq org-default-notes-file "~/Dropbox/orgfiles/notes.org")
+  ;; Filter tags from agenda
+  (setq org-agenda-tag-filter-preset '("-masters_thesis_work"))
   (load-file "~/Dropbox/orgfiles/orgsetup.el")
   ;; Org roam
   (setq org-roam-directory "~/Dropbox/orgfiles/roamnotes")
@@ -319,10 +337,13 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
   ;; Org todo keyword setup
   (setq org-todo-keywords
 	'((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
-	  (sequence "MEETING(m)" "|" "DONE(d)")))
+	  (sequence "MEETING(m)" "|" "DONE(d)")
+	  (sequence "EVENT(e)" "|" "DONE(d)")
+	  (sequence "LECTURE(m)" "|" "PREPARE(p)"  "|" "ATTENDED(d)" "NOTATTENDED(n)")
+	  ))
   (setq org-todo-keyword-faces
         '(("TODO" . "red") ("DOING" . "gold") ("WAITING". "yellow") ("PR" . "dark violet") ("MEETING" . "brown") ("DONE" . "forest green")
-          ("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray")))
+	  ("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray") ("LECTURE" .  "royal blue") ("EVENT" .  "dark olive green")))
   ;; Invoke org roam
   (org-roam-setup)
   )
@@ -363,18 +384,18 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
   (map! :map ein:notebook-mode-map
 	:leader
 	(:prefix ("m". "ein-major-mode")
-        ;; Normal mode keybindings
-        "d" #'ein:worksheet-delete-cell
-        "O" #'ein:worksheet-insert-cell-above
-        "o" #'ein:worksheet-insert-cell-below
-        "K" #'ein:worksheet-move-cell-up
-        "J" #'ein:worksheet-move-cell-down
-        "H" #'ein:worksheet-goto-prev-input
-        "L" #'ein:worksheet-goto-next-input
-        "y" #'ein:worksheet-copy-cell
-        "p" #'ein:worksheet-yank-cell
-        "P" #'ein:worksheet-yank-cell-above
-	)
+		 ;; Normal mode keybindings
+		 "d" #'ein:worksheet-delete-cell
+		 "O" #'ein:worksheet-insert-cell-above
+		 "o" #'ein:worksheet-insert-cell-below
+		 "K" #'ein:worksheet-move-cell-up
+		 "J" #'ein:worksheet-move-cell-down
+		 "H" #'ein:worksheet-goto-prev-input
+		 "L" #'ein:worksheet-goto-next-input
+		 "y" #'ein:worksheet-copy-cell
+		 "p" #'ein:worksheet-yank-cell
+		 "P" #'ein:worksheet-yank-cell-above
+		 )
 
         :n "C-c C-c" #'ein:worksheet-execute-cell
 	:n "C-c C-s" #'ein:worksheet-execute-cell-and-goto-next
@@ -390,19 +411,19 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 ;; Spell check and grammar
 (after! flyspell
   (map! :leader
-      (:prefix ("k" . "krammar/spelling")
-       :desc "Flyspell next error" "n" #'flyspell-goto-next-error
-       :desc "Flyspell correct error at point" "k" #'flyspell-correct-at-point
-       :desc "Flyspell corrent next error" "c" #'flyspell-correct-next
-       :desc "Flyspell corrent previoues error" "C" #'flyspell-correct-previous
-       :desc "Flyspell add word" "a" #'+spell/add-word
-       :desc "Flyspell remove word" "x" #'+spell/remove-word
-       :desc "Langtool check grammar" "l" #'langtool-check
-       :desc "Langtool finish grammar" "L" #'langtool-check-done
-       :desc "Langtool next grammar error" "m" #'langtool-goto-next-error
-       :desc "Langtool prev grammar error" "M" #'langtool-goto-prev-error
-       :desc "Langtool correct at point" "i" #'langtool-correct-at-point
-       :desc "Langtool interactive" "I" #'langtool-interactive-correction)))
+	(:prefix ("k" . "krammar/spelling")
+	 :desc "Flyspell next error" "n" #'flyspell-goto-next-error
+	 :desc "Flyspell correct error at point" "k" #'flyspell-correct-at-point
+	 :desc "Flyspell corrent next error" "c" #'flyspell-correct-next
+	 :desc "Flyspell corrent previoues error" "C" #'flyspell-correct-previous
+	 :desc "Flyspell add word" "a" #'+spell/add-word
+	 :desc "Flyspell remove word" "x" #'+spell/remove-word
+	 :desc "Langtool check grammar" "l" #'langtool-check
+	 :desc "Langtool finish grammar" "L" #'langtool-check-done
+	 :desc "Langtool next grammar error" "m" #'langtool-goto-next-error
+	 :desc "Langtool prev grammar error" "M" #'langtool-goto-prev-error
+	 :desc "Langtool correct at point" "i" #'langtool-correct-at-point
+	 :desc "Langtool interactive" "I" #'langtool-interactive-correction)))
 
 ;; Markdown
 (add-hook 'markdown-mode #'+word-wrap-mode)
@@ -417,11 +438,11 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
   (interactive "sReplace occurences under cursor with: ")
   (if (use-region-p)
       (let (
-            (selection (buffer-substring-no-properties (region-beginning) (region-end))))
+	    (selection (buffer-substring-no-properties (region-beginning) (region-end))))
         (if (= (length selection) 0)
-            (message "empty string")
-          (evil-ex (concat "'<,'>s/" selection "/"))
-          ))
+	    (message "empty string")
+	  (evil-ex (concat "'<,'>s/" selection "/"))
+	  ))
     (evil-ex (concat "%s/" (thing-at-point 'word) "/" replace-str "/g"))))
 
 ;; Write current time in HH.MM format in decimal
@@ -434,10 +455,18 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
          (decimal-time (+ hour (/ minute 60.0))))
     (insert (format "%.2f" decimal-time))))
 
+(defun current-time-decimal ()
+  "Get the current time in decimal format at point."
+  (let* ((current-time (decode-time (current-time)))
+         (hour (nth 2 current-time))
+         (minute (nth 1 current-time))
+         (decimal-time (+ hour (/ minute 60.0))))
+    (format "%.2f" decimal-time)))
+
 ;; Occur mode
 (add-hook 'occur-hook
-          '(lambda ()
-             (switch-to-buffer-other-window "*Occur*")))
+	  '(lambda ()
+	     (switch-to-buffer-other-window "*Occur*")))
 
 ;; Hex to decimal
 (defun hex-to-decimal (start end)
@@ -500,8 +529,8 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
   "Insert a timestamp in the format (year-month-day email) at point."
   (interactive "sEnter email: ")
   (let ((timestamp (format "(%s %s)"
-                           (format-time-string "%Y%m%d")
-                           email)))
+			   (format-time-string "%Y%m%d")
+			   email)))
     (insert timestamp)))
 
 (defun insert-timestamp-with-git-email ()
@@ -511,30 +540,54 @@ The email is fetched from the current Git configuration."
   (let* ((git-email-command "git config user.email")
          (email (string-trim (shell-command-to-string git-email-command)))
          (timestamp (format "(%s %s)"
-                            (format-time-string "%Y%m%d")
-                            email)))
+			    (format-time-string "%Y%m%d")
+			    email)))
     (insert timestamp)))
 
-;(defun catppuccin-latte ()
-;        (interactive)
-;        (setq catppuccin-flavor 'latte)
-;        (catppuccin-reload))
+(defun catppuccin-latte ()
+  (interactive)
+  (setq catppuccin-flavor 'latte)
+  (catppuccin-reload))
 
-;(defun catppuccin-frappe ()
-;        (interactive)
-;        (setq catppuccin-flavor 'frappe)
-;        (catppuccin-reload))
+(defun catppuccin-frappe ()
+  (interactive)
+  (setq catppuccin-flavor 'frappe)
+  (catppuccin-reload))
 
-;(defun catppuccin-macchiato ()
-;        (interactive)
-;        (setq catppuccin-flavor 'macchiato)
-;        (catppuccin-reload))
+(defun catppuccin-macchiato ()
+  (interactive)
+  (setq catppuccin-flavor 'macchiato)
+  (catppuccin-reload))
 
-;(defun catppuccin-mocha ()
-;        (interactive)
-;        (setq catppuccin-flavor 'mocha)
-;        (catppuccin-reload))
+(defun catppuccin-mocha ()
+  (interactive)
+  (setq catppuccin-flavor 'mocha)
+  (catppuccin-reload))
 
 (defun lookup-word (word)
   (interactive (list (thing-at-point 'word)))
   (browse-url (format "http://en.wiktionary.org/wiki/%s" word)))
+
+(defun finnish-week-day (day)
+  (cond
+   ((string= "monday" (downcase day)) "Maanantai")
+   ((string= "tuesday" (downcase day)) "Tiistai")
+   ((string= "wednesday" (downcase day)) "Keskiviikkoa")
+   ((string= "thursday" (downcase day)) "Torstai")
+   ((string= "friday" (downcase day)) "Perjantai")
+   ((string= "saturday" (downcase day)) "Lauantai")
+   ((string= "sunday" (downcase day)) "Sunnuntai")
+   ))
+
+(defun insert-random-generated-numbers (count &optional min max)
+  "Insert COUNT random numbers separated by commas at the current cursor position.
+If MIN and MAX are provided, generate random numbers within the range [MIN, MAX].
+By default, the range is [0, 999]."
+  (interactive "nEnter the number of random values to insert: \nnEnter minimum value (default 0): \nnEnter maximum value (default 255): ")
+  (let* ((min (or min 0))
+         (max (or max 255))
+         (random-numbers
+	  (mapconcat (lambda (_) (number-to-string (+ min (random (- max min)))))
+		     (make-list count nil)
+		     ", ")))
+    (insert random-numbers)))

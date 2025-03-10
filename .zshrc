@@ -1,7 +1,7 @@
 export ZSH=~/.oh-my-zsh
 
 # Set theme
-ZSH_THEME="agnoster"
+ZSH_THEME="eastwood"
 
 plugins=(
   git
@@ -51,3 +51,5 @@ unset __conda_setup
 
 # Renode
 export PATH="$HOME/work/renode/:$PATH"
+export PATH="/opt/homebrew/opt/gnupg@2.2/bin:$PATH"
+export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"

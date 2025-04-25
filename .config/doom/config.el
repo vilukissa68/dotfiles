@@ -46,7 +46,9 @@
 ;; Unbind defaults
 (map! :leader
       (("o r" nil)
-       ("o i" nil)))
+       ("o i" nil)
+       ("o d" nil)
+       ))
 
 ;; Enable focus-follows-mouse
 (setq mouse-autoselect-window t)  ;; Focus follows mouse
@@ -79,6 +81,7 @@
 		:desc "Timestamp with git email" "g" 'insert-timestamp-with-git-email
 		:desc "Timestamp with email" "e" 'insert-timestamp-with-email
 		)))
+
 
 (map! :leader
       (:prefix ("j" . "jump")
@@ -122,15 +125,15 @@
 
 ;; Copilot
 ;; (use-package! copilot
-;;  :hook (prog-mode . copilot-mode)
-;;  :bind (:map copilot-completion-map
-;;              ("<tab>" . 'copilot-accept-completion)
-;;              ("TAB" . 'copilot-accept-completion)
-;;              ("C-TAB" . 'copilot-accept-completion-by-word)
-;;              ("C-<tab>" . 'copilot-accept-completion-by-word)
-;;              ("C-k" . 'copilot-previous-completion)
-;;              ("C-j" . 'copilot-next-completion)
-;;             ))
+;;   :hook (prog-mode . copilot-mode)
+;;   :bind (:map copilot-completion-map
+;;               ("<tab>" . 'copilot-accept-completion)
+;;               ("TAB" . 'copilot-accept-completion)
+;;               ("C-TAB" . 'copilot-accept-completion-by-word)
+;;               ("C-<tab>" . 'copilot-accept-completion-by-word)
+;;               ("C-p" . 'copilot-previous-completion)
+;;               ("C-n" . 'copilot-next-completion)
+;;               ))
 
 ;; Lsp
 (after! lsp-mode
@@ -208,93 +211,106 @@
   (setq rustic-lsp-server 'rust-analyzer)
   (setq rust-format-on-save t))
 
-(after! dap-mode
-  ;; Python support via debugpu: pip install debugpy --user
-  (setq dap-python-debugger 'debugpy)
-  (setq dap-python-executable "python3")
+;; (after! dap-mode
+;;   (dap-ui-mode)
+;;   (dap-ui-controls-mode 1)
+;;   ;; Python support via debugpu: pip install debugpy --user
+;;   (setq dap-python-debugger 'debugpy)
+;;   (setq dap-python-executable "python3")
 
-  (setq dap-auto-configure-features '(breakpoints locals expressions tooltip)
-					;dap-auto-show-output nil ;; Hide the annoying server output
-        lsp-enable-dap-auto-configure t)
+;;   (setq dap-auto-configure-features '(breakpoints locals expressions tooltip)
+;; 					;dap-auto-show-output nil ;; Hide the annoying server output
+;;         lsp-enable-dap-auto-configure t)
+;;   ;; Automatically trigger dap-hydra when a program hits a breakpoint.
+;;   ;;(add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
 
-  ;; Automatically trigger dap-hydra when a program hits a breakpoint.
-  (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
+;;   ;; Automatically delete session and close dap-hydra when the debug session terminates.
+;;   ;; (add-hook 'dap-terminated-hook
+;;   ;; 	    (lambda (arg)
+;;   ;; 	      (call-interactively #'dap-delete-session)
+;;   ;; 	      (dap-hydra/nil)))
 
-  ;; Automatically delete session and close dap-hydra when the debug session terminates.
-  (add-hook 'dap-terminated-hook
-	    (lambda (arg)
-	      (call-interactively #'dap-delete-session)
-	      (dap-hydra/nil)))
+;;   ;; (add-hook! +dap-running-session-mode
+;;   ;;   (set-window-buffer nil (current-buffer))))
+;;   (require 'dap-codelldb)
+;;   (dap-register-debug-template
+;;    "LLDB::Run Rust"
+;;    (list :type "lldb"
+;;          :request "launch"
+;;          :name "LLDB::Run"
+;;          :miDebuggerPath "~/.cargo/bin/rust-lldb"
+;;          :target nil
+;;          :cwd nil
+;;          :program "{workspace}/target/debug/hello-debug"
+;;          ))
+;;   )
 
-  (add-hook! +dap-running-session-mode
-    (set-window-buffer nil (current-buffer))))
+;; ;; C/C++ debugging
+;; (after! realgud
+;;   (require 'hydra)
 
-;; C/C++ debugging
-(after! realgud
-  (require 'hydra)
+;;   (defun +realgud:cmd-start (arg)
+;;     "start = break main + run"
+;;     (interactive "p")
+;;     (realgud-command "start"))
 
-  (defun +realgud:cmd-start (arg)
-    "start = break main + run"
-    (interactive "p")
-    (realgud-command "start"))
+;;   (defun +realgud:cmd-reverse-step (arg)
+;;     "reverse-step step"
+;;     (interactive "p")
+;;     (realgud-command "reverse-step"))
 
-  (defun +realgud:cmd-reverse-step (arg)
-    "reverse-step step"
-    (interactive "p")
-    (realgud-command "reverse-step"))
+;;   (defun +realgud:cmd-reverse-continue (arg)
+;;     "Reverse continue"
+;;     (interactive "p")
+;;     (realgud-command "reverse-continue"))
 
-  (defun +realgud:cmd-reverse-continue (arg)
-    "Reverse continue"
-    (interactive "p")
-    (realgud-command "reverse-continue"))
+;;   (defun +realgud:cmd-reverse-finish (arg)
+;;     "Reverse finish"
+;;     (interactive "p")
+;;     (realgud-command "reverse-finish"))
 
-  (defun +realgud:cmd-reverse-finish (arg)
-    "Reverse finish"
-    (interactive "p")
-    (realgud-command "reverse-finish"))
+;;   (defhydra realgud-hydra (:color pink :hint nil :foreign-keys run)
+;;     "
+;; Stepping | _n_: next | _i_: step | _o_: finish | _c_: continue | _R_: restart | _u_: until-here
+;; Reverse | _rn_: next | _ri_: step | _ro_: finish | _rc_: continue |
+;; Breakpts | _ba_: break | _bD_: delete | _bt_: tbreak | _bd_: disable | _be_: enable | _tr_: backtrace
+;; Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill | _Qq_: quit | _Sg_: gdb | _Ss_: start
+;; "
+;;     ("n" realgud:cmd-next)
+;;     ("i" realgud:cmd-step)
+;;     ("o" realgud:cmd-finish)
+;;     ("c" realgud:cmd-continue)
+;;     ("R" realgud:cmd-restart)
+;;     ("u" realgud:cmd-until-here)
+;;     ("rn" +realgud:cmd-reverse-next)
+;;     ("ri" +realgud:cmd-reverse-step)
+;;     ("ro" +realgud:cmd-reverse-finish)
+;;     ("rc" +realgud:cmd-reverse-continue)
+;;     ("ba" realgud:cmd-break)
+;;     ("bt" realgud:cmd-tbreak)
+;;     ("bD" realgud:cmd-delete)
+;;     ("be" realgud:cmd-enable)
+;;     ("bd" realgud:cmd-disable)
+;;     ("ee" realgud:cmd-eval-at-point)
+;;     ("er" realgud:cmd-eval-region)
+;;     ("tr" realgud:cmd-backtrace)
+;;     ("eE" realgud:cmd-eval)
+;;     ("!" realgud:cmd-shell)
+;;     ("Qk" realgud:cmd-kill)
+;;     ("Sg" realgud:cmd-gdb)
+;;     ("Ss" +realgud:cmd-start)
+;;     ("q" nil "cancel" :color blue)
+;;     ("Qq" realgud:cmd-quit "quit" :color blue))
 
-  (defhydra realgud-hydra (:color pink :hint nil :foreign-keys run)
-    "
-Stepping | _n_: next | _i_: step | _o_: finish | _c_: continue | _R_: restart | _u_: until-here
-Reverse | _rn_: next | _ri_: step | _ro_: finish | _rc_: continue |
-Breakpts | _ba_: break | _bD_: delete | _bt_: tbreak | _bd_: disable | _be_: enable | _tr_: backtrace
-Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill | _Qq_: quit | _Sg_: gdb | _Ss_: start
-"
-    ("n" realgud:cmd-next)
-    ("i" realgud:cmd-step)
-    ("o" realgud:cmd-finish)
-    ("c" realgud:cmd-continue)
-    ("R" realgud:cmd-restart)
-    ("u" realgud:cmd-until-here)
-    ("rn" +realgud:cmd-reverse-next)
-    ("ri" +realgud:cmd-reverse-step)
-    ("ro" +realgud:cmd-reverse-finish)
-    ("rc" +realgud:cmd-reverse-continue)
-    ("ba" realgud:cmd-break)
-    ("bt" realgud:cmd-tbreak)
-    ("bD" realgud:cmd-delete)
-    ("be" realgud:cmd-enable)
-    ("bd" realgud:cmd-disable)
-    ("ee" realgud:cmd-eval-at-point)
-    ("er" realgud:cmd-eval-region)
-    ("tr" realgud:cmd-backtrace)
-    ("eE" realgud:cmd-eval)
-    ("!" realgud:cmd-shell)
-    ("Qk" realgud:cmd-kill)
-    ("Sg" realgud:cmd-gdb)
-    ("Ss" +realgud:cmd-start)
-    ("q" nil "cancel" :color blue)
-    ("Qq" realgud:cmd-quit "quit" :color blue))
+;;   (defun +debugger/realgud:gdb-hydra ()
+;;     "Run `'realgud-hydra'."
+;;     (interactive)
+;;     (realgud-hydra/body))
 
-  (defun +debugger/realgud:gdb-hydra ()
-    "Run `'realgud-hydra'."
-    (interactive)
-    (realgud-hydra/body))
-
-  (map! :leader :prefix ("l" . "custom")
-        (:when (modulep! :tools debugger)
-	  :prefix ("d" . "debugger")
-	  :desc "RealGUD hydra" "h" #'+debugger/realgud:gdb-hydra)))
+;;   (map! :leader :prefix ("l" . "custom")
+;;         (:when (modulep! :tools debugger)
+;; 	  :prefix ("d" . "debugger")
+;; 	  :desc "RealGUD hydra" "h" #'+debugger/realgud:gdb-hydra)))
 
 ;; Help function for merging lists
 (defun merge-list-to-list (dst src)
@@ -306,12 +322,16 @@ Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill
 (after! org
   (map! :leader
 	(:prefix ("o" . "open")
+	 :desc "Open dired" "d" 'dired
 	 :desc "Org schedule" "s" 'org-schedule
 	 :desc "Open cfw calendar" "c" 'cfw:open-org-calendar
 	 (:prefix ("r". "Org Roam")
 	  :desc "Toggle roam buffer" "t" 'org-roam-buffer-toggle
 	  :desc "Node find" "f" 'org-roam-node-find
-	  :desc "Node insert" "i" 'org-roam-node-insert)
+	  :desc "Node insert" "i" 'org-roam-node-insert
+	  :desc "Goto today" "d" 'org-roam-dailies-goto-date
+	  :desc "List dailies" "l" 'org-roam-dailies-find-date
+	  )
 	 (:prefix ("i". "insert")
 	  :desc "Insert block" "b" 'org-insert-structure-template)
 	 ))

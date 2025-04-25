@@ -448,6 +448,34 @@
 ;; Markdown
 (add-hook 'markdown-mode #'+word-wrap-mode)
 
+;; AI assistants
+(use-package! gptel
+  :config
+  (setq! gptel-api-key "your key"))
+
+;; Configure ollama
+(gptel-make-ollama "Ollama"             ;Any name of your choosing
+  :host "localhost:11434"               ;Where it's running
+  :stream t                             ;Stream responses
+  :models '(mistral:latest))          ;List of models
+
+;; Set ollama as default
+(setq
+ gptel-model 'mistral:latest
+ gptel-backend (gptel-make-ollama "Ollama"
+                 :host "localhost:11434"
+                 :stream t
+                 :models '(mistral:latest)))
+
+(after! gptel
+  (map! :leader
+	(:prefix ("l" . "LLMS/AI")
+	 :desc "gptel" "g" #'gptel
+	 :desc "gptel send" "s" #'gptel-send
+	 :desc "gptel refactor" "r" #'gptel-rewrite
+	 :desc "gptel menu" "m" #'gptel-menu
+	 )))
+
 ;; Misc
 ;; Automatically refresh magit buffer on file visit
 (add-hook 'after-save-hook 'magit-after-save-refresh-status t)

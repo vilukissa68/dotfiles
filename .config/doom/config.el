@@ -475,6 +475,8 @@
   (map! :leader
 	(:prefix ("l" . "LLMS/AI")
 	 :desc "gptel" "g" #'gptel
+	 :desc "gptel add context" "a" #'gptel-add
+	 :desc "gptel add file" "A" #'gptel-add-file
 	 :desc "gptel send" "s" #'gptel-send
 	 :desc "gptel refactor" "r" #'gptel-rewrite
 	 :desc "gptel menu" "m" #'gptel-menu
@@ -486,7 +488,7 @@
   :config
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "OLLAMA_CONTEXT_LENGTH" "8192")
-  (setq aider-args '("--model" "ollama/mistral"))
+  (setq aider-args '("--model" "ollama_chat/qwen2.5-coder:7b" "--no-auto-commits" "--no-auto-accept-architect"))
   (require 'aider-doom))
 ;; Misc
 ;; Automatically refresh magit buffer on file visit

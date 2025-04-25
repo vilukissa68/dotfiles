@@ -58,3 +58,4 @@
 (package! catppuccin-theme)
 
 (package! gptel :recipe (:nonrecursive t))
+(package! aider :recipe (:host github :repo "tninja/aider.el" ))

@@ -10,6 +10,9 @@
 (setq epg-pinentry-mode 'loopback)
 ;;(epa-file-enable)
 (setq epg-gpg-program "/opt/homebrew/Cellar/gnupg/2.4.0/bin/gpg")
+;; Path
+(setenv "PATH" (concat (getenv "PATH") ":~/.local/bin"))
+(setq exec-path (append exec-path '("~/.local/bin")))
 
 ;; Sensible defaults
 (setq-default
@@ -449,6 +452,7 @@
 (add-hook 'markdown-mode #'+word-wrap-mode)
 
 ;; AI assistants
+;; Gptel
 (use-package! gptel
   :config
   (setq! gptel-api-key "your key"))
@@ -474,8 +478,16 @@
 	 :desc "gptel send" "s" #'gptel-send
 	 :desc "gptel refactor" "r" #'gptel-rewrite
 	 :desc "gptel menu" "m" #'gptel-menu
+	 :desc "aider menu" "l" #'aider-transient-menu
 	 )))
 
+;; Aider
+(use-package aider
+  :config
+  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+  (setenv "OLLAMA_CONTEXT_LENGTH" "8192")
+  (setq aider-args '("--model" "ollama/mistral"))
+  (require 'aider-doom))
 ;; Misc
 ;; Automatically refresh magit buffer on file visit
 (add-hook 'after-save-hook 'magit-after-save-refresh-status t)

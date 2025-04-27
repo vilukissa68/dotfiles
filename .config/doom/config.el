@@ -351,6 +351,8 @@
 (add-hook 'markdown-mode #'+word-wrap-mode)
 
 ;; AI assistants
+
+
 ;; Gptel
 (use-package! gptel
   :config
@@ -370,28 +372,31 @@
                  :stream t
                  :models '(mistral:latest)))
 
-(after! gptel
-  (map! :leader
-	(:prefix ("l" . "LLMS/AI")
-	 :desc "gptel" "g" #'gptel
-	 :desc "gptel add context" "a" #'gptel-add
-	 :desc "gptel add file" "A" #'gptel-add-file
-	 :desc "gptel send" "s" #'gptel-send
-	 :desc "gptel refactor" "r" #'gptel-rewrite
-	 :desc "gptel menu" "m" #'gptel-menu
-	 :desc "aider menu" "l" #'aider-transient-menu
-	 )))
+(map! :leader
+      (:prefix ("l" . "LLMS/AI")
+       :desc "gptel" "g" #'gptel
+       :desc "gptel add context" "a" #'gptel-add
+       :desc "gptel add file" "A" #'gptel-add-file
+       :desc "gptel send" "s" #'gptel-send
+       :desc "gptel refactor" "r" #'gptel-rewrite
+       :desc "gptel menu" "m" #'gptel-menu
+       :desc "aider menu" "l" #'aidermacs-transient-menu
+       ))
 
-;; Aider
-(use-package aider
+;; Aidermacs
+(use-package! aidermacs
   :config
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
-  (setenv "OLLAMA_CONTEXT_LENGTH" "8192")
-  (setq aider-args '("--model" "ollama_chat/qwen2.5-coder:7b" "--no-auto-commits" "--no-auto-accept-architect"))
-  (require 'aider-doom))
-;; Misc
-;; Automatically refresh magit buffer on file visit
-(add-hook 'after-save-hook 'magit-after-save-refresh-status t)
+  (setenv "OLLAMA_CONTEXT_LENGTH" "65536")
+  (setq aidermacs-show-diff-after-change t)
+  (setq aidermacs-extra-args '("--model" "ollama_chat/deepseek-coder-v2:16b" "--no-auto-commits" "--no-auto-accept-architect" "--show-diffs"))
+  ;;(setq aidermacs-extra-args '("--model" "ollama_chat/qwen2.5-coder:7b" "--no-auto-commits" "--no-auto-accept-architect" "--show-diffs"))
+  ;;(setq aidermacs-backend 'vterm)
+  :custom
+  (aidermacs-use-architect-mode nil)
+  )
+
+
 
 ;; Replace all occurences of a word
 ;; query-replace current word

@@ -171,36 +171,36 @@
 (add-hook 'c-mode-hook 'my/c++-hook)
 
 ;; Debugger
-(map! :map dap-mode-map
-      :leader
-      :prefix ("d" . "dap")
-      ;; basics
-      :desc "dap next"          "n" #'dap-next
-      :desc "dap step in"       "i" #'dap-step-in
-      :desc "dap step out"      "o" #'dap-step-out
-      :desc "dap continue"      "c" #'dap-continue
-      :desc "dap hydra"         "h" #'dap-hydra
-      :desc "dap debug restart" "r" #'dap-debug-restart
-      :desc "dap debug"         "s" #'dap-debug
+;; (map! :map dap-mode-map
+;;       :leader
+;;       :prefix ("d" . "dap")
+;;       ;; basics
+;;       :desc "dap next"          "n" #'dap-next
+;;       :desc "dap step in"       "i" #'dap-step-in
+;;       :desc "dap step out"      "o" #'dap-step-out
+;;       :desc "dap continue"      "c" #'dap-continue
+;;       :desc "dap hydra"         "h" #'dap-hydra
+;;       :desc "dap debug restart" "r" #'dap-debug-restart
+;;       :desc "dap debug"         "s" #'dap-debug
 
-      ;; debug
-      :prefix ("dd" . "Debug")
-      :desc "dap debug recent"  "r" #'dap-debug-recent
-      :desc "dap debug last"    "l" #'dap-debug-last
+;;       ;; debug
+;;       :prefix ("dd" . "Debug")
+;;       :desc "dap debug recent"  "r" #'dap-debug-recent
+;;       :desc "dap debug last"    "l" #'dap-debug-last
 
-      ;; eval
-      :prefix ("de" . "Eval")
-      :desc "eval"                "e" #'dap-eval
-      :desc "eval region"         "r" #'dap-eval-region
-      :desc "eval thing at point" "s" #'dap-eval-thing-at-point
-      :desc "add expression"      "a" #'dap-ui-expressions-add
-      :desc "remove expression"   "d" #'dap-ui-expressions-remove
+;;       ;; eval
+;;       :prefix ("de" . "Eval")
+;;       :desc "eval"                "e" #'dap-eval
+;;       :desc "eval region"         "r" #'dap-eval-region
+;;       :desc "eval thing at point" "s" #'dap-eval-thing-at-point
+;;       :desc "add expression"      "a" #'dap-ui-expressions-add
+;;       :desc "remove expression"   "d" #'dap-ui-expressions-remove
 
-      :prefix ("db" . "Breakpoint")
-      :desc "dap breakpoint toggle"      "b" #'dap-breakpoint-toggle
-      :desc "dap breakpoint condition"   "c" #'dap-breakpoint-condition
-      :desc "dap breakpoint hit count"   "h" #'dap-breakpoint-hit-condition
-      :desc "dap breakpoint log message" "l" #'dap-breakpoint-log-message)
+;;       :prefix ("db" . "Breakpoint")
+;;       :desc "dap breakpoint toggle"      "b" #'dap-breakpoint-toggle
+;;       :desc "dap breakpoint condition"   "c" #'dap-breakpoint-condition
+;;       :desc "dap breakpoint hit count"   "h" #'dap-breakpoint-hit-condition
+;;       :desc "dap breakpoint log message" "l" #'dap-breakpoint-log-message)
 
 ;; Doom themes fix to prevent extra screen buffering with treemacs
 ;; https://github.com/emacs-lsp/dap-mode/issues/374
@@ -213,107 +213,6 @@
 (after! rustic
   (setq rustic-lsp-server 'rust-analyzer)
   (setq rust-format-on-save t))
-
-;; (after! dap-mode
-;;   (dap-ui-mode)
-;;   (dap-ui-controls-mode 1)
-;;   ;; Python support via debugpu: pip install debugpy --user
-;;   (setq dap-python-debugger 'debugpy)
-;;   (setq dap-python-executable "python3")
-
-;;   (setq dap-auto-configure-features '(breakpoints locals expressions tooltip)
-;; 					;dap-auto-show-output nil ;; Hide the annoying server output
-;;         lsp-enable-dap-auto-configure t)
-;;   ;; Automatically trigger dap-hydra when a program hits a breakpoint.
-;;   ;;(add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
-
-;;   ;; Automatically delete session and close dap-hydra when the debug session terminates.
-;;   ;; (add-hook 'dap-terminated-hook
-;;   ;; 	    (lambda (arg)
-;;   ;; 	      (call-interactively #'dap-delete-session)
-;;   ;; 	      (dap-hydra/nil)))
-
-;;   ;; (add-hook! +dap-running-session-mode
-;;   ;;   (set-window-buffer nil (current-buffer))))
-;;   (require 'dap-codelldb)
-;;   (dap-register-debug-template
-;;    "LLDB::Run Rust"
-;;    (list :type "lldb"
-;;          :request "launch"
-;;          :name "LLDB::Run"
-;;          :miDebuggerPath "~/.cargo/bin/rust-lldb"
-;;          :target nil
-;;          :cwd nil
-;;          :program "{workspace}/target/debug/hello-debug"
-;;          ))
-;;   )
-
-;; ;; C/C++ debugging
-;; (after! realgud
-;;   (require 'hydra)
-
-;;   (defun +realgud:cmd-start (arg)
-;;     "start = break main + run"
-;;     (interactive "p")
-;;     (realgud-command "start"))
-
-;;   (defun +realgud:cmd-reverse-step (arg)
-;;     "reverse-step step"
-;;     (interactive "p")
-;;     (realgud-command "reverse-step"))
-
-;;   (defun +realgud:cmd-reverse-continue (arg)
-;;     "Reverse continue"
-;;     (interactive "p")
-;;     (realgud-command "reverse-continue"))
-
-;;   (defun +realgud:cmd-reverse-finish (arg)
-;;     "Reverse finish"
-;;     (interactive "p")
-;;     (realgud-command "reverse-finish"))
-
-;;   (defhydra realgud-hydra (:color pink :hint nil :foreign-keys run)
-;;     "
-;; Stepping | _n_: next | _i_: step | _o_: finish | _c_: continue | _R_: restart | _u_: until-here
-;; Reverse | _rn_: next | _ri_: step | _ro_: finish | _rc_: continue |
-;; Breakpts | _ba_: break | _bD_: delete | _bt_: tbreak | _bd_: disable | _be_: enable | _tr_: backtrace
-;; Eval | _ee_: at-point | _er_: region | _eE_: eval | 37 | _!_: shell | _Qk_: kill | _Qq_: quit | _Sg_: gdb | _Ss_: start
-;; "
-;;     ("n" realgud:cmd-next)
-;;     ("i" realgud:cmd-step)
-;;     ("o" realgud:cmd-finish)
-;;     ("c" realgud:cmd-continue)
-;;     ("R" realgud:cmd-restart)
-;;     ("u" realgud:cmd-until-here)
-;;     ("rn" +realgud:cmd-reverse-next)
-;;     ("ri" +realgud:cmd-reverse-step)
-;;     ("ro" +realgud:cmd-reverse-finish)
-;;     ("rc" +realgud:cmd-reverse-continue)
-;;     ("ba" realgud:cmd-break)
-;;     ("bt" realgud:cmd-tbreak)
-;;     ("bD" realgud:cmd-delete)
-;;     ("be" realgud:cmd-enable)
-;;     ("bd" realgud:cmd-disable)
-;;     ("ee" realgud:cmd-eval-at-point)
-;;     ("er" realgud:cmd-eval-region)
-;;     ("tr" realgud:cmd-backtrace)
-;;     ("eE" realgud:cmd-eval)
-;;     ("!" realgud:cmd-shell)
-;;     ("Qk" realgud:cmd-kill)
-;;     ("Sg" realgud:cmd-gdb)
-;;     ("Ss" +realgud:cmd-start)
-;;     ("q" nil "cancel" :color blue)
-;;     ("Qq" realgud:cmd-quit "quit" :color blue))
-
-;;   (defun +debugger/realgud:gdb-hydra ()
-;;     "Run `'realgud-hydra'."
-;;     (interactive)
-;;     (realgud-hydra/body))
-
-;;   (map! :leader :prefix ("l" . "custom")
-;;         (:when (modulep! :tools debugger)
-;; 	  :prefix ("d" . "debugger")
-;; 	  :desc "RealGUD hydra" "h" #'+debugger/realgud:gdb-hydra)))
 
 ;; Help function for merging lists
 (defun merge-list-to-list (dst src)

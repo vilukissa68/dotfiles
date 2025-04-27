@@ -26,6 +26,7 @@ alias raspi="ssh vaino@88.193.156.189"
 #alias renode='mono /Applications/Renode.app/Contents/MacOS/bin/Renode.exe'
 #alias renode-test='/Applications/Renode.app/Contents/MacOS/tests/renode-test'
 alias x86brew="arch -x86_64 /usr/local/bin/brew"
+alias ls=eza
 
 # Urxvt perl extensions
 PATH="/home/vaino/perl5/bin${PATH:+:${PATH}}"; export PATH;
@@ -53,3 +54,4 @@ unset __conda_setup
 export PATH="$HOME/work/renode/:$PATH"
 export PATH="/opt/homebrew/opt/gnupg@2.2/bin:$PATH"
 export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"

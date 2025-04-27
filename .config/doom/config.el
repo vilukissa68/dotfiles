@@ -43,8 +43,9 @@
 (which-function-mode)
 
 ;; Supress warnings
-;;(add-to-list warning-suppress-log-types '(lsp-mode))
-;;(add-to-list warning-suppress-types '(lsp-mode))
+(add-to-list warning-suppress-log-types '(lsp-mode))
+(add-to-list warning-suppress-types '(lsp-mode))
+(setq warning-minimum-log-level :error)
 
 ;; Unbind defaults
 (map! :leader
@@ -125,18 +126,6 @@
 ;; Faster which key
 (after! which-key
   (setq which-key-idle-delay 0.1))
-
-;; Copilot
-;; (use-package! copilot
-;;   :hook (prog-mode . copilot-mode)
-;;   :bind (:map copilot-completion-map
-;;               ("<tab>" . 'copilot-accept-completion)
-;;               ("TAB" . 'copilot-accept-completion)
-;;               ("C-TAB" . 'copilot-accept-completion-by-word)
-;;               ("C-<tab>" . 'copilot-accept-completion-by-word)
-;;               ("C-p" . 'copilot-previous-completion)
-;;               ("C-n" . 'copilot-next-completion)
-;;               ))
 
 ;; Lsp
 (after! lsp-mode
@@ -351,7 +340,29 @@
 (add-hook 'markdown-mode #'+word-wrap-mode)
 
 ;; AI assistants
+;;
+;; Copilot
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+	      ;; Unbind keys globally or in specific maps
+	      ("C-l" . nil)
+	      ("C-n" . nil)
+	      ("C-p" . nil)
+	      ("C-k" . nil)
+	      ("C-j" . nil)
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)
+              ("C-p" . 'copilot-previous-completion)
+              ("C-n" . 'copilot-next-completion)
+	      ("C-l" . 'copilot-accept-completion-by-line)
+	      ("C-k" . 'copilot-previous-completion)
+	      ("C-j" . 'copilot-next-completion)
+              ))
 
+(use-package! copilot-chat)
 
 ;; Gptel
 (use-package! gptel
@@ -381,6 +392,7 @@
        :desc "gptel refactor" "r" #'gptel-rewrite
        :desc "gptel menu" "m" #'gptel-menu
        :desc "aider menu" "l" #'aidermacs-transient-menu
+       :desc "copilot-chat" "c" #'copilot-chat-transient
        ))
 
 ;; Aidermacs

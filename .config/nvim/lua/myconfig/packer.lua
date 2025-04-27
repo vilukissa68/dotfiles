@@ -11,6 +11,7 @@ return require('packer').startup(function(use)
 	  requires = { {'nvim-lua/plenary.nvim'} }
   }
   use 'Mofiqul/dracula.nvim'
+  use { "catppuccin/nvim", as = "catppuccin" }
 
   use ('nvim-treesitter/nvim-treesitter', {run = 'TSUpdate'})
   use ('mbbill/undotree')

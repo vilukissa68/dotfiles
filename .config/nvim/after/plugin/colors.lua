@@ -51,4 +51,4 @@ dracula.setup({
   -- end,
 })
 
-vim.cmd[[colorscheme dracula]]
+-- vim.cmd[[colorscheme dracula]]

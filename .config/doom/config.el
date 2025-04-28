@@ -43,8 +43,6 @@
 (which-function-mode)
 
 ;; Supress warnings
-(add-to-list warning-suppress-log-types '(lsp-mode))
-(add-to-list warning-suppress-types '(lsp-mode))
 (setq warning-minimum-log-level :error)
 
 ;; Unbind defaults
@@ -369,11 +367,12 @@
   :config
   (setq! gptel-api-key "your key"))
 
-;; Configure ollama
-(gptel-make-ollama "Ollama"             ;Any name of your choosing
-  :host "localhost:11434"               ;Where it's running
-  :stream t                             ;Stream responses
-  :models '(mistral:latest))          ;List of models
+;; Configure models for gptel
+(gptel-make-ollama "Ollama"
+  :host "localhost:11434"
+  :stream t
+  :models '(mistral:latest))
+(gptel-make-gh-copilot"Github Copilot")
 
 ;; Set ollama as default
 (setq

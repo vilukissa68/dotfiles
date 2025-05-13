@@ -33,6 +33,7 @@
  evil-shift-width 4
  use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
  vc-follow-symlinks t                             ; Always follow the symlinks
+ mouse-wheel-tilt-scroll t			  ; Enable mouse wheel scrolling
  view-read-only t)                                ; Always open read-only buffers in view-mode
 (mac-auto-operator-composition-mode 1)		  ; Use ligatures
 (column-number-mode 1)                            ; Show the column number

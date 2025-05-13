@@ -66,7 +66,8 @@
 (define-key global-map (kbd "<C-triple-wheel-down>") 'text-scale-decrease)
 
 ;; Set font
-(setq doom-font (font-spec :family "Iosevka" :size 12.0))
+(setq doom-font (font-spec :family "Iosevka Term SS08" :size 12.0))
+;;(setq doom-font (font-spec :family "Monaspace Argon Frozen" :size 12.0))
 
 ;; General keybindings
 (map! :leader

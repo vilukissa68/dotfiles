@@ -88,9 +88,11 @@
 (map! :leader
       (:prefix ("j" . "jump")
        :desc "Jump to declaration" "d" 'lsp-find-declaration
+       :desc "Find definition" "f" 'lsp-find-definition
+       :desc "Jump back" "b" 'evil-jump-backward
        :desc "Jump with i menu" "i" 'imenu
        :desc "Jump to references" "r" 'lsp-find-references
-       :desc "Jump to beginning of defun" "b" 'beginning-of-defun
+       :desc "Jump to beginning of defun" "s" 'beginning-of-defun
        :desc "Jump to end of defun" "e" 'end-of-defun
        :desc "Jump back to previous pos" "h" 'evil-jump-backward
        :desc "Jump back to swap pos" "s" 'evil-jump-backward-swap

@@ -35,7 +35,6 @@
  vc-follow-symlinks t                             ; Always follow the symlinks
  mouse-wheel-tilt-scroll t			  ; Enable mouse wheel scrolling
  view-read-only t)                                ; Always open read-only buffers in view-mode
-(mac-auto-operator-composition-mode 1)		  ; Use ligatures
 (column-number-mode 1)                            ; Show the column number
 (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
 (global-hl-line-mode)                             ; Hightlight current line
@@ -120,10 +119,24 @@
        ))
 
 
-;; MacOS specific
-(setq default-input-method "MacOSX")
-(setq mac-option-key-is-meta t)
-(setq mac-right-option-modifier nil)
+;; OS specific
+;; Mac
+(when (eq system-type 'darwin)
+  (setq default-input-method "MacOSX")
+  (setq mac-option-key-is-meta t)
+  (setq mac-right-option-modifier nil)
+  (mac-auto-operator-composition-mode 1)		  ; Use ligatures
+  )
+
+;; Linux
+(when (eq system-type 'gnu/linux)
+  (setq default-input-method "rfc1345")
+  (setq x-select-enable-clipboard t)
+  (setq x-select-enable-primary t)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+  (prettify-symbols-mode 1) ;; Use ligatures
+  )
 
 
 ;; Faster which key

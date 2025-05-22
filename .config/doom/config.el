@@ -127,6 +127,15 @@
        :desc "Compile" "C" 'compile
        ))
 
+
+;; Workspaces
+(map! :leader
+      (:prefix ("TAB" . "tab")
+       :desc "Tab next" "n" 'tab-next
+       :desc "Tab new" "N" 'tab-new
+       :desc "Tab previous" "p" 'tab-previous
+       ))
+
 ;; OS specific
 ;; Mac
 (when (eq system-type 'darwin)
@@ -156,6 +165,10 @@
   (setq lsp-auto-guess-root nil ;; Dont guess root
         lsp-ui-doc-show-with-cursor t
         lsp-ui-doc-show-with-mouse t))
+
+;; Helm
+(after! helm
+  (setq helm-move-to-line-cycle-in-source nil))
 
 ;; Python
 (after! python-mode
@@ -375,16 +388,16 @@
 	      ("C-p" . nil)
 	      ("C-k" . nil)
 	      ("C-j" . nil)
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)
-              ("C-p" . 'copilot-previous-completion)
-              ("C-n" . 'copilot-next-completion)
+	      ("<tab>" . 'copilot-accept-completion)
+	      ("TAB" . 'copilot-accept-completion)
+	      ("C-TAB" . 'copilot-accept-completion-by-word)
+	      ("C-<tab>" . 'copilot-accept-completion-by-word)
+	      ("C-p" . 'copilot-previous-completion)
+	      ("C-n" . 'copilot-next-completion)
 	      ("C-l" . 'copilot-accept-completion-by-line)
 	      ("C-k" . 'copilot-previous-completion)
 	      ("C-j" . 'copilot-next-completion)
-              ))
+	      ))
 
 (use-package! copilot-chat)
 

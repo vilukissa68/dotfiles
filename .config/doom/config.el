@@ -12,7 +12,9 @@
 (setq epg-gpg-program "/opt/homebrew/Cellar/gnupg/2.4.0/bin/gpg")
 ;; Path
 (setenv "PATH" (concat (getenv "PATH") ":~/.local/bin"))
+(setenv "PATH" (concat (getenv "PATH") ":~/anaconda3/bin"))
 (setq exec-path (append exec-path '("~/.local/bin")))
+(setq exec-path (append exec-path '("~/anaconda3/bin")))
 
 ;; Sensible defaults
 (setq-default
@@ -118,6 +120,12 @@
        :desc "Format buffer" "f" '+format/buffer
        ))
 
+(map! :leader
+      (:prefix ("c" . "code")
+       :desc "Comment region" "c" 'comment-or-uncomment-region
+       :desc "Comment line" "l" 'comment-line
+       :desc "Compile" "C" 'compile
+       ))
 
 ;; OS specific
 ;; Mac
@@ -419,8 +427,6 @@
   (setenv "OLLAMA_CONTEXT_LENGTH" "65536")
   (setq aidermacs-show-diff-after-change t)
   (setq aidermacs-extra-args '("--model" "ollama_chat/deepseek-coder-v2:16b" "--no-auto-commits" "--no-auto-accept-architect" "--show-diffs"))
-  ;;(setq aidermacs-extra-args '("--model" "ollama_chat/qwen2.5-coder:7b" "--no-auto-commits" "--no-auto-accept-architect" "--show-diffs"))
-  ;;(setq aidermacs-backend 'vterm)
   :custom
   (aidermacs-use-architect-mode nil)
   )

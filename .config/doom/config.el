@@ -413,13 +413,17 @@
   :models '(mistral:latest))
 (gptel-make-gh-copilot"Github Copilot")
 
-;; Set ollama as default
-(setq
- gptel-model 'mistral:latest
- gptel-backend (gptel-make-ollama "Ollama"
-                 :host "localhost:11434"
-                 :stream t
-                 :models '(mistral:latest)))
+;; Set Ollama as default
+;; (setq
+;;  gptel-model 'mistral:latest
+;;  gptel-backend (gptel-make-ollama "Ollama"
+;;                  :host "localhost:11434"
+;;                  :stream t
+;;                  :models '(mistral:latest)))
+
+;; Set Github Copilot as default
+(setq gptel-backend (gptel-make-gh-copilot "Github Copilot"))
+(setq gptel-model 'github-copilot)
 
 (map! :leader
       (:prefix ("l" . "LLMS/AI")

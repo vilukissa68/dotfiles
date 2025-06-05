@@ -78,18 +78,17 @@
 (map! :leader
       (:prefix ("f". "files")
        :desc "Toggle treemacs" "t" #'treemacs
-       :desc "Open org directory" "o" 'my-org-finder))
-
-(map! :leader
+       :desc "Open org directory" "o" 'my-org-finder)
       (:prefix ("i". "insert")
 	       (:prefix ("t". "time")
 		:desc "Timestamp decimal" "d" 'insert-current-time-decimal
 		:desc "Timestamp with git email" "g" 'insert-timestamp-with-git-email
-		:desc "Timestamp with email" "e" 'insert-timestamp-with-email
-		)))
-
-
-(map! :leader
+		:desc "Timestamp with email" "e" 'insert-timestamp-with-email))
+      (:prefix ("o" . "open")
+       :desc "Open dired" "d" #'(lambda () (interactive) (dired default-directory))
+       :desc "Open dired" "D" #'(lambda () (interactive) (dired (projectile-project-root)))
+       :desc "Org schedule" "s" 'org-schedule
+       :desc "Open cfw calendar" "c" 'cfw:open-org-calendar)
       (:prefix ("j" . "jump")
        :desc "Jump to declaration" "d" 'lsp-find-declaration
        :desc "Find definition" "f" 'lsp-find-definition
@@ -101,40 +100,24 @@
        :desc "Jump back to previous pos" "h" 'evil-jump-backward
        :desc "Jump back to swap pos" "s" 'evil-jump-backward-swap
        :desc "Jump back to forward pos" "l" 'evil-jump-forward
-       :desc "Open occur buffer" "o" 'occur
-       ))
-
-(map! :leader
+       :desc "Open occur buffer" "o" 'occur)
       (:prefix ("v" . "visual select")
        :desc "Select buffer" "a" 'mark-whole-buffer
-       :desc "Select word" "w" 'mark-word
-       ))
-
-(map! :leader
+       :desc "Select word" "w" 'mark-word)
       (:prefix ("s")
-       :desc "Search and replace" "r" 'evil-replace-word-selection
-       ))
-
-(map! :leader
+       :desc "Search and replace" "r" 'evil-replace-word-selection)
       (:prefix ("b")
-       :desc "Format buffer" "f" '+format/buffer
-       ))
-
-(map! :leader
+       :desc "Format buffer" "f" '+format/buffer)
       (:prefix ("c" . "code")
        :desc "Comment region" "c" 'comment-or-uncomment-region
+       :desc "Uncomment region" "u" 'uncomment-region
        :desc "Comment line" "l" 'comment-line
-       :desc "Compile" "C" 'compile
-       ))
-
-
-;; Workspaces
-(map! :leader
+       :desc "Compile" "C" 'compile)
+      ;; Workspaces
       (:prefix ("TAB" . "tab")
        :desc "Tab next" "n" 'tab-next
        :desc "Tab new" "N" 'tab-new
-       :desc "Tab previous" "p" 'tab-previous
-       ))
+       :desc "Tab previous" "p" 'tab-previous))
 
 ;; OS specific
 ;; Mac
@@ -170,6 +153,29 @@
 (after! helm
   (setq helm-move-to-line-cycle-in-source nil))
 
+;; Dired
+
+(after! dired
+  (evil-define-key 'normal dired-mode-map
+    ;; Navigation
+    "h" 'dired-up-directory
+    "l" 'dired-find-file
+    "q" 'quit-window
+
+    ;; File operations
+    "d" 'dired-flag-file-deletion
+    "x" 'dired-do-flagged-delete
+    "y" 'dired-copy-filename-as-kill
+    "p" 'dired-do-paste
+    "r" 'dired-do-rename
+    "m" 'dired-mark
+    "M" 'dired-toggle-marks	
+    "u" 'dired-unmark
+    "gg" 'evil-goto-first-line
+    "G" 'evil-goto-line
+    "n" 'dired-create-directory
+    ))
+
 ;; Python
 (after! python-mode
   (setq python-shell-interpreter "python3")
@@ -195,6 +201,9 @@
 
 (add-hook 'c++-mode-hook 'my/c++-hook)
 (add-hook 'c-mode-hook 'my/c++-hook)
+
+;; Hook to opencl files with c mode
+(add-to-list 'auto-mode-alist '("\\.clh\\'" . opencl-c-mode))
 
 ;; Debugger
 ;; (map! :map dap-mode-map
@@ -249,52 +258,48 @@
 ;; Org config
 (after! org
   (map! :leader
-	(:prefix ("o" . "open")
-	 :desc "Open dired" "d" 'dired
-	 :desc "Org schedule" "s" 'org-schedule
-	 :desc "Open cfw calendar" "c" 'cfw:open-org-calendar
-	 (:prefix ("r". "Org Roam")
-	  :desc "Toggle roam buffer" "t" 'org-roam-buffer-toggle
-	  :desc "Node find" "f" 'org-roam-node-find
-	  :desc "Node insert" "i" 'org-roam-node-insert
-	  :desc "Goto today" "d" 'org-roam-dailies-goto-date
-	  :desc "List dailies" "l" 'org-roam-dailies-find-date
-	  )
-	 (:prefix ("i". "insert")
-	  :desc "Insert block" "b" 'org-insert-structure-template)
-	 ))
-  ;; Basic org settings
-  (setq org-directory "~/Dropbox/orgfiles/")
-  (setq org-agenda-files '("~/Dropbox/orgfiles" "~/Dropbox/orgfiles/roamnotes"))
-  (setq org-default-notes-file "~/Dropbox/orgfiles/notes.org")
-  ;; Filter tags from agenda
-  (setq org-agenda-tag-filter-preset '("-masters_thesis_work"))
-  (load-file "~/Dropbox/orgfiles/orgsetup.el")
-  ;; Org roam
-  (setq org-roam-directory "~/Dropbox/orgfiles/roamnotes")
-  ;; Open org folder
-  (defun my-org-finder ()
-    (interactive)
-    (ido-find-file-in-dir org-directory))
-  ;; Enable online image in org files
-  (setq org-display-remote-inline-images 'cache)
-  ;; Org capture templates
-  (merge-list-to-list 'org-capture-templates
-		      '(("w" "Work Todo" entry (file+headline "~/Dropbox/orgfiles/work.org" "Todos") "* TODO %?\n  %i\n  %a")
-			("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes") "* %?\n %i\n %a")))
-  ;; Org todo keyword setup
-  (setq org-todo-keywords
-	'((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
-	  (sequence "MEETING(m)" "|" "DONE(d)")
-	  (sequence "EVENT(e)" "|" "DONE(d)")
-	  (sequence "LECTURE(m)" "|" "PREPARE(p)"  "|" "ATTENDED(d)" "NOTATTENDED(n)")
-	  ))
-  (setq org-todo-keyword-faces
-        '(("TODO" . "red") ("DOING" . "gold") ("WAITING". "yellow") ("PR" . "dark violet") ("MEETING" . "brown") ("DONE" . "forest green")
-	  ("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray") ("LECTURE" .  "royal blue") ("EVENT" .  "dark olive green")))
-  ;; Invoke org roam
-  (org-roam-setup)
-  )
+	(:prefix ("r". "Org Roam")
+	 :desc "Toggle roam buffer" "t" 'org-roam-buffer-toggle
+	 :desc "Node find" "f" 'org-roam-node-find
+	 :desc "Node insert" "i" 'org-roam-node-insert
+	 :desc "Goto today" "d" 'org-roam-dailies-goto-date
+	 :desc "List dailies" "l" 'org-roam-dailies-find-date
+	 )
+	(:prefix ("i". "insert")
+	 :desc "Insert block" "b" 'org-insert-structure-template)
+	))
+;; Basic org settings
+(setq org-directory "~/Dropbox/orgfiles/")
+(setq org-agenda-files '("~/Dropbox/orgfiles" "~/Dropbox/orgfiles/roamnotes"))
+(setq org-default-notes-file "~/Dropbox/orgfiles/notes.org")
+;; Filter tags from agenda
+(setq org-agenda-tag-filter-preset '("-masters_thesis_work"))
+(load-file "~/Dropbox/orgfiles/orgsetup.el")
+;; Org roam
+(setq org-roam-directory "~/Dropbox/orgfiles/roamnotes")
+;; Open org folder
+(defun my-org-finder ()
+  (interactive)
+  (ido-find-file-in-dir org-directory))
+;; Enable online image in org files
+(setq org-display-remote-inline-images 'cache)
+;; Org capture templates
+(merge-list-to-list 'org-capture-templates
+		    '(("w" "Work Todo" entry (file+headline "~/Dropbox/orgfiles/work.org" "Todos") "* TODO %?\n  %i\n  %a")
+		      ("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes") "* %?\n %i\n %a")))
+;; Org todo keyword setup
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
+	(sequence "MEETING(m)" "|" "DONE(d)")
+	(sequence "EVENT(e)" "|" "DONE(d)")
+	(sequence "LECTURE(m)" "|" "PREPARE(p)"  "|" "ATTENDED(d)" "NOTATTENDED(n)")
+	))
+(setq org-todo-keyword-faces
+      '(("TODO" . "red") ("DOING" . "gold") ("WAITING". "yellow") ("PR" . "dark violet") ("MEETING" . "brown") ("DONE" . "forest green")
+	("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray") ("LECTURE" .  "royal blue") ("EVENT" .  "dark olive green")))
+;; Invoke org roam
+(org-roam-setup)
+
 
 ;; Magit
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)

@@ -161,7 +161,6 @@
     "h" 'dired-up-directory
     "l" 'dired-find-file
     "q" 'quit-window
-
     ;; File operations
     "d" 'dired-flag-file-deletion
     "x" 'dired-do-flagged-delete
@@ -403,6 +402,20 @@
 	      ("C-k" . 'copilot-previous-completion)
 	      ("C-j" . 'copilot-next-completion)
 	      ))
+
+;; Fix jumping tab key completion
+(after! (evil copilot)
+  ;; Define the custom function that either accepts the completion or does the default behavior
+  (defun my/copilot-tab-or-default ()
+    (interactive)
+    (if (and (bound-and-true-p copilot-mode)
+             ;; Add any other conditions to check for active copilot suggestions if necessary
+             )
+        (copilot-accept-completion)
+      (evil-insert 1))) ; Default action to insert a tab. Adjust as needed.
+
+  ;; Bind the custom function to <tab> in Evil's insert state
+  (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
 
 (use-package! copilot-chat)
 

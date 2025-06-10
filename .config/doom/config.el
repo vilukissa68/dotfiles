@@ -45,6 +45,12 @@
 (global-display-line-numbers-mode)
 (which-function-mode)
 
+;; Important functions used later in this config
+(defun merge-list-to-list (dst src)
+  "Merges content of the 2nd list with the 1st one"
+  (set dst
+       (append (eval dst) src)))  
+
 ;; Supress warnings
 (setq warning-minimum-log-level :error)
 
@@ -257,16 +263,38 @@
 ;; Org config
 (after! org
   (map! :leader
-	(:prefix ("r". "Org Roam")
-	 :desc "Toggle roam buffer" "t" 'org-roam-buffer-toggle
-	 :desc "Node find" "f" 'org-roam-node-find
-	 :desc "Node insert" "i" 'org-roam-node-insert
-	 :desc "Goto today" "d" 'org-roam-dailies-goto-date
-	 :desc "List dailies" "l" 'org-roam-dailies-find-date
-	 )
-	(:prefix ("i". "insert")
-	 :desc "Insert block" "b" 'org-insert-structure-template)
-	))
+    (:prefix ("r" . "Org Roam")
+     :desc "Toggle roam buffer" "t" #'org-roam-buffer-toggle
+     :desc "Node find" "f" #'org-roam-node-find
+     :desc "Node insert" "i" #'org-roam-node-insert
+     :desc "Goto today" "d" #'org-roam-dailies-goto-date
+     :desc "List dailies" "l" #'org-roam-dailies-find-date)
+    (:prefix ("i" . "insert")
+     :desc "Insert block" "b" #'org-insert-structure-template))
+
+  ;; Org capture templates
+  (merge-list-to-list 'org-capture-templates
+                      '(("w" "Work Todo" entry (file+headline "~/Dropbox/orgfiles/work.org" "Todos")
+                         "* TODO %?\n  %i\n  %a")
+                        ("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes")
+                         "* %?\n  %i\n  %a")))
+
+  ;; Org todo keyword setup
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
+          (sequence "MEETING(m)" "|" "DONE(d)")
+          (sequence "EVENT(e)" "|" "DONE(d)")
+          (sequence "LECTURE(m)" "|" "PREPARE(p)" "|" "ATTENDED(d)" "NOTATTENDED(n)")))
+
+  (setq org-todo-keyword-faces
+        '(("TODO" . "red") ("DOING" . "gold") ("WAITING" . "yellow") ("PR" . "dark violet")
+          ("MEETING" . "brown") ("DONE" . "forest green") ("UNCLEAR" . "black")
+          ("DROPPED" . "gray") ("POSTPONED" . "dark gray") ("LECTURE" . "royal blue")
+          ("EVENT" . "dark olive green")))
+
+  ;; Invoke org-roam
+  (org-roam-setup))
+
 ;; Basic org settings
 (setq org-directory "~/Dropbox/orgfiles/")
 (setq org-agenda-files '("~/Dropbox/orgfiles" "~/Dropbox/orgfiles/roamnotes"))
@@ -282,23 +310,6 @@
   (ido-find-file-in-dir org-directory))
 ;; Enable online image in org files
 (setq org-display-remote-inline-images 'cache)
-;; Org capture templates
-(merge-list-to-list 'org-capture-templates
-		    '(("w" "Work Todo" entry (file+headline "~/Dropbox/orgfiles/work.org" "Todos") "* TODO %?\n  %i\n  %a")
-		      ("v" "Work note" entry (file+headline "~/Dropbox/orgfiles/work.org" "Notes") "* %?\n %i\n %a")))
-;; Org todo keyword setup
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "PR(r)" "|" "DONE(d)" "UNCLEAR(u)" "DROPPED(o)" "POSTPONED(p)")
-	(sequence "MEETING(m)" "|" "DONE(d)")
-	(sequence "EVENT(e)" "|" "DONE(d)")
-	(sequence "LECTURE(m)" "|" "PREPARE(p)"  "|" "ATTENDED(d)" "NOTATTENDED(n)")
-	))
-(setq org-todo-keyword-faces
-      '(("TODO" . "red") ("DOING" . "gold") ("WAITING". "yellow") ("PR" . "dark violet") ("MEETING" . "brown") ("DONE" . "forest green")
-	("UNCLEAR". "black") ("DROPPED" . "gray") ("POSTPONED" . "dark gray") ("LECTURE" .  "royal blue") ("EVENT" .  "dark olive green")))
-;; Invoke org roam
-(org-roam-setup)
-
 
 ;; Magit
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -383,7 +394,16 @@
 ;; AI assistants
 ;;
 ;; Copilot
+;; Custom tab completion fix
+(defun my/copilot-tab-or-default ()
+  (interactive)
+  (if (and (bound-and-true-p copilot-mode)
+           (copilot--overlay-visible))
+      (copilot-accept-completion)
+    (evil-insert 1)))
+
 (use-package! copilot
+  :after prog-mode
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
 	      ;; Unbind keys globally or in specific maps
@@ -392,8 +412,8 @@
 	      ("C-p" . nil)
 	      ("C-k" . nil)
 	      ("C-j" . nil)
-	      ("<tab>" . 'copilot-accept-completion)
-	      ("TAB" . 'copilot-accept-completion)
+	      ("<tab>" . 'my/copilot-tab-or-default)
+	      ("TAB" . 'my/copilot-tab-or-default)
 	      ("C-TAB" . 'copilot-accept-completion-by-word)
 	      ("C-<tab>" . 'copilot-accept-completion-by-word)
 	      ("C-p" . 'copilot-previous-completion)
@@ -401,21 +421,8 @@
 	      ("C-l" . 'copilot-accept-completion-by-line)
 	      ("C-k" . 'copilot-previous-completion)
 	      ("C-j" . 'copilot-next-completion)
-	      ))
-
-;; Fix jumping tab key completion
-(after! (evil copilot)
-  ;; Define the custom function that either accepts the completion or does the default behavior
-  (defun my/copilot-tab-or-default ()
-    (interactive)
-    (if (and (bound-and-true-p copilot-mode)
-             ;; Add any other conditions to check for active copilot suggestions if necessary
-             )
-        (copilot-accept-completion)
-      (evil-insert 1))) ; Default action to insert a tab. Adjust as needed.
-
-  ;; Bind the custom function to <tab> in Evil's insert state
-  (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
+	      )
+  )
 
 (use-package! copilot-chat)
 
@@ -627,3 +634,17 @@ By default, the range is [0, 999]."
 		     (make-list count nil)
 		     ", ")))
     (insert random-numbers)))
+
+;; ;; Fix jumping tab key completion
+;; (after! (evil copilot)
+;;   ;; Define the custom function that either accepts the completion or does the default behavior
+;;   (defun my/copilot-tab-or-default ()
+;;     (interactive)
+;;     (if (and (bound-and-true-p copilot-mode)
+;;              ;; Add any other conditions to check for active copilot suggestions if necessary
+;;              )
+;;         (copilot-accept-completion)
+;;       (evil-insert 1))) ; Default action to insert a tab. Adjust as needed.
+
+;;   ;; Bind the custom function to <tab> in Evil's insert state
+;;   (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))

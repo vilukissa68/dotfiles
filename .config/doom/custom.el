@@ -8,6 +8,11 @@
  '(ein:output-area-inlined-images t)
  '(elfeed-feeds
    '("https://jvns.ca/atom.xml" "https://kill-the-newsletter.com/feeds/miuy83uy8hfvy5hbg6rx.xml" "https://www.darthsanddroids.net/rss.xml" "http://feeds.feedburner.com/satwcomic" "https://xkcd.com/rss.xml" "https://korben.info/feed" "https://linuxfr.org/news.atom" "https://www.rfi.fr/en/france/rss" "http://feeds.feedburner.com/Ikeahacker" "https://www.lapinkansa.fi/feedit/rss/newest-free/" "https://www.hs.fi/rss/paakirjoitukset.xml" "https://www.kaleva.fi/feedit/rss/managed-listing/rss-uusimmat/" "https://www.hs.fi/rss/tuoreimmat.xml" "https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET" "https://www.tampere.fi/ajankohtaista/artikkelit.xml" "https://www.tampere.fi/ajankohtaista/ilmoitukset.xml" "https://www.tampere.fi/ajankohtaista/uutiset.xml" "https://www.tamperelainen.fi/feed/rss" "https://archlinux.org/feeds/news/" "http://feeds.arstechnica.com/arstechnica/index/" "http://feeds.feedburner.com/ItsFoss" "https://www.linuxjournal.com/node/feed" "https://www.linuxtoday.com/feed/" "http://feeds.macrumors.com/MacRumors-Front" "https://www.readonlymemo.com/rss/" "http://feeds.feedburner.com/Techcrunch" "https://www.theverge.com/rss/full.xml" "https://www.wired.com/feed" "https://github.com/FreshRSS/FreshRSS/releases.atom" "https://rss-bridge.org/bridge01/?action=display&bridge=YoutubeBridge&context=By+username&u=LinusTechTips&duration_min=5&duration_max=&format=Mrss" "http://feeds.bbci.co.uk/news/rss.xml?edition=int" "http://rss.cnn.com/rss/cnn_topstories.rss" "https://moxie.foxnews.com/google-publisher/latest.xml" "https://www.huffingtonpost.co.uk/feeds/index.xml" "https://feeds.npr.org/1001/rss.xml" "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml") t)
+ '(ignored-local-variable-values
+   '((eval add-hook 'before-save-hook
+	  (lambda nil
+		(org-babel-ref-resolve "workhourinsert"))
+	  nil t)))
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(org-image-max-width 'window)
  '(package-selected-packages '(use-package-ensure-system-package use-package)))

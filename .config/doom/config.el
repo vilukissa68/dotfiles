@@ -94,7 +94,23 @@
        :desc "Open dired" "d" #'(lambda () (interactive) (dired default-directory))
        :desc "Open dired" "D" #'(lambda () (interactive) (dired (projectile-project-root)))
        :desc "Org schedule" "s" 'org-schedule
-       :desc "Open cfw calendar" "c" 'cfw:open-org-calendar)
+       :desc "Org deadline" "S" 'org-deadline
+       :desc "Open cfw calendar" "c" 'cfw:open-org-calendar
+       (:prefix ("a" . "org agenda")
+	:desc "Open org agenda" "a" 'org-agenda
+	:desc "Open org todo list" "t" 'org-todo-list
+	:desc "Org agenda (work related)" "w" '(lambda () (interactive) (org-tags-view t "work"))
+	:desc "Filter by tag" "T" 'org-agenda-filter-by-tag
+	:desc "Tags search" "m" 'org-tags-view
+	:desc "View search results" "v" 'org-search-view
+	:desc "Filter" "f" 'org-agenda-filter
+	))
+      (:prefix ("e" . "eval")
+       :desc "Eval buffer" "b" 'eval-buffer
+       :desc "Eval region" "r" 'eval-region
+       :desc "Eval last sexp" "l" 'eval-last-sexp
+       :desc "Eval expression" "e" 'eval-expression
+       )
       (:prefix ("j" . "jump")
        :desc "Jump to declaration" "d" 'lsp-find-declaration
        :desc "Find definition" "f" 'lsp-find-definition
@@ -262,15 +278,22 @@
 
 ;; Org config
 (after! org
+  (setq org-agenda-span 14
+	org-agenda-use-time-grid t
+	org-agenda-time-grid
+	'((daily today require-timed)
+          (800 1000 1200 1400 1600 1800 2000)
+          "......"
+          "----------------"))
   (map! :leader
-    (:prefix ("r" . "Org Roam")
-     :desc "Toggle roam buffer" "t" #'org-roam-buffer-toggle
-     :desc "Node find" "f" #'org-roam-node-find
-     :desc "Node insert" "i" #'org-roam-node-insert
-     :desc "Goto today" "d" #'org-roam-dailies-goto-date
-     :desc "List dailies" "l" #'org-roam-dailies-find-date)
-    (:prefix ("i" . "insert")
-     :desc "Insert block" "b" #'org-insert-structure-template))
+	(:prefix ("r" . "Org Roam")
+	 :desc "Toggle roam buffer" "t" #'org-roam-buffer-toggle
+	 :desc "Node find" "f" #'org-roam-node-find
+	 :desc "Node insert" "i" #'org-roam-node-insert
+	 :desc "Goto today" "d" #'org-roam-dailies-goto-date
+	 :desc "List dailies" "l" #'org-roam-dailies-find-date)
+	(:prefix ("i" . "insert")
+	 :desc "Insert block" "b" #'org-insert-structure-template))
 
   ;; Org capture templates
   (merge-list-to-list 'org-capture-templates
@@ -323,7 +346,7 @@
 (map! :leader
       :desc "Search web for text between BEG/END"
       "s w" #'eww-search-words
-      (:prefix ("e" . "evaluate/ERC/EWW")
+      (:prefix ("E" . "ERC/EWW")
        :desc "Eww web browser" "w" #'eww-new
        :desc "Eww add bookmark" "a" #'eww-add-bookmark
        :desc "Eww list bookmarks" "l" #'eww-list-bookmarks

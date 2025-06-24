@@ -285,6 +285,52 @@
           (800 1000 1200 1400 1600 1800 2000)
           "......"
           "----------------"))
+  (setq org-global-properties
+	'(("Effort_ALL" . "0:10 0:30 1:00 2:00 4:00 8:00 16:00 24:00")))
+  (defvar my/org-effort-values '("0:10" "0:30" "1:00" "2:00" "4:00" "8:00" "16:00" "24:00")
+    "List of effort estimates to cycle through.")
+
+  (defun my/org-cycle-effort (direction)
+    "Cycle the Effort property for the current Org heading.
+DIRECTION should be 1 for forward (up), -1 for backward (down)."
+    (interactive)
+    (let* ((current (org-entry-get nil "Effort"))
+           (efforts my/org-effort-values)
+           (index (or (cl-position current efforts :test #'string=) -1))
+           (len (length efforts))
+           (new-index (mod (+ index direction) len))
+           (new-effort (nth new-index efforts)))
+      (org-entry-put nil "Effort" new-effort)
+      (message "Effort: %s" new-effort)))
+
+  (defun my/org-cycle-effort-up ()
+    "Cycle Effort up (increase) using predefined values."
+    (interactive)
+    (my/org-cycle-effort 1)
+    (my/org-inject-effort-into-headline))
+
+  (defun my/org-cycle-effort-down ()
+    "Cycle Effort down (decrease) using predefined values."
+    (interactive)
+    (my/org-cycle-effort -1)
+    (my/org-inject-effort-into-headline))
+
+  (defun my/org-inject-effort-into-headline ()
+    "Add or update effort in Org heading based on :Effort: property."
+    (interactive)
+    (when (org-entry-get nil "Effort")
+      (let* ((effort (org-entry-get nil "Effort"))
+             (heading (org-get-heading t t t t))
+             (new-heading (if (string-match-p "\\[.*\\]$" heading)
+                              (replace-regexp-in-string "\\[.*\\]$" (format "[%s]" effort) heading)
+                            (format "%s [%s]" heading effort))))
+	(org-edit-headline new-heading))))
+  (add-hook 'before-save-hook #'my/org-inject-effort-into-headline)
+
+  (map! :after org
+	:map org-mode-map
+	"C-S-<up>"   #'my/org-cycle-effort-up
+	"C-S-<down>" #'my/org-cycle-effort-down)
   (map! :leader
 	(:prefix ("r" . "Org Roam")
 	 :desc "Toggle roam buffer" "t" #'org-roam-buffer-toggle

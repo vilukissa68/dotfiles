@@ -61,3 +61,4 @@
 
 (package! gptel :recipe (:nonrecursive t))
 (package! aidermacs :recipe (:host github :repo "MatthewZMD/aidermacs"))
+(package! csv-mode)

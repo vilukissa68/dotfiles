@@ -1,3 +1,4 @@
+(load (expand-file-name "env.el" "~/Dropbox/emacs") t)
 (setq doom-theme 'doom-one-light)
 (setq catppuccin-flavor 'latte) ;; or 'latte, 'frappe 'macchiato, or 'mocha
 
@@ -76,6 +77,9 @@
 ;; Set font
 (setq doom-font (font-spec :family "Iosevka Term SS08" :size 12.0))
 ;;(setq doom-font (font-spec :family "Monaspace Argon Frozen" :size 12.0))
+
+;; CSV
+(setq csv-separator ",") ;; Set default separator for CSV files
 
 ;; General keybindings
 (map! :leader
@@ -327,6 +331,12 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
 	(org-edit-headline new-heading))))
   (add-hook 'before-save-hook #'my/org-inject-effort-into-headline)
 
+  ;; Automatically sort org entries by TODO state on save
+  (defun my/org-sort-by-todo-on-save ()
+    (when (eq major-mode 'org-mode)
+      (org-sort-entries nil ?o)))
+  (add-hook 'before-save-hook #'my/org-sort-by-todo-on-save)
+
   (map! :after org
 	:map org-mode-map
 	"C-S-<up>"   #'my/org-cycle-effort-up
@@ -537,12 +547,50 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "OLLAMA_CONTEXT_LENGTH" "65536")
   (setq aidermacs-show-diff-after-change t)
-  (setq aidermacs-extra-args '("--model" "ollama_chat/deepseek-coder-v2:16b" "--no-auto-commits" "--no-auto-accept-architect" "--show-diffs"))
-  :custom
-  (aidermacs-use-architect-mode nil)
+  ;;(setq aidermacs-extra-args '("--model" "ollama_chat/deepseek-coder-v2:16b" "--no-auto-commits" "--no-auto-accept-architect" "--show-diffs"))
+  (let ((target-entry
+	 (cl-find-if (lambda (entry)
+                       (and (listp entry) ; Basic sanity check for entry structure
+			    (car entry) ; Ensure car is not nil
+			    (string= (car entry) "https://api.openai.com/v1")))
+                     aidermacs--api-providers)))
+    (when target-entry ;; Change the URL key (the first element of the inner list)
+      (setf (car target-entry) "https://api.githubcopilot.com")
+
+      ;; The rest of the list (cdr target-entry) contains property pairs.
+      ;; This is an alist of properties.
+      (let* ((properties-alist (cdr target-entry))
+             (hostname-pair (assoc 'hostname properties-alist)))
+	(when hostname-pair
+          ;; Change the hostname value
+          (setf (cdr hostname-pair) "api.githubcopilot.com")))))
+  (setq aidermacs-extra-args
+	'("--model" "openai/gpt-4o"
+          "--architect" "openai/claude-3.7-sonnet-thought"
+          "--weak-model" "openai/gpt-4o"
+          "--no-show-model-warnings"
+          "--show-diffs"
+          "--chat-language" "en"
+          "--no-auto-commits"
+          "--no-auto-accept-architect"))
+
+  ;;:custom
+  ;; Use Github copilot provider for OpenAI
+  ;; Use Github copilot API key
+  ;; (aidermacs-editor-model "openai/gpt-4o")
+  ;; (aidermacs-architect-model "openai/claude-3.7-sonnet-thought")
+  ;; (aidermacs-weak-model "openai/gpt-4o")
+  ;; (aidermacs-extra-args '("--no-show-model-warnings" "--show-diffs" "--chat-language en"))
   )
 
+(defun my/enable-wrap-for-aidermacs ()
+  "Enable visual wrapping in Aidermacs buffers."
+  (when (string-prefix-p "*aidermacs:" (buffer-name))
+    (message "Debug: Aider adjusted")
+    (visual-line-mode 1)
+    (setq truncate-lines nil)))
 
+(add-hook 'window-configuration-change-hook #'my/enable-wrap-for-aidermacs)
 
 ;; Replace all occurences of a word
 ;; query-replace current word

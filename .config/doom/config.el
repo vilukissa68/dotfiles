@@ -374,6 +374,31 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   ;; Invoke org-roam
   (org-roam-setup))
 
+(after! org-modern
+  (setq
+   org-auto-align-tags nil
+   org-tags-column 0
+   org-catch-invisible-edits 'show-and-error
+   org-special-ctrl-a/e t
+   org-insert-heading-respect-content t
+   org-hide-emphasis-markers t
+   org-pretty-entities t
+   org-agenda-tags-column 0
+   org-ellipsis "…"
+   )
+  (setq org-modern-todo-faces
+        '(("TODO" . (:foreground "red" :background "gainsboro" :weight bold :height 1.2))
+          ("DOING" . (:foreground "gold" :background "gainsboro" :weight bold :height 1.2))
+          ("WAITING" . (:foreground "yellow" :background "gainsboro" :weight bold :height 1.2))
+          ("PR" . (:foreground "dark violet" :background "gainsboro" :weight bold :height 1.2))
+          ("MEETING" . (:foreground "brown" :background "gainsboro" :weight bold :height 1.2))
+          ("DONE" . (:foreground "forest green" :background "gainsboro" :weight bold :height 1.2))
+          ("UNCLEAR" . (:foreground "black" :background "gainsboro" :weight bold :height 1.2))
+          ("DROPPED" . (:foreground "gray" :background "gainsboro" :weight bold :height 1.2))
+          ("POSTPONED" . (:foreground "dark gray" :background "gainsboro" :weight bold :height 1.2))
+          ("LECTURE" . (:foreground "royal blue" :background "gainsboro" :weight bold :height 1.2))
+          ("EVENT" . (:foreground "dark olive green" :background "gainsboro" :weight bold :height 1.2)))))
+
 ;; Basic org settings
 (setq org-directory "~/Dropbox/orgfiles/")
 (setq org-agenda-files '("~/Dropbox/orgfiles" "~/Dropbox/orgfiles/roamnotes"))
@@ -547,6 +572,7 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "OLLAMA_CONTEXT_LENGTH" "65536")
   (setq aidermacs-show-diff-after-change t)
+  (setq aidermacs-backend 'vterm)
   ;;(setq aidermacs-extra-args '("--model" "ollama_chat/deepseek-coder-v2:16b" "--no-auto-commits" "--no-auto-accept-architect" "--show-diffs"))
   (let ((target-entry
 	 (cl-find-if (lambda (entry)

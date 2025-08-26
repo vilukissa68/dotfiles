@@ -143,7 +143,9 @@
       (:prefix ("TAB" . "tab")
        :desc "Tab next" "n" 'tab-next
        :desc "Tab new" "N" 'tab-new
-       :desc "Tab previous" "p" 'tab-previous))
+       :desc "Tab previous" "p" 'tab-previous
+       :desc "New worksapce" "o" '+workspace-new
+       ))
 
 ;; OS specific
 ;; Mac

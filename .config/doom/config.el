@@ -100,6 +100,8 @@
        :desc "Org schedule" "s" 'org-schedule
        :desc "Org deadline" "S" 'org-deadline
        :desc "Open cfw calendar" "c" 'cfw:open-org-calendar
+       :desc "Open Vterm right" "v" 'my/vterm-new-buffer-split-right
+       :desc "Open Vterm below" "s" 'my/vterm-new-buffer-split-down
        (:prefix ("a" . "org agenda")
 	:desc "Open org agenda" "a" 'org-agenda
 	:desc "Open org todo list" "t" 'org-todo-list
@@ -779,6 +781,42 @@ By default, the range is [0, 999]."
 		     (make-list count nil)
 		     ", ")))
     (insert random-numbers)))
+
+
+(defun my/vterm-new-buffer-split-right ()
+  "Split the current window to the right and open a new vterm buffer."
+  (interactive)
+  ;; split the window
+  (let ((new-window (split-window-right)))
+    ;; generate a unique buffer
+    (let* ((name (generate-new-buffer-name "*vterm*"))
+           (buffer (get-buffer-create name)))
+      ;; start vterm if not already running
+      (with-current-buffer buffer
+        (unless (derived-mode-p 'vterm-mode)
+          (vterm-mode)))
+      ;; display in the new window
+      (set-window-buffer new-window buffer)
+      ;; focus the new window
+      (select-window new-window))))
+
+(defun my/vterm-new-buffer-split-down ()
+  "Split the current window to the right and open a new vterm buffer."
+  (interactive)
+  ;; split the window
+  (let ((new-window (split-window-below)))
+    ;; generate a unique buffer
+    (let* ((name (generate-new-buffer-name "*vterm*"))
+           (buffer (get-buffer-create name)))
+      ;; start vterm if not already running
+      (with-current-buffer buffer
+        (unless (derived-mode-p 'vterm-mode)
+          (vterm-mode)))
+      ;; display in the new window
+      (set-window-buffer new-window buffer)
+      ;; focus the new window
+      (select-window new-window))))
+
 
 ;; ;; Fix jumping tab key completion
 ;; (after! (evil copilot)

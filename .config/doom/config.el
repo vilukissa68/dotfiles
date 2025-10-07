@@ -500,6 +500,29 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
 ;; Markdown
 (add-hook 'markdown-mode #'+word-wrap-mode)
 
+;; Typst
+;; on new install run 'typst-ts-mc-install-grammar
+;; For lsp we use tinymisy
+;; cargo install --git https://github.com/Myriad-Dreamin/tinymist --locked tinymist-cli
+(use-package! typst-ts-mode
+  :after eglot
+  :hook (typst-ts-mode . eglot-ensure)  ;; <- auto-start Eglot
+  :config
+  (add-to-list 'eglot-server-programs
+               '(typst-ts-mode . ("tinymist")))
+
+  ;; Enable eglot automatically
+  (add-hook 'typst-ts-mode-hook #'eglot)
+
+  ;; Bind keys
+  (map! :map typst-ts-mode-map
+        "C-c C-c" #'typst-ts-compile
+        :localleader
+        :n "c" #'typst-ts-compile
+        :n "a" #'eglot-code-actions
+        :n "r" #'eglot-rename
+        :n "f" #'eglot-format-buffer))
+
 ;; AI assistants
 ;;
 ;; Copilot

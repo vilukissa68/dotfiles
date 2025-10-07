@@ -62,3 +62,5 @@
 (package! gptel :recipe (:nonrecursive t))
 (package! aidermacs :recipe (:host github :repo "MatthewZMD/aidermacs"))
 (package! csv-mode)
+
+(package! typst-ts-mode :recipe (:host nil :repo "https://git.sr.ht/~meow_king/typst-ts-mode"))

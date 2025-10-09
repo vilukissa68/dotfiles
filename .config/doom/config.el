@@ -119,14 +119,16 @@
        )
       (:prefix ("j" . "jump")
        :desc "Jump to declaration" "d" 'lsp-find-declaration
+       :desc "Jump to declaration new window" "D" 'my/lsp-find-declaration-in-split
+       :desc "Jump to type definition" "t" 'lsp-find-type-definition
        :desc "Find definition" "f" 'lsp-find-definition
+       :desc "Find definition new window" "F" 'my/lsp-find-definition-in-split
        :desc "Jump back" "b" 'evil-jump-backward
        :desc "Jump with i menu" "i" 'imenu
        :desc "Jump to references" "r" 'lsp-find-references
        :desc "Jump to beginning of defun" "s" 'beginning-of-defun
        :desc "Jump to end of defun" "e" 'end-of-defun
        :desc "Jump back to previous pos" "h" 'evil-jump-backward
-       :desc "Jump back to swap pos" "s" 'evil-jump-backward-swap
        :desc "Jump back to forward pos" "l" 'evil-jump-forward
        :desc "Open occur buffer" "o" 'occur)
       (:prefix ("v" . "visual select")
@@ -840,6 +842,24 @@ By default, the range is [0, 999]."
       (set-window-buffer new-window buffer)
       ;; focus the new window
       (select-window new-window))))
+
+(defun my/lsp-find-declaration-in-split ()
+  "Open a new window split and run `lsp-find-declaration` there."
+  (interactive)
+  (let ((win (selected-window)))
+    ;; Split window horizontally or vertically as you prefer
+    (let ((new-win (split-window-right)))  ;; use (split-window-below) for horizontal split
+      (select-window new-win)
+      (lsp-find-declaration))))
+
+(defun my/lsp-find-definition-in-split ()
+  "Open a new window split and run `lsp-find-definition` there."
+  (interactive)
+  (let ((win (selected-window)))
+    ;; Split window horizontally or vertically as you prefer
+    (let ((new-win (split-window-right)))  ;; use (split-window-below) for horizontal split
+      (select-window new-win)
+      (lsp-find-definition))))
 
 
 ;; ;; Fix jumping tab key completion

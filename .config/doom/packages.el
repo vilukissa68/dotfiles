@@ -64,3 +64,5 @@
 (package! csv-mode)
 
 (package! typst-ts-mode :recipe (:host nil :repo "https://git.sr.ht/~meow_king/typst-ts-mode"))
+(package! monkeytype)
+(package! xenops)

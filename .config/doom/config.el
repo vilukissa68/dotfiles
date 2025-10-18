@@ -639,6 +639,16 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   ;; (aidermacs-extra-args '("--no-show-model-warnings" "--show-diffs" "--chat-language en"))
   )
 
+;; Latex
+;; Xenops
+(add-hook 'latex-mode-hook #'xenops-mode)
+(after! xenops
+  (setq! xenops-math-preview-delay 0.5)
+  (setq! xenops-math-image-scale-factor 2.0)
+  (setq xenops-math-inline-format "\\(%s\\)")
+  (setq xenops-math-block-format "\\[%s\\]")
+  (xenops-mode 1))
+
 (defun my/enable-wrap-for-aidermacs ()
   "Enable visual wrapping in Aidermacs buffers."
   (when (string-prefix-p "*aidermacs:" (buffer-name))

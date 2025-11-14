@@ -12,10 +12,12 @@
 ;;(epa-file-enable)
 (setq epg-gpg-program "/opt/homebrew/Cellar/gnupg/2.4.0/bin/gpg")
 ;; Path
-(setenv "PATH" (concat (getenv "PATH") ":~/.local/bin"))
-(setenv "PATH" (concat (getenv "PATH") ":~/anaconda3/bin"))
-(setq exec-path (append exec-path '("~/.local/bin")))
-(setq exec-path (append exec-path '("~/anaconda3/bin")))
+(setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.local/bin")))
+(setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/anaconda3/bin")))
+
+(setq exec-path (append exec-path (list (expand-file-name "~/.local/bin"))))
+(setq exec-path (append exec-path (list (expand-file-name "~/anaconda3/bin"))))
+
 
 ;; Sensible defaults
 (setq-default
@@ -75,11 +77,8 @@
 (define-key global-map (kbd "<C-triple-wheel-down>") 'text-scale-decrease)
 
 ;; Set font
-;;(setq doom-font (font-spec :family "Iosevka Term SS08" :size 12.0))
-(setq doom-font (font-spec :family "Monaspace Argon" :size 12.0))
-
-;; CSV
-(setq csv-separator ",") ;; Set default separator for CSV files
+(setq doom-font (font-spec :family "Iosevka Term" :size 10.0))
+;;(setq doom-font (font-spec :family "Monaspace Argon Frozen" :size 12.0))
 
 ;; General keybindings
 (map! :leader
@@ -167,7 +166,7 @@
   (setq x-select-enable-clipboard t)
   (setq x-select-enable-primary t)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+  ;;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
   (prettify-symbols-mode 1) ;; Use ligatures
   )
 

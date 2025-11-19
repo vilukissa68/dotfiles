@@ -478,8 +478,6 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
         :n "S-RET" #'ein:worksheet-execute-cell-and-goto-next
         :n "C-c C-l" #'ein:worksheet-clear-output))
 
-;; RSS
-(setq elfeed-feeds '("https://planet.emacslife.com/atom.xml"))
 
 ;; Spell check and grammar
 (after! flyspell
@@ -523,6 +521,99 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
         :n "a" #'eglot-code-actions
         :n "r" #'eglot-rename
         :n "f" #'eglot-format-buffer))
+
+;; Elfeed
+(use-package! elfeed-score)
+(after! elfeed
+
+  (defun concatenate-authors (authors-list)
+    "Given AUTHORS-LIST, list of plists; return string of all authors concatenated."
+    (s-split ", "
+	     (mapconcat
+	      (lambda (author)
+		(plist-get author :name))
+	      authors-list
+	      ", "))
+    (if (> (length authors-list) 1)
+	(format "%s et al." (plist-get (nth 0 authors-list) :name))
+      (plist-get (nth 0 authors-list) :name)))
+
+  (defun my-search-print-fn (entry)
+    "Print ENTRY to the buffer."
+    (let* ((feed (elfeed-entry-feed entry))
+           (date (elfeed-search-format-date (elfeed-entry-date entry)))
+           (title (or (elfeed-meta entry :title)
+                      (elfeed-entry-title entry) ""))
+           (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
+           (entry-authors (concatenate-authors (elfeed-meta entry :authors)))
+           (title-column (elfeed-format-column title 100 :left))
+           (entry-score (elfeed-format-column (number-to-string
+                                               (elfeed-score-scoring-get-score-from-entry entry))
+                                              10 :left))
+           (authors-column (elfeed-format-column entry-authors 40 :left))
+           (feed-column-width 20))
+      ;; Feed column
+      (insert (propertize
+               (elfeed-format-column (elfeed-feed-title feed) feed-column-width :left)
+               'face 'elfeed-search-feed-face
+               'kbd-help (elfeed-feed-url feed)) " ")
+      ;; Date
+      (insert (propertize date 'face 'elfeed-search-date-face) " ")
+      ;; Title
+      (insert (propertize title-column
+                          'face title-faces 'kbd-help title) " ")
+      ;; Authors
+      (insert (propertize authors-column 'kbd-help entry-authors) " ")
+      ;; Score
+      (insert entry-score " ")))
+
+  (setq elfeed-search-print-entry-function #'my-search-print-fn)
+  (setq elfeed-search-date-format '("%d-%m-%y" 10 :left))
+  (setq elfeed-search-title-max-width 110)
+  (setq elfeed-search-filter "@2w =cs."))
+(defun ar/elfeed-open-arxiv-pdf ()
+  "Open selected Elfeed arXiv entries as PDFs using pdf-tools."
+  (interactive)
+  (let ((entries
+         (cond
+          ;; Called from show buffer
+          ((eq major-mode 'elfeed-show-mode)
+           (list elfeed-show-entry))
+          ;; Called from search buffer
+          ((eq major-mode 'elfeed-search-mode)
+           (elfeed-search-selected))
+          ;; Fallback: just the current entry
+          (t (list (elfeed-search-selected))))))
+
+    (mapc
+     (lambda (entry)
+       (let* ((url (elfeed-entry-link entry)))
+         (unless (string-match "arxiv\\.org/abs/\\([0-9]+\\.[0-9]+\\)" url)
+           (error "Entry is not an arXiv link: %s" url))
+         (let* ((id (match-string 1 url))
+                (pdf-url (format "https://arxiv.org/pdf/%s.pdf" id))
+                (tmp-file (make-temp-file "arxiv-" nil ".pdf")))
+           (message "Downloading arXiv PDF: %s" pdf-url)
+           (url-copy-file pdf-url tmp-file t)
+           (find-file tmp-file)
+           (when (fboundp 'pdf-view-mode)
+             (pdf-view-mode)))
+         ;; Mark entry as read and update
+         (elfeed-untag entry 'unread)
+         (elfeed-search-update-entry entry)))
+     entries)
+
+    ;; Move to next line if in search buffer
+    (when (eq major-mode 'elfeed-search-mode)
+      (unless (or elfeed-search-remain-on-entry
+                  (use-region-p))
+        (forward-line)))))
+
+(map! :map elfeed-search-mode-map
+      :n "P" #'ar/elfeed-open-arxiv-pdf)
+(map! :map elfeed-show-mode-map
+      :n "P" #'ar/elfeed-open-arxiv-pdf)
+)
 
 ;; AI assistants
 ;;

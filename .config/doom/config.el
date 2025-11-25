@@ -570,50 +570,60 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   (setq elfeed-search-print-entry-function #'my-search-print-fn)
   (setq elfeed-search-date-format '("%d-%m-%y" 10 :left))
   (setq elfeed-search-title-max-width 110)
-  (setq elfeed-search-filter "@2w =cs."))
-(defun ar/elfeed-open-arxiv-pdf ()
-  "Open selected Elfeed arXiv entries as PDFs using pdf-tools."
-  (interactive)
-  (let ((entries
-         (cond
-          ;; Called from show buffer
-          ((eq major-mode 'elfeed-show-mode)
-           (list elfeed-show-entry))
-          ;; Called from search buffer
-          ((eq major-mode 'elfeed-search-mode)
-           (elfeed-search-selected))
-          ;; Fallback: just the current entry
-          (t (list (elfeed-search-selected))))))
+  (setq elfeed-search-filter "@2w =cs.")
 
-    (mapc
-     (lambda (entry)
-       (let* ((url (elfeed-entry-link entry)))
-         (unless (string-match "arxiv\\.org/abs/\\([0-9]+\\.[0-9]+\\)" url)
-           (error "Entry is not an arXiv link: %s" url))
-         (let* ((id (match-string 1 url))
-                (pdf-url (format "https://arxiv.org/pdf/%s.pdf" id))
-                (tmp-file (make-temp-file "arxiv-" nil ".pdf")))
-           (message "Downloading arXiv PDF: %s" pdf-url)
-           (url-copy-file pdf-url tmp-file t)
-           (find-file tmp-file)
-           (when (fboundp 'pdf-view-mode)
-             (pdf-view-mode)))
-         ;; Mark entry as read and update
-         (elfeed-untag entry 'unread)
-         (elfeed-search-update-entry entry)))
-     entries)
+  (defun ar/elfeed-open-arxiv-pdf ()
+    "Open selected Elfeed arXiv entries as PDFs using pdf-tools."
+    (interactive)
+    (let ((entries
+           (cond
+            ;; Called from show buffer
+            ((eq major-mode 'elfeed-show-mode)
+             (list elfeed-show-entry))
+            ;; Called from search buffer
+            ((eq major-mode 'elfeed-search-mode)
+             (elfeed-search-selected))
+            ;; Fallback: just the current entry
+            (t (list (elfeed-search-selected))))))
 
-    ;; Move to next line if in search buffer
-    (when (eq major-mode 'elfeed-search-mode)
-      (unless (or elfeed-search-remain-on-entry
-                  (use-region-p))
-        (forward-line)))))
+      (mapc
+       (lambda (entry)
+	 (let* ((url (elfeed-entry-link entry)))
+           (unless (string-match "arxiv\\.org/abs/\\([0-9]+\\.[0-9]+\\)" url)
+             (error "Entry is not an arXiv link: %s" url))
+           (let* ((id (match-string 1 url))
+                  (pdf-url (format "https://arxiv.org/pdf/%s.pdf" id))
+                  (tmp-file (make-temp-file "arxiv-" nil ".pdf")))
+             (message "Downloading arXiv PDF: %s" pdf-url)
+             (url-copy-file pdf-url tmp-file t)
+             (find-file tmp-file)
+             (when (fboundp 'pdf-view-mode)
+               (pdf-view-mode)))
+           ;; Mark entry as read and update
+           (elfeed-untag entry 'unread)
+           (elfeed-search-update-entry entry)))
+       entries)
 
-(map! :map elfeed-search-mode-map
-      :n "P" #'ar/elfeed-open-arxiv-pdf)
-(map! :map elfeed-show-mode-map
-      :n "P" #'ar/elfeed-open-arxiv-pdf)
-)
+      ;; Move to next line if in search buffer
+      (when (eq major-mode 'elfeed-search-mode)
+	(unless (or elfeed-search-remain-on-entry
+                    (use-region-p))
+          (forward-line)))))
+
+  (map! :map elfeed-search-mode-map
+	:n "P" #'ar/elfeed-open-arxiv-pdf)
+  (map! :map elfeed-show-mode-map
+	:n "P" #'ar/elfeed-open-arxiv-pdf)
+  )
+
+;; Elfeed
+(use-package! elfeed-score
+  :after elfeed
+  :config
+  (elfeed-score-load-score-file (concat org-directory "/elfeed.score")) ; See the elfeed-score documentation for the score file syntax
+  (elfeed-score-enable)
+  (define-key elfeed-search-mode-map "=" elfeed-score-map))
+
 
 ;; AI assistants
 ;;
@@ -975,3 +985,18 @@ By default, the range is [0, 999]."
 
 ;;   ;; Bind the custom function to <tab> in Evil's insert state
 ;;   (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
+
+;; NOTE: Sus hack to fix helm-show-buffers
+(advice-add 'persp-buffer-list-restricted
+            :filter-return (lambda (lst) (seq-filter #'identity lst)))
+
+;; NOTE Fix image rendering with line numbers in shr-based modes
+(defun my/disable-line-numbers ()
+  "Turn off display-line-numbers-mode locally."
+  (when (fboundp 'display-line-numbers-mode)
+    (display-line-numbers-mode -1)))
+
+;; Apply the fix to all known major modes using shr.el
+(add-hook 'eww-mode-hook 'my/disable-line-numbers)
+(add-hook 'elfeed-show-mode-hook 'my/disable-line-numbers)
+(add-hook 'shr-mode-hook 'my/disable-line-numbers)

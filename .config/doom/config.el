@@ -288,6 +288,7 @@
 
 ;; Org config
 (after! org
+  (use-package! org-table-highlight)
   (setq org-agenda-span 14
 	org-agenda-use-time-grid t
 	org-agenda-time-grid

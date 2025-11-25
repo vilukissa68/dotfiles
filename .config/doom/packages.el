@@ -67,3 +67,4 @@
 (package! monkeytype)
 (package! xenops)
 (package! elfeed-score)
+(package! org-table-highlight)

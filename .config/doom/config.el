@@ -720,23 +720,16 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
 	(when hostname-pair
           ;; Change the hostname value
           (setf (cdr hostname-pair) "api.githubcopilot.com")))))
+  (setq aidermacs-default-model "gemini/gemini-2.5-pro")
+  (setq aidermacs-editor-model "gemini/gemini-2.5-pro")
+  (setq aidermacs-architect-model "gemini/gemini-2.5-pro")
+  (setq aidermacs-weak-model "openai/claude-haiku-4.5")
   (setq aidermacs-extra-args
-	'("--model" "openai/gpt-4o"
-          "--architect" "openai/claude-3.7-sonnet-thought"
-          "--weak-model" "openai/gpt-4o"
-          "--no-show-model-warnings"
+	'("--no-show-model-warnings"
           "--show-diffs"
           "--chat-language" "en"
           "--no-auto-commits"
           "--no-auto-accept-architect"))
-
-  ;;:custom
-  ;; Use Github copilot provider for OpenAI
-  ;; Use Github copilot API key
-  ;; (aidermacs-editor-model "openai/gpt-4o")
-  ;; (aidermacs-architect-model "openai/claude-3.7-sonnet-thought")
-  ;; (aidermacs-weak-model "openai/gpt-4o")
-  ;; (aidermacs-extra-args '("--no-show-model-warnings" "--show-diffs" "--chat-language en"))
   )
 
 ;; Latex

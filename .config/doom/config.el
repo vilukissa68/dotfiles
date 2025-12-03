@@ -280,6 +280,23 @@
   (setq rustic-lsp-server 'rust-analyzer)
   (setq rust-format-on-save t))
 
+;; Compiler explorer (rmsbolt)
+(use-package! rmsbolt
+  :config
+  ;; rmsbolt-default-compiler-options is a list of strings
+  (setq rmsbolt-default-compiler-options
+        '("-O2" "-march=native" "-std=c++17"))
+
+  ;; rmsbolt-default-compiler is a string
+  (setq rmsbolt-default-compiler "gcc")
+
+  ;; Optional: Set the default assembly style
+  (setq rmsbolt-default-asm-format "intel")
+
+  ;; Optional: Bind a key to trigger compilation
+  (map! :leader :desc "RMS Bolt Compile" "t c" #'rmsbolt-compile)
+  )
+
 ;; Help function for merging lists
 (defun merge-list-to-list (dst src)
   "Merges content of the 2nd list with the 1st one"

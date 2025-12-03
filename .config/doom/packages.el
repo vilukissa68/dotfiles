@@ -68,3 +68,5 @@
 (package! xenops)
 (package! elfeed-score)
 (package! org-table-highlight)
+
+(package! rmsbold :recipe (:host gitlab :repo "jgkamat/rmsbolt"))

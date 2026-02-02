@@ -101,6 +101,7 @@
        :desc "Open cfw calendar" "c" 'cfw:open-org-calendar
        :desc "Open Vterm right" "v" 'my/vterm-new-buffer-split-right
        :desc "Open Vterm below" "s" 'my/vterm-new-buffer-split-down
+       :desc "Open git diff here" "g" 'diff-hl-show-hunk
        (:prefix ("a" . "org agenda")
 	:desc "Open org agenda" "a" 'org-agenda
 	:desc "Open org todo list" "t" 'org-todo-list

@@ -373,6 +373,11 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
       (cancel-timer my/org-agenda-peek--timer))
 
     (let* ((org-agenda-window-setup 'current-window)
+	   (org-agenda-prefix-format
+            '((agenda . " ")
+              (todo   . " ")
+              (tags   . " ")
+              (search . " ")))
            (buf (save-window-excursion
                   (org-agenda nil "p")
                   (current-buffer))))
@@ -449,7 +454,10 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   (add-hook 'org-agenda-mode-hook
             (lambda ()
               (setq truncate-lines nil)
-              (visual-line-mode 1)))
+              (visual-line-mode 1)
+	      )
+	    (setq-local org-agenda-tags-column (- (window-width) 12))
+	    )
 
   ;; Invoke org-roam
   (org-roam-setup))

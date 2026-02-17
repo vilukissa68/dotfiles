@@ -362,6 +362,48 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
       (org-sort-entries nil ?o)))
   (add-hook 'before-save-hook #'my/org-sort-by-todo-on-save)
 
+  (defvar my/org-agenda-peek--window nil)
+  (defvar my/org-agenda-peek--timer nil)
+
+  (defun my/org-agenda-peek ()
+    (interactive)
+
+    ;; Cancel previous timer if any
+    (when (timerp my/org-agenda-peek--timer)
+      (cancel-timer my/org-agenda-peek--timer))
+
+    (let* ((org-agenda-window-setup 'current-window)
+           (buf (save-window-excursion
+                  (org-agenda nil "p")
+                  (current-buffer))))
+
+      ;; Display on LEFT side, small width
+      (setq my/org-agenda-peek--window
+            (display-buffer
+             buf
+             '((display-buffer-in-side-window)
+               (side . left)
+               (slot . 0)
+               (window-width . 0.22)
+               (window-parameters
+		. ((no-delete-other-windows . t)
+                   (no-other-window . nil))))))
+
+      ;; Schedule conditional close
+      (setq my/org-agenda-peek--timer
+            (run-at-time
+             "15 sec" nil
+             #'my/org-agenda-peek--maybe-close
+             buf))))
+
+  (defun my/org-agenda-peek--maybe-close (buf)
+    (when (and (buffer-live-p buf)
+               (window-live-p my/org-agenda-peek--window)
+               ;; Only close if user is NOT interacting with it
+               (not (eq (selected-window) my/org-agenda-peek--window)))
+      (delete-window my/org-agenda-peek--window)
+      (kill-buffer buf)))
+
   (map! :after org
 	:map org-mode-map
 	"C-S-<up>"   #'my/org-cycle-effort-up
@@ -395,6 +437,19 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
           ("MEETING" . "brown") ("DONE" . "forest green") ("UNCLEAR" . "black")
           ("DROPPED" . "gray") ("POSTPONED" . "dark gray") ("LECTURE" . "royal blue")
           ("EVENT" . "dark olive green")))
+
+  (setq org-agenda-custom-commands
+	'(("p" "Peek view"
+           ((agenda "" ((org-agenda-span 14)))   ;; today
+            (alltodo ""
+                     ((org-agenda-skip-function
+                       '(org-agenda-skip-entry-if 'todo 'done))
+                      (org-agenda-overriding-header
+                       "Unfinished TODOs")))))))
+  (add-hook 'org-agenda-mode-hook
+            (lambda ()
+              (setq truncate-lines nil)
+              (visual-line-mode 1)))
 
   ;; Invoke org-roam
   (org-roam-setup))

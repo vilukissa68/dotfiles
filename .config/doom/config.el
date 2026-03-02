@@ -362,52 +362,61 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
       (org-sort-entries nil ?o)))
   (add-hook 'before-save-hook #'my/org-sort-by-todo-on-save)
 
+
   (defvar my/org-agenda-peek--window nil)
-  (defvar my/org-agenda-peek--timer nil)
-
-  (defun my/org-agenda-peek ()
-    (interactive)
-
-    ;; Cancel previous timer if any
-    (when (timerp my/org-agenda-peek--timer)
-      (cancel-timer my/org-agenda-peek--timer))
-
-    (let* ((org-agenda-window-setup 'current-window)
-	   (org-agenda-prefix-format
-            '((agenda . " ")
-              (todo   . " ")
-              (tags   . " ")
-              (search . " ")))
-           (buf (save-window-excursion
-                  (org-agenda nil "p")
-                  (current-buffer))))
-
-      ;; Display on LEFT side, small width
-      (setq my/org-agenda-peek--window
-            (display-buffer
-             buf
-             '((display-buffer-in-side-window)
-               (side . left)
-               (slot . 0)
-               (window-width . 0.22)
-               (window-parameters
-		. ((no-delete-other-windows . t)
-                   (no-other-window . nil))))))
-
-      ;; Schedule conditional close
-      (setq my/org-agenda-peek--timer
-            (run-at-time
-             "15 sec" nil
-             #'my/org-agenda-peek--maybe-close
-             buf))))
+  (defvar my/org-agenda-peek--close-timer nil)
+  (defvar my/org-agenda-peek--master-timer nil)
+  (defvar my/org-agenda-peek-interval 3600) ;; 1 hour
 
   (defun my/org-agenda-peek--maybe-close (buf)
+    "Closes the window only if you aren't currently using it."
     (when (and (buffer-live-p buf)
                (window-live-p my/org-agenda-peek--window)
-               ;; Only close if user is NOT interacting with it
                (not (eq (selected-window) my/org-agenda-peek--window)))
       (delete-window my/org-agenda-peek--window)
       (kill-buffer buf)))
+
+  (defun my/org-agenda-peek ()
+    "The core function to generate and show the agenda side-window."
+    (interactive)
+    ;; Only run if we aren't busy in the minibuffer
+    (unless (active-minibuffer-window)
+      (when (timerp my/org-agenda-peek--close-timer)
+	(cancel-timer my/org-agenda-peek--close-timer))
+
+      (let* ((org-agenda-window-setup 'current-window)
+             (org-agenda-prefix-format '((agenda . " ")))
+             ;; Create the agenda buffer silently
+             (buf (save-window-excursion
+                    (org-agenda nil "p")
+                    (current-buffer))))
+
+	(setq my/org-agenda-peek--window
+              (display-buffer
+               buf
+               '((display-buffer-in-side-window)
+		 (side . left)
+		 (slot . 0)
+		 (window-width . 0.22)
+		 (window-parameters . ((no-delete-other-windows . t)
+                                       (no-other-window . nil))))))
+
+	;; Close after 15 seconds
+	(setq my/org-agenda-peek--close-timer
+              (run-at-time 15 nil #'my/org-agenda-peek--maybe-close buf)))))
+
+  (defun my/org-agenda-peek-initialize ()
+    "Starts the periodic peek timer."
+    (require 'org-agenda) ;; Ensure the feature is loaded
+    (when (timerp my/org-agenda-peek--master-timer)
+      (cancel-timer my/org-agenda-peek--master-timer))
+
+    ;; Start repeating timer
+    (setq my/org-agenda-peek--master-timer
+          (run-at-time t my/org-agenda-peek-interval #'my/org-agenda-peek)))
+
+  ;; Use after-init-hook and ensure the parenthesis is closed!
+  (add-hook 'after-init-hook #'my/org-agenda-peek-initialize)
 
   (map! :after org
 	:map org-mode-map

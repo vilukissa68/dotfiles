@@ -513,11 +513,17 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
 (setq org-display-remote-inline-images 'cache)
 
 ;; Magit
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-(setq transient-default-level 7)
+(after! magit
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq transient-default-level 7))
 
-;; Magit-forge
-(setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     "))
+;; Forge (Wait for magit to load forge)
+(after! forge
+  (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     "))
+  (setq forge-topic-list-limit '(60 . 0))
+  ;; Use the non-local version of add-to-list (remove the 't' at the end)
+  ;; so it persists across all buffers.
+  (add-to-list 'magit-status-sections-hook 'forge-insert-pullreqs))
 
 ;; EWW (Emacs Web Wowser)
 ;;(setq browse-url-browser-function 'eww-browse-url)

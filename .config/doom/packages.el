@@ -70,3 +70,5 @@
 (package! org-table-highlight)
 
 (package! rmsbold :recipe (:host gitlab :repo "jgkamat/rmsbolt"))
+
+(package! ement)

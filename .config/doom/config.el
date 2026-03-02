@@ -824,6 +824,47 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   (setq xenops-math-block-format "\\[%s\\]")
   (xenops-mode 1))
 
+;; Ement
+(use-package! ement
+  :commands (ement-connect)
+  :config
+
+  (defun my-ement-login ()
+    "Connect to my custom Matrix server using Ement."
+    (interactive)
+    (ement-connect :uri-prefix "https://matrix.vilukissa.xyz"))
+
+  (when (featurep! :editor evil +everywhere)
+    (with-eval-after-load 'evil-collection
+      (evil-collection-ement-setup)))
+
+  ;; Make the compose buffer taller by default
+  (setq ement-room-compose-buffer-window-auto-height t
+        ement-room-compose-buffer-window-auto-height-min 10
+        ement-room-compose-buffer-window-auto-height-max 25)
+
+  (map! :map ement-room-mode-map
+        :n "RET" #'ement-room-send-message
+        :n "q"   #'ement-room-bury-buffer
+        (:prefix ("i" . "compose")
+         :n "c" #'ement-room-compose-message
+         :n "o" #'ement-room-compose-org)
+        (:prefix ("m" . "message")
+         :n "r" #'ement-room-write-reply
+         :n "e" #'ement-room-edit-message
+         :n "d" #'ement-room-delete-message
+         :n "a" #'ement-room-send-reaction
+         :n "x" #'ement-room-retry-send
+         :n "v" #'ement-room-toggle-format)
+        (:prefix ("f" . "file")
+         :n "i" #'ement-room-send-image
+         :n "f" #'ement-room-send-file)
+	(:prefix ("r" . "room")
+         :n "l" #'ement-room-leave
+         :n "f" #'ement-room-forget
+         :n "m" #'ement-room-list-members      ;; See everyone in the room + their status
+         :n "s" #'ement-room-search)))
+
 (defun my/enable-wrap-for-aidermacs ()
   "Enable visual wrapping in Aidermacs buffers."
   (when (string-prefix-p "*aidermacs:" (buffer-name))

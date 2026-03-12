@@ -77,8 +77,8 @@
 (define-key global-map (kbd "<C-triple-wheel-down>") 'text-scale-decrease)
 
 ;; Set font
-(setq doom-font (font-spec :family "Iosevka Term" :size 10.0))
-;;(setq doom-font (font-spec :family "Monaspace Argon Frozen" :size 12.0))
+;;(setq doom-font (font-spec :family "Iosevka Term" :size 12.0))
+(setq doom-font (font-spec :family "Monaspace Argon" :size 12.0 :weight 'light))
 
 ;; General keybindings
 (map! :leader
@@ -178,6 +178,7 @@
 
 ;; Lsp
 (after! lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories (expand-file-name "~/work"))
   (setq lsp-auto-guess-root nil ;; Dont guess root
         lsp-ui-doc-show-with-cursor t
         lsp-ui-doc-show-with-mouse t))
@@ -415,6 +416,14 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
     (setq my/org-agenda-peek--master-timer
           (run-at-time t my/org-agenda-peek-interval #'my/org-agenda-peek)))
 
+  ;; Render overline with +<text>+ in org mode
+  (defface org-overline
+    '((t (:overline t)))
+    "Face for overlined text in Org mode.")
+  (font-lock-add-keywords
+   'org-mode
+   '(("\\+\\([^+\n]+\\)\\+"
+      1 'org-overline prepend)))
   ;; Use after-init-hook and ensure the parenthesis is closed!
   (add-hook 'after-init-hook #'my/org-agenda-peek-initialize)
 
@@ -619,10 +628,9 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
         :n "r" #'eglot-rename
         :n "f" #'eglot-format-buffer))
 
-;; Elfeed
-(use-package! elfeed-score)
+(custom-set-faces
+ '(shr-image ((t (:height 0.1)))))
 (after! elfeed
-
   (defun concatenate-authors (authors-list)
     "Given AUTHORS-LIST, list of plists; return string of all authors concatenated."
     (s-split ", "

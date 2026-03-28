@@ -78,7 +78,9 @@
 
 ;; Set font
 ;;(setq doom-font (font-spec :family "Iosevka Term" :size 12.0))
-(setq doom-font (font-spec :family "Monaspace Argon" :size 12.0 :weight 'light))
+;;(setq doom-font (font-spec :family "Monaspace Argon" :height 160 :weight 'regular))
+(setq doom-font (font-spec :family "Monaspace Krypton" :size 13 :weight 'light :width 'condensed))
+(setq-default line-spacing 0)
 
 ;; General keybindings
 (map! :leader

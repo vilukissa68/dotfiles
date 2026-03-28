@@ -731,6 +731,55 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
   (elfeed-score-enable)
   (define-key elfeed-search-mode-map "=" elfeed-score-map))
 
+;; PDF tools
+(defun my/pdf-reflow-article-dyslexic ()
+  "Extract the entire PDF text into a buffer and apply OpenDyslexic font correctly."
+  (interactive)
+  (unless (derived-mode-p 'pdf-view-mode)
+    (user-error "Error: You must run this from an active PDF buffer"))
+
+  (let* ((pdf-buffer (current-buffer))
+         (num-pages (pdf-cache-number-of-pages))
+         (out-buf (get-buffer-create "*PDF-Reflow-Article*"))
+         (font-name "OpenDyslexic")) ; Standard name for the font
+
+    ;; 1. Prepare the output buffer
+    (with-current-buffer out-buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (message "Extracting %d pages... please wait..." num-pages)
+
+        ;; 2. Loop through pages while referencing the PDF buffer
+        (dotimes (i num-pages)
+          (let ((page-text (with-current-buffer pdf-buffer
+                             (pdf-info-gettext (1+ i) '(0 0 1 1)))))
+            (insert (format "--- Page %d ---\n\n" (1+ i)))
+            (insert page-text)
+            (insert "\n\n")))
+
+        ;; 3. Apply Dyslexic styling
+        (if (member font-name (font-family-list))
+            (progn
+              (buffer-face-set `(:family ,font-name :height 150))
+              (message "Reflow complete with OpenDyslexic!"))
+          (message "Warning: OpenDyslexic not found. Check (font-family-list)."))
+
+        ;; 4. UI Polish
+        (setq-local line-spacing 0.4)
+        (variable-pitch-mode 1)
+        (visual-line-mode 1)
+        (goto-char (point-min))))
+
+    ;; 5. Display the result
+    (display-buffer out-buf)))
+
+
+(add-hook 'pdf-view-mode-hook #'pdf-links-minor-mode)
+
+;; Optional: Customize the appearance of the link "hints"
+(setq pdf-links-browse-uri-function 'browse-url-generic
+      browse-url-generic-program "open" ; Uses default macOS browser
+      pdf-links-clickable-types '(display uri goto-dest search-link))
 
 ;; AI assistants
 ;;

@@ -849,8 +849,14 @@ DIRECTION should be 1 for forward (up), -1 for backward (down)."
        :desc "gptel refactor" "r" #'gptel-rewrite
        :desc "gptel menu" "m" #'gptel-menu
        :desc "aider menu" "l" #'aidermacs-transient-menu
-       :desc "copilot-chat" "c" #'copilot-chat-transient
+       :desc "copilot-chat" "o" #'copilot-chat-transient
+       :desc "claude code ide menu" "c" #'claude-code-ide-menu
        ))
+
+;; Claude Code IDE
+(use-package! claude-code-ide
+  :config
+  (claude-code-ide-emacs-tools-setup))
 
 ;; Aidermacs
 (use-package! aidermacs

@@ -72,3 +72,6 @@
 (package! rmsbold :recipe (:host gitlab :repo "jgkamat/rmsbolt"))
 
 (package! ement)
+
+(package! claude-code-ide
+  :recipe (:host github :repo "manzaltu/claude-code-ide.el"))
